@@ -25,6 +25,7 @@ void treereader(Int_t *n_event_cntr, Int_t *n_event_fwd, TString name,
 	vector<Double_t> pt_v_1, y_v_1, phi_v_1, eta_v_1;
 	vector<Double_t> pt_v_2, y_v_2, phi_v_2, eta_v_2;
 	vector<Double_t>::iterator m, n, q;
+	vector<int> MN_index;
 
         Bool_t veto = true;
 	Int_t nentries = 0, nEvent = 0;
@@ -50,7 +51,7 @@ tree->SetBranchAddress("rap",&rap);
 tree->SetBranchAddress("nPV",&nPV);
 tree->SetBranchAddress("iEvt",&iEvent);
 tree->SetBranchAddress("CNTR",&CNTR);
-tree->SetBranchAddress("FWD",&FWD);
+tree->SetBranchAddress("FWD2",&FWD);
 
 tree->GetEntry(0);
 nEvent = iEvent;
@@ -59,7 +60,6 @@ for(int i = 0 ; i < nentries ; ++i){
 	tree->GetEntry(i);
 	weight = 1.;
 
-if(nPV == 1){
 	if(iEvent == nEvent){//in Event
 		if((pt > pt_min_1) && (fabs(rap) < 4.7)){
 		  pt_v_1.push_back(pt);
@@ -80,19 +80,25 @@ if(nPV == 1){
 	i = (i-1);
 	tree->GetEntry(i);
 	//-------------------------
+if(nPV == 1){
+
 if((pt_v_2.size() > 1)&&(pt_v_1.size() > 0)){
+cout << FWD << "\n";
 	if(CNTR > 0) (*n_event_cntr)++;
 	if(FWD > 0) (*n_event_fwd)++;
-
-if((CNTR > 0)||(FWD > 0)){
-
+if(CNTR > 0){
+	CNTR = 1; weight = weight*CNTR;
 	//!!!MERGING SHOULD BE ADDED THROUGHT GENERIC
+	//inclusive should be added throught generic
 
-   	for(int j = 0; j < pt_v_2.size(); j++){
-    		pt_h->Fill(pt_v_2[j],weight);
-    		y_h->Fill(y_v_2[j],weight);
-    		phi_h->Fill(phi_v_2[j],weight);
-	}
+	MN_index = find_MN(y_v_1, y_v_2);
+    		pt_h->Fill(pt_v_1[MN_index[0]],weight);
+    		y_h->Fill(y_v_1[MN_index[0]],weight);
+    		phi_h->Fill(phi_v_1[MN_index[0]],weight);
+
+    		pt_h->Fill(pt_v_2[MN_index[1]],weight);
+    		y_h->Fill(y_v_2[MN_index[1]],weight);
+    		phi_h->Fill(phi_v_2[MN_index[1]],weight);
 
 	dy_MN = find_dy_MN(y_v_1, y_v_2);
 	dphi_MN = find_dphi_MN(y_v_1, phi_v_1, y_v_2, phi_v_2);
@@ -106,17 +112,18 @@ if((CNTR > 0)||(FWD > 0)){
 	if((dy_MN > 3.)&&(dy_MN < 6.))dphi_2->Fill(dphi_MN,weight);
 	if((dy_MN > 6.)&&(dy_MN < 9.4))dphi_3->Fill(dphi_MN,weight);
 
-	cos_1->Fill(dy_MN, weight*cos(pi - dphi_MN) );
+	cos_1->Fill(dy_MN, weight*cos(pi - dphi_MN));
 	cos2_1->Fill(dy_MN,weight*pow(cos(pi - dphi_MN),2));
 	cos_2->Fill(dy_MN,weight*cos(2*(pi - dphi_MN)));
 	cos2_2->Fill(dy_MN,weight*pow(cos(2*(pi - dphi_MN)),2));
 	cos_3->Fill(dy_MN,weight*cos(3*(pi - dphi_MN)));
 	cos2_3->Fill(dy_MN,weight*pow(cos(3*(pi - dphi_MN)),2));
 
-	if((pt_v_1.size() == 1)&&(pt_v_2.size() == 2)&&veto){
+	if((pt_v_1.size() > 0)&&(pt_v_2.size() == 2)&&veto){
 		excl_dy->Fill(dy_MN,weight);
 	}
-}//CNTR or FWD trigger
+
+}//only CNTR events
 }//enough jets
 }//nPV == 1
 

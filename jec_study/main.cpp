@@ -20,21 +20,21 @@ using namespace std;
 int main(int argc, char** argv) {
     char str[256];
 
-    TString dir_name="GENERIC";
+    TString dir_name="DATA_13TeV";
     TString dir  = "/afs/cern.ch/work/i/ivanp/2015_Decorrelator/CMSSW_7_4_15/src/" + dir_name + "/";
-    TString list_name = "/generic";
-    TString list = dir + "listing" + list_name;
-    Double_t pt_min_1 = 35.; // pt_min_1 >= pt_min_2
+    TString list_name = "/FSQJets_2016B_VdMmay_list"; //"/FSQJets_2015_2016_list";
+    TString list = dir + "listing/GT_76X_dataRun2_v15_80X_dataRun2_Prompt_v8" + list_name;
+    Double_t pt_min_1 = 35.; //pt_min_1 >= pt_min_2
     Double_t pt_min_2 = 35.;
     Double_t pt_veto  = 35.;
-    Double_t FWD_weight = 1.;
+    Double_t FWD_weight = 0.5;
     TString Pt_min = "_pt";
 				Pt_min += pt_min_1;
 				Pt_min += "_";
 				Pt_min += pt_min_2;
     TString Pt_veto = "_veto";
 				Pt_veto += pt_veto;
-    TString specification = "_name_ECM_param_MN_dy0_9.4" + Pt_min;//+Pt_veto;
+    TString specification = "_FSQJets_2015_2016_data_13TeV_LowPU_MN_CNTR_dy0_9.4" + Pt_min;//+Pt_veto;
 
     FILE *file;
     TString name, histname;
@@ -173,6 +173,7 @@ Int_t n_event_fwd = 0;
 cout << "Events: cntr - " << n_event_cntr << " fwd - " << n_event_fwd << "\n";
 
 //------------------------------------PRINTING---------------------------------------
+Bool_t sw2 = true, norm = true, norm_bin = true;
 TFile file_res(dir + "/results" + specification + ".root","RECREATE");
 pt->Write();
 y->Write();
