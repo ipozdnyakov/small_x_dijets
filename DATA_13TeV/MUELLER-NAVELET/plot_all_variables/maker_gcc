@@ -1,0 +1,1 @@
+g++ -o k_factor.exe main.cpp Reader.cpp Finder.cpp `root-config --cflags --glibs --libs` 

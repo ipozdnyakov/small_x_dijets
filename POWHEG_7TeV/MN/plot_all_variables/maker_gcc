@@ -1,0 +1,1 @@
+g++ -o k_factor.exe main.cpp MNkfactor.cpp Finder_MN.cpp `root-config --cflags --glibs --libs` 
