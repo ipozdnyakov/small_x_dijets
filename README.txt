@@ -6,7 +6,7 @@ analyses like dijet k-factor and dijets decorrelations, looking for BFKL effects
 This project takes input data from .root files produced by https://github.com/ipozdnyakov/cmssw_jets.git,
 each file conatains TTree with one entry for each jet in the event.
 
-2. ENVIROMENT
+2. ENVIRONMENT
 
 Project is written to be run within CMSSW enviroment. Current version is used - CMSSW_7_4_15.
 Top level of the project repository should be placed in /CMSSW_X_X_X/src/. 
