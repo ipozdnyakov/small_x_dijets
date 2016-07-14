@@ -20,7 +20,7 @@ using namespace std;
 int main(int argc, char** argv) {
     char str[256];
 
-    TString dir_name="DATA_13TeV";
+    TString dir_name="jec_study";
     TString dir  = "/afs/cern.ch/work/i/ivanp/2015_Decorrelator/CMSSW_7_4_15/src/" + dir_name + "/";
     TString list_name = "/FSQJets_2016B_VdMmay_list"; //"/FSQJets_2015_2016_list";
     TString list = dir + "listing/GT_76X_dataRun2_v15_80X_dataRun2_Prompt_v8" + list_name;

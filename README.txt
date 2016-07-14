@@ -40,3 +40,10 @@ Each step is a branch in its nature.
 		  the  set  of  observables  it  plots  observable  on  jets   with 
 		  pt_plus_unc and pt_minus_unc results  are  stored  in  two  .root 
 		  files, for each set of observables
+
+
+5. DATA
+-----------
+
+/listing - contains lists of files from 13TeV_DATA (output of git@github.com:ipozdnyakov/cmssw_jets project)
+(data stored in /afs/cern.ch/work/i/ivanp/13TeV_DATA/)
