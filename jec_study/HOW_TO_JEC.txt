@@ -1,0 +1,22 @@
+Official documentation	- https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookJetEnergyCorrections
+Tutorial		- https://twiki.cern.ch/twiki/bin/viewauth/CMS/SWGuideCMSDataAnalysisSchoolJetAnalysis#How_to_apply_JEC
+Example for tutorial	- https://github.com/ajaykumar649/Jets_Short
+
+The following was done in this project:
+1) jets were taken already corrected (see project git@github.com:ipozdnyakov/cmssw_jets), also corr factors were saved
+2) .txt files may be  obtained using file /JetMETCorrections/Modules/test/JetCorrectionDBReader_cfg.py with apropriate parameters
+	payloadName    = cms.untracked.string('ak4PFJetsCHS') corresponds to slimmedJets in MiniAOD for 2015 and 2016
+	process.GlobalTag.globaltag = '76X_dataRun2_v15/80X_dataRun2_Prompt_v8'
+	globalTag      = cms.untracked.string('76X_dataRun2_v15/80X_dataRun2_Prompt_v8')
+
+	>>Global Tag "76X_dataRun2_v15" has not been found in the database. from GTProxy::load 
+	>>Global Tag "80X_dataRun2_Prompt_v8" has not been found in the database. from GTProxy::load
+
+3) alternatevely they can be obtained from directs link at the page - https://twiki.cern.ch/twiki/bin/viewauth/CMS/JECDataMC
+GT: 76X_dataRun2_16Dec2015_v0 		--- Fall15_25nsV2_DATA.tar.gz
+GT: 80X_dataRun2_Prompt_ICHEP16JEC_v0 	--- Spring16_25nsV6_DATA.tar.gz
+
+4) text files with corrections and uncertainties are stored in /JEC_txt
+
+5) in the code, uncertainties obtained
+
