@@ -18,5 +18,15 @@ GT: 80X_dataRun2_Prompt_ICHEP16JEC_v0 	--- Spring16_25nsV6_DATA.tar.gz
 
 4) text files with corrections and uncertainties are stored in /JEC_txt
 
-5) in the code, uncertainties obtained
+5) in the code, uncertainties obtained by including
 
+  #include "CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
+
+  JetCorrectionUncertainty *jecUnc = new JetCorrectionUncertainty("Jec11_V12_Uncertainty_AK5PF.txt")
+
+  jecUnc->setJetEta(eta);
+  jecUnc->setJetPt(ptCor); // here you must use the CORRECTED jet pt
+  double unc = jecUnc->getUncertainty(true);
+  double ptCor_shifted = ptCor(1+shift*unc) ; // shift = +1(up), or -1(down)
+
+To figure out how to include headers and librearies for CMSSW modules - compare with inclusion of root_config - see maker_gcc

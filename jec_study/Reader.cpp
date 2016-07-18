@@ -7,7 +7,7 @@
 #include "TMath.h"
 #include <vector>
 #include <math.h>
-
+#include "CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
 #include "reader.h"
 #include "finder.h"
 #define pi 3.1415926
@@ -19,7 +19,8 @@ void treereader(Int_t *n_event_cntr, Int_t *n_event_fwd, TString name,
 	TH1D *w2_dy, TH1D *excl_dy,
         TH1D *cos_1, TH1D *cos_2, TH1D *cos_3, TH1D *cos2_1, TH1D *cos2_2, TH1D *cos2_3,
         TH2D *dphi_dy,
-        Double_t pt_min_1, Double_t pt_min_2, Double_t FWD_weight,  Double_t pt_veto
+        Double_t pt_min_1, Double_t pt_min_2, Double_t FWD_weight,  Double_t pt_veto,
+	JetCorrectionUncertainty *unc
         ){
 
 	vector<Double_t> pt_v_1, y_v_1, phi_v_1, eta_v_1;
@@ -51,7 +52,7 @@ tree->SetBranchAddress("rap",&rap);
 tree->SetBranchAddress("nPV",&nPV);
 tree->SetBranchAddress("iEvt",&iEvent);
 tree->SetBranchAddress("CNTR",&CNTR);
-tree->SetBranchAddress("FWD2",&FWD);
+tree->SetBranchAddress("FWD3",&FWD);
 
 tree->GetEntry(0);
 nEvent = iEvent;
@@ -83,9 +84,9 @@ for(int i = 0 ; i < nentries ; ++i){
 if(nPV == 1){
 
 if((pt_v_2.size() > 1)&&(pt_v_1.size() > 0)){
-cout << FWD << "\n";
 	if(CNTR > 0) (*n_event_cntr)++;
-	if(FWD > 0) (*n_event_fwd)++;
+	if(FWD > 0){(*n_event_fwd)++;
+	cout << FWD << "\n";}
 if(CNTR > 0){
 	CNTR = 1; weight = weight*CNTR;
 	//!!!MERGING SHOULD BE ADDED THROUGHT GENERIC
