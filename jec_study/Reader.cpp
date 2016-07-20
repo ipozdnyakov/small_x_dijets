@@ -7,18 +7,17 @@
 #include "TMath.h"
 #include <vector>
 #include <math.h>
+
 #include "CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
+#include "observables.h"
 #include "reader.h"
 #include "finder.h"
 #define pi 3.1415926
 
 using namespace std;
 
-void treereader(Int_t *n_event_cntr, Int_t *n_event_fwd, TString name,
-        TH1D *pt_h, TH1D *y_h, TH1D *phi_h, TH1D *dphi_0, TH1D *dphi_1, TH1D *dphi_2, TH1D *dphi_3,  TH1D *dy,
-	TH1D *w2_dy, TH1D *excl_dy,
-        TH1D *cos_1, TH1D *cos_2, TH1D *cos_3, TH1D *cos2_1, TH1D *cos2_2, TH1D *cos2_3,
-        TH2D *dphi_dy,
+void treereader( TString name,
+	Observables *MN_jets,
         Double_t pt_min_1, Double_t pt_min_2, Double_t FWD_weight,  Double_t pt_veto,
 	JetCorrectionUncertainty *unc
         ){
@@ -84,44 +83,43 @@ for(int i = 0 ; i < nentries ; ++i){
 if(nPV == 1){
 
 if((pt_v_2.size() > 1)&&(pt_v_1.size() > 0)){
-	if(CNTR > 0) (*n_event_cntr)++;
-	if(FWD > 0){(*n_event_fwd)++;
-	cout << FWD << "\n";}
+	if(CNTR > 0) MN_jets->n_event_cntr++;
+	if(FWD > 0) MN_jets->n_event_fwd++;
 if(CNTR > 0){
 	CNTR = 1; weight = weight*CNTR;
 	//!!!MERGING SHOULD BE ADDED THROUGHT GENERIC
 	//inclusive should be added throught generic
 
 	MN_index = find_MN(y_v_1, y_v_2);
-    		pt_h->Fill(pt_v_1[MN_index[0]],weight);
-    		y_h->Fill(y_v_1[MN_index[0]],weight);
-    		phi_h->Fill(phi_v_1[MN_index[0]],weight);
+    		MN_jets->pt->Fill(pt_v_1[MN_index[0]],weight);
+    		MN_jets->y->Fill(y_v_1[MN_index[0]],weight);
+    		MN_jets->phi->Fill(phi_v_1[MN_index[0]],weight);
 
-    		pt_h->Fill(pt_v_2[MN_index[1]],weight);
-    		y_h->Fill(y_v_2[MN_index[1]],weight);
-    		phi_h->Fill(phi_v_2[MN_index[1]],weight);
+    		MN_jets->pt->Fill(pt_v_2[MN_index[1]],weight);
+    		MN_jets->y->Fill(y_v_2[MN_index[1]],weight);
+    		MN_jets->phi->Fill(phi_v_2[MN_index[1]],weight);
 
 	dy_MN = find_dy_MN(y_v_1, y_v_2);
 	dphi_MN = find_dphi_MN(y_v_1, phi_v_1, y_v_2, phi_v_2);
 
-	dphi_0->Fill(dphi_MN,weight);
-	dy->Fill(dy_MN,weight);
-	w2_dy->Fill(dy_MN,weight*weight);
-	dphi_dy->Fill(dphi_MN,dy_MN,weight);
+	MN_jets->dphi[0]->Fill(dphi_MN,weight);
+	MN_jets->dy->Fill(dy_MN,weight);
+	MN_jets->w2_dy->Fill(dy_MN,weight*weight);
+	MN_jets->dphi_dy->Fill(dphi_MN,dy_MN,weight);
 
-	if((dy_MN > 0.)&&(dy_MN < 3.))dphi_1->Fill(dphi_MN,weight);
-	if((dy_MN > 3.)&&(dy_MN < 6.))dphi_2->Fill(dphi_MN,weight);
-	if((dy_MN > 6.)&&(dy_MN < 9.4))dphi_3->Fill(dphi_MN,weight);
+	if((dy_MN > 0.)&&(dy_MN < 3.))  MN_jets->dphi[1]->Fill(dphi_MN,weight);
+	if((dy_MN > 3.)&&(dy_MN < 6.))  MN_jets->dphi[2]->Fill(dphi_MN,weight);
+	if((dy_MN > 6.)&&(dy_MN < 9.4)) MN_jets->dphi[3]->Fill(dphi_MN,weight);
 
-	cos_1->Fill(dy_MN, weight*cos(pi - dphi_MN));
-	cos2_1->Fill(dy_MN,weight*pow(cos(pi - dphi_MN),2));
-	cos_2->Fill(dy_MN,weight*cos(2*(pi - dphi_MN)));
-	cos2_2->Fill(dy_MN,weight*pow(cos(2*(pi - dphi_MN)),2));
-	cos_3->Fill(dy_MN,weight*cos(3*(pi - dphi_MN)));
-	cos2_3->Fill(dy_MN,weight*pow(cos(3*(pi - dphi_MN)),2));
+	MN_jets->cos_1->Fill(dy_MN, weight*cos(pi - dphi_MN));
+	MN_jets->cos2_1->Fill(dy_MN,weight*pow(cos(pi - dphi_MN),2));
+	MN_jets->cos_2->Fill(dy_MN,weight*cos(2*(pi - dphi_MN)));
+	MN_jets->cos2_2->Fill(dy_MN,weight*pow(cos(2*(pi - dphi_MN)),2));
+	MN_jets->cos_3->Fill(dy_MN,weight*cos(3*(pi - dphi_MN)));
+	MN_jets->cos2_3->Fill(dy_MN,weight*pow(cos(3*(pi - dphi_MN)),2));
 
 	if((pt_v_1.size() > 0)&&(pt_v_2.size() == 2)&&veto){
-		excl_dy->Fill(dy_MN,weight);
+		MN_jets->excl_dy->Fill(dy_MN,weight);
 	}
 
 }//only CNTR events
@@ -147,6 +145,5 @@ if(CNTR > 0){
 	CNTR = -1;
    	}
 }
-//cout << *n_event << "\n";
 };
 
