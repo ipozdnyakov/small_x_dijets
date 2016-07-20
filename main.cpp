@@ -23,7 +23,7 @@ int main(int argc, char** argv) {
 
     TString dir  = "/afs/cern.ch/work/i/ivanp/2015_Decorrelator/CMSSW_7_4_15/src/";
     TString list_name = "FSQJets_2015_2016";
-    TString list = dir + "Listing/" + list_name;
+    TString list = dir + "listing/" + list_name;
     Double_t pt_min_1 = 35.; //pt_min_1 >= pt_min_2
     Double_t pt_min_2 = 35.;
     Double_t pt_veto  = 35.;
@@ -44,8 +44,8 @@ int main(int argc, char** argv) {
     Observables *MN_jets = new Observables(dir_name, specification);
 
 //------------------------------------JEC UNC-------------------------------------------
-    JetCorrectionUncertainty *jecUnc2015 = new JetCorrectionUncertainty("./Jec_txt/2015/Fall15_25nsV2_DATA_Uncertainty_AK4PFchs.txt");
-    JetCorrectionUncertainty *jecUnc2016 = new JetCorrectionUncertainty("./Jec_txt/2016/Spring16_25nsV6_DATA_Uncertainty_AK4PFchs.txt");
+    JetCorrectionUncertainty *jecUnc2015 = new JetCorrectionUncertainty("./jec_txt/2015/Fall15_25nsV2_DATA_Uncertainty_AK4PFchs.txt");
+    JetCorrectionUncertainty *jecUnc2016 = new JetCorrectionUncertainty("./jec_txt/2016/Spring16_25nsV6_DATA_Uncertainty_AK4PFchs.txt");
 
 //------------------------------------PROCESSING----------------------------------------
     int j = 0;
