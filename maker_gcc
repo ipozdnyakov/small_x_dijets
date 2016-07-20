@@ -2,8 +2,8 @@
 
 setenv CMSSW_LIBS '-lJetMETCorrectionsObjects -lFWCoreCommon -FWCoreFramework -lCondFormatsJetMETObjects -lJetMETCorrectionsModules'
 
-g++ -o k_factor.exe main.cpp Reader.cpp Finder.cpp Observables.cpp\
--I./include \
+g++ -o k_factor.exe main.cpp ./Source/Reader.cpp ./Source/Finder.cpp ./Source/Observables.cpp\
+-I./Include \
 `root-config --cflags --glibs --libs` \
 -I/afs/cern.ch/cms/slc6_amd64_gcc491/cms/cmssw/CMSSW_7_4_15/src/ \
 -L/afs/cern.ch/cms/slc6_amd64_gcc491/cms/cmssw/CMSSW_7_4_15/lib/slc6_amd64_gcc491 \

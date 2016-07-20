@@ -21,11 +21,9 @@ using namespace std;
 int main(int argc, char** argv) {
     char str[256];
 
-    TString dir_name="jec_study";
     TString dir  = "/afs/cern.ch/work/i/ivanp/2015_Decorrelator/CMSSW_7_4_15/src/";
     TString list_name = "FSQJets_2015_2016";
-    TString list = dir + "listing/" + list_name;
-	dir = dir + dir_name + "/";
+    TString list = dir + "Listing/" + list_name;
     Double_t pt_min_1 = 35.; //pt_min_1 >= pt_min_2
     Double_t pt_min_2 = 35.;
     Double_t pt_veto  = 35.;
@@ -36,17 +34,18 @@ int main(int argc, char** argv) {
 				Pt_min += pt_min_2;
     TString Pt_veto = "_veto";
 				Pt_veto += pt_veto;
-    TString specification = "_FSQJets_2015_2016_data_13TeV_LowPU_MN_CNTR_dy0_9.4" + Pt_min;//+Pt_veto;
-
     FILE *file;
     TString name;
     TString pict;
+
 //------------------------------------OBSERVABLES---------------------------------------
+    TString dir_name="jec_study";
+    TString specification = "_FSQJets_2015_2016_data_13TeV_LowPU_MN_CNTR_dy0_9.4" + Pt_min;//+Pt_veto;
     Observables *MN_jets = new Observables(dir_name, specification);
 
 //------------------------------------JEC UNC-------------------------------------------
-    JetCorrectionUncertainty *jecUnc2015 = new JetCorrectionUncertainty("../JEC_txt/2015/Fall15_25nsV2_DATA_Uncertainty_AK4PFchs.txt");
-    JetCorrectionUncertainty *jecUnc2016 = new JetCorrectionUncertainty("../JEC_txt/2016/Spring16_25nsV6_DATA_Uncertainty_AK4PFchs.txt");
+    JetCorrectionUncertainty *jecUnc2015 = new JetCorrectionUncertainty("./Jec_txt/2015/Fall15_25nsV2_DATA_Uncertainty_AK4PFchs.txt");
+    JetCorrectionUncertainty *jecUnc2016 = new JetCorrectionUncertainty("./Jec_txt/2016/Spring16_25nsV6_DATA_Uncertainty_AK4PFchs.txt");
 
 //------------------------------------PROCESSING----------------------------------------
     int j = 0;
