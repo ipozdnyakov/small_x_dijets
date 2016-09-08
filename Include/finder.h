@@ -18,7 +18,7 @@
 #include "TROOT.h"
 #include "TStyle.h"
 #include "TTree.h"
-#include "reader.h"
+#include "sample.h"
 #include "TH2.h"
 #include "TProfile.h"
 #include "TError.h"

@@ -1,8 +1,8 @@
-#include"observables.h"
+#include"observable.h"
 using namespace std;
 #define pi 3.1415926
 
-Observables::Observables(TString dir_name, TString specification){
+Observable::Observable(TString dir_name, TString specification){
 TString histname;
 //------------------------------------BINING---------------------------------------
     double kfacbins[16]={0,0.5,1.0,1.5,2.0,2.5,3.0,
@@ -107,10 +107,10 @@ TString histname;
 
 }
 
-Observables::~Observables(){
+Observable::~Observable(){
 }
 
-void Observables::CalculateErrors(){
+void Observable::CalculateErrors(){
 //Errors calculation
 Double_t w_ = 0., x_ = 0., y_ = 0., dx_ = 0., dy_ = 0., s_ = 0., ds_ = 0.;//k=s/x, s = x+y
 Double_t dcos = 0., dcos_2 = 0., dcos_3 = 0.;
@@ -168,7 +168,7 @@ dcos_2 = sqrt(
 
 }
 
-void Observables::WriteToFile(TString name){
+void Observable::WriteToFile(TString name){
 TFile file_res(name,"RECREATE");
 pt->Write();
 y->Write();

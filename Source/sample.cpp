@@ -8,20 +8,41 @@
 #include <vector>
 #include <math.h>
 
+#include <fstream>
 #include "CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
-#include "observables.h"
-#include "reader.h"
+#include "observable.h"
+#include "sample.h"
 #include "finder.h"
 #define pi 3.1415926
 
 using namespace std;
 
-void treereader( TString name,
-	Observables *MN_jets,
+void Sample::read_list( 
+	Observable *MN_jets,
         Double_t pt_min_1, Double_t pt_min_2, Double_t FWD_weight,  Double_t pt_veto,
 	JetCorrectionUncertainty *unc
         ){
 
+    //Open file with names of data files
+        ifstream        data_files("./listing/" + this->list_name);
+	cout << "\t-reading data files from " << this->list_name << ":\n";
+
+    //Read each input file from the list
+        string          data_name;
+        while(getline(data_files, data_name)){
+                cout << "\t" << data_name << "\n";
+                this->read_file(data_name, MN_jets, pt_min_1, pt_min_2, FWD_weight, pt_veto, unc);
+        }
+};
+
+void Sample::read_file(
+	string name,
+	Observable *MN_jets,
+        Double_t pt_min_1, Double_t pt_min_2, Double_t FWD_weight,  Double_t pt_veto,
+	JetCorrectionUncertainty *unc
+        ){
+
+	TString file_name = name;
 	vector<Double_t> pt_v_1, y_v_1, phi_v_1, eta_v_1;
 	vector<Double_t> pt_v_2, y_v_2, phi_v_2, eta_v_2;
 	vector<Double_t>::iterator m, n, q;
@@ -36,7 +57,7 @@ void treereader( TString name,
 	Int_t CNTR = -1, FWD = -1;
         Double_t weight = 0.;
 
-TFile Jfile(name);
+TFile Jfile(file_name);
 TTree* tree;
 tree = (TTree*) Jfile.Get("JetCollection/jet_tree");
 nentries = tree->GetEntries();

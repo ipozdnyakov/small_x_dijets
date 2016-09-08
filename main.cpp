@@ -1,10 +1,7 @@
-#include <fstream>
-
-#include "reader.h"
-#include "observables.h"
+#include "sample.h"
+#include "observable.h"
 #include "CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
 
-#define pi 3.1415926
 using namespace std;
 
 int main(int argc, char** argv) {
@@ -28,26 +25,16 @@ cout << "Start main programm:\n";
 //------------------------------------OBSERVABLES---------------------------------------
     TString dir_name="jec_study";
     TString specification = "_FSQJets_2015_2016_data_13TeV_LowPU_MN_CNTR_dy0_9.4" + Pt_min;//+Pt_veto;
-    Observables *MN_jets = new Observables(dir_name, specification);
+    Observable *MN_jets = new Observable(dir_name, specification);
 
 //------------------------------------JEC UNC-------------------------------------------
     JetCorrectionUncertainty *jecUnc2015 = new JetCorrectionUncertainty("./jec_txt/2015/Fall15_25nsV2_DATA_Uncertainty_AK4PFchs.txt");
     JetCorrectionUncertainty *jecUnc2016 = new JetCorrectionUncertainty("./jec_txt/2016/Spring16_25nsV6_DATA_Uncertainty_AK4PFchs.txt");
 
 //------------------------------------READING-and-PROCESSING----------------------------
-//Open file with names of data files
-    string list_name = "FSQJets_2015_2016";
-    ifstream data_files("./listing/" + list_name);
-cout << "\t-start reading data files from " << list_name << "\n";
 
-//Read each input file from the list
-    string data_name;
-
-    while(getline(data_files, data_name)){
-	cout << "Reading file  " << data_name << "\n";
-	treereader(data_name, MN_jets, pt_min_1, pt_min_2, FWD_weight, pt_veto, jecUnc2016);
-    };
-
+    Sample *data = new Sample("FSQJets_2015_2016");
+    data->read_list(MN_jets, pt_min_1, pt_min_2, FWD_weight, pt_veto, jecUnc2016);
     cout << "Events: cntr - " << MN_jets->n_event_cntr << " fwd - " << MN_jets->n_event_fwd << "\n";
 
 //------------------------------------POST PROCESSING-----------------------------------

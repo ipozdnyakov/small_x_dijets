@@ -46,16 +46,21 @@ main.cpp	- main code of the analysis
 
 Source/Include  - *.cpp and *.h files correspondingly
 
-	Observable.cpp/.h	- base class for each observable
+	sample.cpp/.h		- class for accessing events from the input data
 
-	Reader.cpp/.h		- function for reading each file from the list
+	observable.cpp/.h	- base class for each observable
 
 	Finder.cpp/.h		- set of functions to find required dijet in the event
 
 4. TASK FLOW (FUNCTIONALITY)
 ----------------------------
 
-/access_to_the_data	- [IN PROGRESS] framework for access to each event
+/access_to_the_data	- [DONE] class "Sample" for access to each event
+			  Sample -> read_list() -> read_file()
+
+/access_to_the_event	- [IN PROGRESS] incapsulate cuts/weights in Sample/Observable
+			  make clear access and processing framework for each event,
+			  i.e. include sample merging, pile-up, corrections
 
 /introduce_observation	- [TO BE DONE] base class for all further observables
 
@@ -67,3 +72,7 @@ Source/Include  - *.cpp and *.h files correspondingly
 			  observable from  the  set  of  observables  it  plots  observable
 			  on  jets   with pt_plus_unc and pt_minus_unc results  are  stored
 			  in  two  .root files, for each set of observables
+
+5. NEED TO BE COMPATIBLE WITH CMSSW 
+-----------------------------------
+to use internal events (edmEvent) and objects (jets) classes and access to the data, triggers and so on..

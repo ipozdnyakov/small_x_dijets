@@ -5,12 +5,12 @@
 #include"TROOT.h"
 #include"TFile.h"
 
-#ifndef OBSERVABLES_H
-#define OBSERVABLES_H
+#ifndef OBSERVABLE_H
+#define OBSERVABLE_H
 
 using namespace std;
 
-class Observables
+class Observable
 {
  public:
     int  n_event, n_dijets;
@@ -23,8 +23,8 @@ class Observables
     TH1D *cos_1, *cos_2, *cos_3, *cos2_1, *cos2_2, *cos2_3;
     TH2D *dphi_dy;
 
-    Observables(TString , TString);
-    ~Observables();
+    Observable(TString , TString);
+    ~Observable();
 
     void CalculateErrors();
     void WriteToFile(TString name);
@@ -73,4 +73,4 @@ class Observables
     const int nphi_towers = 72;*/
 };
 
-#endif // OBSERVABLES_H
+#endif // OBSERVABLE_H

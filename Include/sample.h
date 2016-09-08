@@ -1,20 +1,30 @@
-#include"TKey.h"
-#include"TFile.h"
-#include"TH1D.h"
-#include"TH2D.h"
-#include"TMath.h"
-#include"TProfile.h"
-
-#include "observables.h"
+#include "observable.h"
 #include "CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
 
-#ifndef _READERFILE_H
-#define	_READERFILE_H
+#ifndef _SAMPLE_H
+#define	_SAMPLE_H
 using namespace std;
-void treereader(
-	TString ,
-        Observables *, 
-        Double_t , Double_t , Double_t , Double_t , 
-	JetCorrectionUncertainty *
-	 );
-#endif	/* _READERFILE_H */
+
+class Sample {
+
+protected:
+	string list_name;
+
+public:
+	Sample(): list_name("FSQJets_2015_2016") { }
+	Sample(string str): list_name(str) { }
+
+	void read_list(
+                Observable *,
+                Double_t , Double_t , Double_t , Double_t ,
+                JetCorrectionUncertainty *
+	);
+
+	void read_file(
+		string ,
+		Observable *, 
+        	Double_t , Double_t , Double_t , Double_t , 
+		JetCorrectionUncertainty *
+	);
+};
+#endif	/* _SAMPLE_H */
