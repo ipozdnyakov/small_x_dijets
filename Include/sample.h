@@ -19,21 +19,21 @@ public:
 	Sample(string str): name(str) { }
 
 	void ReadSample(
-                Observable *,
+                MN *,
                 Double_t , Double_t , Double_t , Double_t ,
                 JetCorrectionUncertainty *
 	);
 
 	void ReadFile(
 		string ,
-		Observable *, 
+		MN *, 
         	Double_t , Double_t , Double_t , Double_t , 
 		JetCorrectionUncertainty *
 	);
 
 	void ReadEvent(
 		Event *,
-		Observable *,
+		MN *,
         	Double_t , Double_t , Double_t , Double_t , 
 		JetCorrectionUncertainty *
 	);

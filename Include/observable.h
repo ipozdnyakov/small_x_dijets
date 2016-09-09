@@ -10,11 +10,19 @@
 
 using namespace std;
 
-class Observable
-{
- public:
+class Observable {
+
+public:
     int  n_event, n_dijets;
-    int  n_event_cntr, n_event_fwd;
+    int  n_event_cntr, n_event_fwd;	
+
+    Observable(){}
+};
+
+
+class MN : virtual public Observable
+{
+public:
 
     int nk_bin, neta_bin, npt_bin, ndphi_bin;
 
@@ -23,11 +31,10 @@ class Observable
     TH1D *cos_1, *cos_2, *cos_3, *cos2_1, *cos2_2, *cos2_3;
     TH2D *dphi_dy;
 
-    Observable(TString , TString);
-    ~Observable();
-
     void CalculateErrors();
     void WriteToFile(TString name);
+
+    MN(TString , TString);
 
 /*    int NumberOfDijets();
     void CalculateDerivatives();

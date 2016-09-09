@@ -25,7 +25,7 @@ cout << "Start main programm:\n";
 //------------------------------------OBSERVABLES---------------------------------------
     TString dir_name="jec_study";
     TString specification = "_FSQJets_2015_2016_data_13TeV_LowPU_MN_CNTR_dy0_9.4" + Pt_min;//+Pt_veto;
-    Observable *MN_jets = new Observable(dir_name, specification);
+    MN *MN_jets = new MN(dir_name, specification);
 
 //------------------------------------JEC UNC-------------------------------------------
     JetCorrectionUncertainty *jecUnc2015 = new JetCorrectionUncertainty("./jec_txt/2015/Fall15_25nsV2_DATA_Uncertainty_AK4PFchs.txt");

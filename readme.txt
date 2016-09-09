@@ -46,13 +46,15 @@ main.cpp	- main code of the analysis
 
 Source/Include  - *.cpp and *.h files correspondingly
 
+	bining.h		- global definition of bining arrays
+
 	sample.cpp/.h		- class for accessing events from the input data
 
 	event.cpp/.h		- class for event data (nPV, triggers, weigth, jets, etc.)
 
 	observable.cpp/.h	- base class for each observable
 
-	Finder.cpp/.h		- set of functions to find required dijet in the event
+	finder.cpp/.h		- set of functions to find required dijet in vectors
 
 4. TASK FLOW (FUNCTIONALITY)
 ----------------------------

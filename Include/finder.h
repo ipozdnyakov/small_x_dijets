@@ -1,33 +1,10 @@
-#include<stdlib.h>
-#include<iostream>
-#include<cstdio>
-#include<string>
-#include"TCanvas.h"
-#include"TString.h"
-#include"TH1.h"
-#include"TPaveText.h"
-#include"TStyle.h"
-#include"TSystem.h"
-#include"TROOT.h"
-#include"TEnv.h"
-#include"TImage.h"
-#include"TPad.h"
-#include"TLatex.h"
 #include<vector>
-#include "TFile.h"
-#include "TROOT.h"
-#include "TStyle.h"
-#include "TTree.h"
-#include "sample.h"
-#include "TH2.h"
-#include "TProfile.h"
-#include "TError.h"
-
-#ifndef _FINDER_H
-#define	_FINDER_H
+#include"TROOT.h"
 
 using namespace std;
 
+#ifndef _FINDER_H
+#define	_FINDER_H
 	vector<int> find_MN(vector<Double_t> , vector<Double_t>);
 
 	Double_t find_dy_MN(vector<Double_t> , vector<Double_t>);

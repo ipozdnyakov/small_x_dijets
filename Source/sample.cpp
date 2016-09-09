@@ -19,7 +19,7 @@
 using namespace std;
 
 void Sample::ReadSample( 
-	Observable *MN_jets,
+	MN *MN_jets,
         Double_t pt_min_1, Double_t pt_min_2, Double_t FWD_weight,  Double_t pt_veto,
 	JetCorrectionUncertainty *unc
 ){
@@ -36,7 +36,7 @@ void Sample::ReadSample(
 
 void Sample::ReadFile(
 	string name,
-	Observable *MN_jets,
+	MN *MN_jets,
         Double_t pt_min_1, Double_t pt_min_2, Double_t FWD_weight,  Double_t pt_veto,
 	JetCorrectionUncertainty *unc
 ){
@@ -83,7 +83,7 @@ void Sample::ReadFile(
 
 void Sample::ReadEvent(
 	Event *event,
-	Observable *MN_jets,
+	MN *MN_jets,
         Double_t pt_min_1, Double_t pt_min_2, Double_t FWD_weight,  Double_t pt_veto,
 	JetCorrectionUncertainty *unc
 ){
