@@ -48,6 +48,8 @@ Source/Include  - *.cpp and *.h files correspondingly
 
 	sample.cpp/.h		- class for accessing events from the input data
 
+	event.cpp/.h		- class for event data (nPV, triggers, weigth, jets, etc.)
+
 	observable.cpp/.h	- base class for each observable
 
 	Finder.cpp/.h		- set of functions to find required dijet in the event
