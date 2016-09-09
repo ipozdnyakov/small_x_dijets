@@ -1,3 +1,4 @@
+#include "event.h"
 #include "observable.h"
 #include "CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
 
@@ -29,5 +30,13 @@ public:
         	Double_t , Double_t , Double_t , Double_t , 
 		JetCorrectionUncertainty *
 	);
+
+	void ReadEvent(
+		Event *,
+		Observable *,
+        	Double_t , Double_t , Double_t , Double_t , 
+		JetCorrectionUncertainty *
+	);
+
 };
 #endif	/* _SAMPLE_H */

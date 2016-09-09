@@ -8,7 +8,7 @@ class Event {
 
 //Event is a set of jets and parameters
 
-protected:
+public:
 	int number;
 	int nPV;
 	int CNTR, FWD;
