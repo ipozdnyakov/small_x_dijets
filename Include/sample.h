@@ -20,21 +20,21 @@ public:
 
 	void ReadSample(
                 MN *,
-                Double_t , Double_t , Double_t , Double_t ,
+                Double_t ,
                 JetCorrectionUncertainty *
 	);
 
 	void ReadFile(
 		string ,
 		MN *, 
-        	Double_t , Double_t , Double_t , Double_t , 
+        	Double_t , 
 		JetCorrectionUncertainty *
 	);
 
 	void ReadEvent(
 		Event *,
 		MN *,
-        	Double_t , Double_t , Double_t , Double_t , 
+        	Double_t , 
 		JetCorrectionUncertainty *
 	);
 

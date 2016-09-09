@@ -20,7 +20,7 @@ using namespace std;
 
 void Sample::ReadSample( 
 	MN *MN_jets,
-        Double_t pt_min_1, Double_t pt_min_2, Double_t FWD_weight,  Double_t pt_veto,
+        Double_t FWD_weight,
 	JetCorrectionUncertainty *unc
 ){
 
@@ -30,14 +30,14 @@ void Sample::ReadSample(
         string file_name;
         while(getline(data_files, file_name)){
                 cout << "\t" << file_name << "\n";
-                this->ReadFile(file_name, MN_jets, pt_min_1, pt_min_2, FWD_weight, pt_veto, unc);
+                this->ReadFile(file_name, MN_jets, FWD_weight, unc);
         }
 };
 
 void Sample::ReadFile(
 	string name,
 	MN *MN_jets,
-        Double_t pt_min_1, Double_t pt_min_2, Double_t FWD_weight,  Double_t pt_veto,
+        Double_t FWD_weight,
 	JetCorrectionUncertainty *unc
 ){
 
@@ -74,7 +74,7 @@ void Sample::ReadFile(
 			event->AddJet(pt,eta,phi,rap);
 		}else{						//out Event
 			nEvent = iEvent;
-			this->ReadEvent(event, MN_jets, pt_min_1, pt_min_2, FWD_weight, pt_veto, unc);
+			this->ReadEvent(event, MN_jets, FWD_weight, unc);
 			delete event;
 			event = new Event(iEvent,nPV,CNTR,FWD,weight);
    		}
@@ -84,7 +84,7 @@ void Sample::ReadFile(
 void Sample::ReadEvent(
 	Event *event,
 	MN *MN_jets,
-        Double_t pt_min_1, Double_t pt_min_2, Double_t FWD_weight,  Double_t pt_veto,
+        Double_t FWD_weight,
 	JetCorrectionUncertainty *unc
 ){
 
@@ -98,19 +98,19 @@ void Sample::ReadEvent(
 
         for(int i = 0; i < event->pt.size(); i++){
 
-		if((event->pt[i] > pt_min_1) && (fabs(event->rap[i]) < 4.7)){
+		if((event->pt[i] > MN_jets->pt_min_1) && (fabs(event->rap[i]) < 4.7)){
 		  pt_v_1.push_back(event->pt[i]);
 		  phi_v_1.push_back(event->phi[i]);
 		  y_v_1.push_back(event->rap[i]);
                   eta_v_1.push_back(event->eta[i]);
 		}
-		if((event->pt[i] > pt_min_2) && (fabs(event->rap[i]) < 4.7)){
+		if((event->pt[i] > MN_jets->pt_min_2) && (fabs(event->rap[i]) < 4.7)){
 		  pt_v_2.push_back(event->pt[i]);
 		  phi_v_2.push_back(event->phi[i]);
 		  y_v_2.push_back(event->rap[i]);
                   eta_v_2.push_back(event->eta[i]);
 		}
-		if((event->pt[i] < pt_min_2)&&(event->pt[i] > pt_veto)) veto = false;
+		if((event->pt[i] < MN_jets->pt_min_2)&&(event->pt[i] > MN_jets->pt_veto)) veto = false;
 	}
 
 	if(event->nPV == 1){

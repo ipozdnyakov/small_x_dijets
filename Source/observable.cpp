@@ -3,7 +3,21 @@
 using namespace std;
 #define pi 3.1415926
 
-MN::MN(TString dir_name, TString specification){
+MN::MN(TString dir_name, TString specification, double pt_min_1, double pt_min_2, double pt_veto){
+
+	this->pt_min_1 = pt_min_1;
+	this->pt_min_2 = pt_min_2;
+	this->pt_veto = pt_veto;
+
+	TString Pt_min = "_pt";
+                           	Pt_min += pt_min_1;
+                                Pt_min += "_";
+                                Pt_min += pt_min_2;
+	TString Pt_veto = "_veto";
+                              	Pt_veto += pt_veto;
+
+
+	this->specification = specification + Pt_min + Pt_veto; 
 
     TString histname;
 
@@ -141,8 +155,8 @@ dcos_2 = sqrt(
 
 }
 
-void MN::WriteToFile(TString name){
-TFile file_res(name,"RECREATE");
+void MN::WriteToFile(TString addres){
+TFile file_res(addres + this->specification + ".root","RECREATE");
 pt->Write();
 y->Write();
 phi->Write();

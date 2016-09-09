@@ -13,9 +13,10 @@ using namespace std;
 class Observable {
 
 public:
+    string specification;
     int  n_event, n_dijets;
     int  n_event_cntr, n_event_fwd;	
-
+    
     Observable(){}
 };
 
@@ -23,6 +24,9 @@ public:
 class MN : virtual public Observable
 {
 public:
+    Double_t pt_min_1; //pt_min_1 >= pt_min_2
+    Double_t pt_min_2;
+    Double_t pt_veto;
 
     int nk_bin, neta_bin, npt_bin, ndphi_bin;
 
@@ -32,9 +36,9 @@ public:
     TH2D *dphi_dy;
 
     void CalculateErrors();
-    void WriteToFile(TString name);
+    void WriteToFile(TString );
 
-    MN(TString , TString);
+    MN(TString , TString, double , double , double);
 
 /*    int NumberOfDijets();
     void CalculateDerivatives();
