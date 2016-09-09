@@ -1,11 +1,11 @@
 1. INTRODUCTION
 ---------------
 This project contains code for analises of low pile-up dijets in FSQ subgroup, 
-particularly for analises like dijet k-factor and dijets decorrelations, 
+particularly for analises like dijets k-factor and dijets decorrelations, 
 looking for BFKL effects in pQCD.
 
-This project takes input data from .root files produced by 
-https://github.com/ipozdnyakov/cmssw_jets.git,
+This project takes input data from *.root files produced by 
+other project - https://github.com/ipozdnyakov/cmssw_jets.git,
 each file conatains TTree with one entry for each jet in the event.
 
 
@@ -18,16 +18,16 @@ Top level of the project repository should be placed in /CMSSW_X_X_X/src/.
 
 3. CONTENT OF THE PROJECT
 -------------------------
-Initial commit consists of separate folders each of which is containing 
+Initial commit consisted of separate folders each of which is containing 
 a similar set of source files intended to perform specific task 
-(efficieny study, plotting variables, etc.) Using git allows one to make 
+(efficiency study, plotting variables, etc.) Using git allows one to make 
 more sofisticated and flexible control and reuse of similar parts,
 so it goes.
 
 To reflect the nature of the physical analysis of collisions data 
 the workflow in the project is organised as follows
 
-	- each task of the analysis developed in separate branch
+	- each task of the analysis developing in separate branch
 	- after completion branch have to be merged to master branch
 	- finally master branch should be a "button" for running full analysis
 
@@ -38,7 +38,7 @@ the workflow in the project is organised as follows
 		  git@github.com:ipozdnyakov/cmssw_jets project
 		  (data stored in /afs/cern.ch/work/i/ivanp/13TeV_DATA/)
 
-/Jec_txt	- contains .txt files with JEC and uncertainties
+/Jec_txt	- contains *.txt files with JEC and uncertainties
 
 maker_gcc	- script to compile the code to k_factor.exe, wich is the "final button"
 
@@ -56,7 +56,7 @@ Source/Include  - *.cpp and *.h files correspondingly
 ----------------------------
 
 /access_to_the_data	- [DONE] class "Sample" for access to each event
-			  Sample -> read_list() -> read_file()
+			  Sample -> ReadSample() -> ReadFile()
 
 /access_to_the_event	- [IN PROGRESS] incapsulate cuts/weights in Sample/Observable
 			  make clear access and processing framework for each event,

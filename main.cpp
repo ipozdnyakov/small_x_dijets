@@ -34,7 +34,7 @@ cout << "Start main programm:\n";
 //------------------------------------READING-and-PROCESSING----------------------------
 
     Sample *data = new Sample("FSQJets_2015_2016");
-    data->read_list(MN_jets, pt_min_1, pt_min_2, FWD_weight, pt_veto, jecUnc2016);
+    data->ReadSample(MN_jets, pt_min_1, pt_min_2, FWD_weight, pt_veto, jecUnc2016);
     cout << "Events: cntr - " << MN_jets->n_event_cntr << " fwd - " << MN_jets->n_event_fwd << "\n";
 
 //------------------------------------POST PROCESSING-----------------------------------

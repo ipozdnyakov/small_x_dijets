@@ -7,20 +7,23 @@ using namespace std;
 
 class Sample {
 
+//Sample is a set of *.root files listed in the file in ./listing
+//the name of the file is the name of the sample
+
 protected:
-	string list_name;
+	string name;
 
 public:
-	Sample(): list_name("FSQJets_2015_2016") { }
-	Sample(string str): list_name(str) { }
+	Sample(): name("FSQJets_2015_2016") { }
+	Sample(string str): name(str) { }
 
-	void read_list(
+	void ReadSample(
                 Observable *,
                 Double_t , Double_t , Double_t , Double_t ,
                 JetCorrectionUncertainty *
 	);
 
-	void read_file(
+	void ReadFile(
 		string ,
 		Observable *, 
         	Double_t , Double_t , Double_t , Double_t , 

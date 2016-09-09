@@ -17,25 +17,25 @@
 
 using namespace std;
 
-void Sample::read_list( 
+void Sample::ReadSample( 
 	Observable *MN_jets,
         Double_t pt_min_1, Double_t pt_min_2, Double_t FWD_weight,  Double_t pt_veto,
 	JetCorrectionUncertainty *unc
         ){
 
     //Open file with names of data files
-        ifstream        data_files("./listing/" + this->list_name);
-	cout << "\t-reading data files from " << this->list_name << ":\n";
+        ifstream data_files("./listing/" + this->name);
+	cout << "\t-reading data files from " << this->name << ":\n";
 
-    //Read each input file from the list
-        string          data_name;
-        while(getline(data_files, data_name)){
-                cout << "\t" << data_name << "\n";
-                this->read_file(data_name, MN_jets, pt_min_1, pt_min_2, FWD_weight, pt_veto, unc);
+    //Read each input file from the sample
+        string file_name;
+        while(getline(data_files, file_name)){
+                cout << "\t" << file_name << "\n";
+                this->ReadFile(file_name, MN_jets, pt_min_1, pt_min_2, FWD_weight, pt_veto, unc);
         }
 };
 
-void Sample::read_file(
+void Sample::ReadFile(
 	string name,
 	Observable *MN_jets,
         Double_t pt_min_1, Double_t pt_min_2, Double_t FWD_weight,  Double_t pt_veto,
