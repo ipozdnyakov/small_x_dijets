@@ -18,11 +18,12 @@ public:
 	Sample(): name("FSQJets_2015_2016") { }
 	Sample(string str): name(str) { }
 
-	void ReadSample(
-                MN *,
+	template <class Obs> void ReadSample(
+                Obs *,
                 Double_t ,
                 JetCorrectionUncertainty *
 	);
+
 
 	void ReadFile(
 		string ,

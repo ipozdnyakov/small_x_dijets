@@ -1,13 +1,4 @@
 #include <TTree.h>
-#include <stdlib.h>
-#include <iostream>
-#include <TH1.h>
-#include "TKey.h"
-#include "TFile.h"
-#include "TMath.h"
-#include <vector>
-#include <math.h>
-
 #include <fstream>
 #include "CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
 #include "observable.h"
@@ -18,12 +9,12 @@
 #define pi 3.1415926
 using namespace std;
 
-void Sample::ReadSample( 
-	MN *MN_jets,
+template void Sample::ReadSample<MN>(MN *, Double_t , JetCorrectionUncertainty *);
+template <class Obs> void Sample::ReadSample( 
+	Obs *MN_jets,
         Double_t FWD_weight,
 	JetCorrectionUncertainty *unc
 ){
-
         ifstream data_files("./listing/" + this->name);
 	cout << "\t-reading data files from " << this->name << ":\n";
 
@@ -33,6 +24,7 @@ void Sample::ReadSample(
                 this->ReadFile(file_name, MN_jets, FWD_weight, unc);
         }
 };
+
 
 void Sample::ReadFile(
 	string name,
