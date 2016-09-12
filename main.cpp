@@ -10,7 +10,6 @@ cout << "Start main programm:\n";
 
     TString work_dir  = "/afs/cern.ch/work/i/ivanp/2015_Decorrelator/CMSSW_7_4_15/src/";
     Double_t FWD_weight = 0.5;
-    TString pict;
 
 //------------------------------------OBSERVABLES---------------------------------------
     MN *MN_jets_35 = new MN("measurement", "_FSQJets_2015_2016_data_13TeV_LowPU_MN_CNTR_dy0_9.4", 35., 35., 35.);
@@ -22,7 +21,9 @@ cout << "Start main programm:\n";
 //------------------------------------READING-and-PROCESSING----------------------------
 
     Sample *data = new Sample("FSQJets_2015_2016");
+
     data->ReadSample(MN_jets_35, FWD_weight, jecUnc2016);
+
     cout << "Events: cntr - " << MN_jets_35->n_event_cntr << " fwd - " << MN_jets_35->n_event_fwd << "\n";
 
 //------------------------------------POST PROCESSING-----------------------------------
