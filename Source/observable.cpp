@@ -1,9 +1,56 @@
+#include<TFile.h>
 #include"observable.h"
 #include"bining.h"
+
 using namespace std;
 #define pi 3.1415926
 
-MN::MN(TString dir_name, TString specification, double pt_min_1, double pt_min_2, double pt_veto){
+Observable::Observable(TString dir_name, TString specification){
+
+	this->specification = specification;
+
+	TString histname;
+
+	histname = "pt";  histname += specification;
+        pt = new TH1D(histname, dir_name, n_pt_bins - 1, pt_bins);
+        pt->Sumw2();
+
+        histname = "eta";  histname += specification;
+        eta = new TH1D(histname, dir_name, n_eta_towers - 1, eta_towers);
+        eta->Sumw2();
+
+        histname = "y";  histname += specification;
+        y = new TH1D(histname, dir_name, n_eta_towers - 1, eta_towers);
+        y->Sumw2();
+
+        histname = "phi";  histname += specification;
+        phi = new TH1D(histname, dir_name, n_phi_towers, -pi, pi);
+        phi->Sumw2();
+}
+
+void Observable::ReadEvent(Event *event){
+	
+	this->n_events++;
+
+	for(int i = 0; i < event->pt.size(); i++){
+                this->pt->Fill(event->pt[i]);
+                this->eta->Fill(event->eta[i]);
+                this->y->Fill(event->rap[i]);
+                this->phi->Fill(event->phi[i]);
+		this->n_entries++;
+	}
+
+}
+
+void Observable::WriteToFile(TString addres){
+	TFile file_res(addres + this->specification + ".root","RECREATE");
+	pt->Write();
+	y->Write();
+	phi->Write();
+}
+
+MN::MN(TString dir_name, TString specification, double pt_min_1, double pt_min_2, double pt_veto)
+:Observable(dir_name, specification){
 
 	this->pt_min_1 = pt_min_1;
 	this->pt_min_2 = pt_min_2;
@@ -23,18 +70,6 @@ MN::MN(TString dir_name, TString specification, double pt_min_1, double pt_min_2
 
     for(int i = 0; i < 11; i++){dphi_bins[i] = dphi_bins[i]*pi;}
     
-        histname = "pt";  histname += specification;
-        pt = new TH1D(histname, dir_name, n_pt_bins - 1, pt_bins);
-        pt->Sumw2();
-
-        histname = "y";  histname += specification;
-        y = new TH1D(histname, dir_name, n_eta_towers - 1, eta_towers);
-        y->Sumw2();
-
-        histname = "phi";  histname += specification;
-        phi = new TH1D(histname, dir_name, n_phi_towers, -pi, pi);
-        phi->Sumw2();
-
         histname = "dphi_0";  histname += specification;
         dphi[0] = new TH1D(histname, dir_name, n_dphi_bins - 1, dphi_bins);
         dphi[0]->Sumw2();
@@ -152,6 +187,75 @@ dcos_2 = sqrt(
  cos_3->SetBinError(i,dcos_3*sqrt(w2_dy->GetBinContent(i))/s_);
 
 }
+
+}
+
+void MN::ReadEvent(Event *event){
+        vector<Double_t> pt_v_1, y_v_1, phi_v_1, eta_v_1;
+        vector<Double_t> pt_v_2, y_v_2, phi_v_2, eta_v_2;
+        vector<Double_t>::iterator m, n, q;
+        vector<int> MN_index;
+
+        Bool_t veto = true;
+        Double_t dy_MN = 0., dphi_MN = 0.;
+
+        for(int i = 0; i < event->pt.size(); i++){
+
+                if((event->pt[i] > this->pt_min_1) && (fabs(event->rap[i]) < 4.7)){
+                  pt_v_1.push_back(event->pt[i]);
+                  phi_v_1.push_back(event->phi[i]);
+                  y_v_1.push_back(event->rap[i]);
+                  eta_v_1.push_back(event->eta[i]);
+                }
+                if((event->pt[i] > this->pt_min_2) && (fabs(event->rap[i]) < 4.7)){
+                  pt_v_2.push_back(event->pt[i]);
+                  phi_v_2.push_back(event->phi[i]);
+                  y_v_2.push_back(event->rap[i]);
+                  eta_v_2.push_back(event->eta[i]);
+                }
+                if((event->pt[i] < this->pt_min_2)&&(event->pt[i] > this->pt_veto)) veto = false;
+        }
+	if(event->nPV == 1){
+
+        if((pt_v_2.size() > 1)&&(pt_v_1.size() > 0)){
+                if(event->CNTR > 0) this->n_event_cntr++;
+                if(event->FWD > 0) this->n_event_fwd++;
+        if(event->CNTR > 0){
+                MN_index = find_MN(y_v_1, y_v_2);
+                this->pt->Fill(pt_v_1[MN_index[0]],event->weight);
+                this->y->Fill(y_v_1[MN_index[0]],event->weight);
+                this->phi->Fill(phi_v_1[MN_index[0]],event->weight);
+
+                this->pt->Fill(pt_v_2[MN_index[1]],event->weight);
+                this->y->Fill(y_v_2[MN_index[1]],event->weight);
+                this->phi->Fill(phi_v_2[MN_index[1]],event->weight);
+
+                dy_MN = find_dy_MN(y_v_1, y_v_2);
+                dphi_MN = find_dphi_MN(y_v_1, phi_v_1, y_v_2, phi_v_2);
+
+                this->dphi[0]->Fill(dphi_MN,event->weight);
+                this->dy->Fill(dy_MN,event->weight);
+                this->w2_dy->Fill(dy_MN,event->weight*event->weight);
+                this->dphi_dy->Fill(dphi_MN,dy_MN,event->weight);
+
+                if((dy_MN > 0.)&&(dy_MN < 3.))  this->dphi[1]->Fill(dphi_MN,event->weight);
+                if((dy_MN > 3.)&&(dy_MN < 6.))  this->dphi[2]->Fill(dphi_MN,event->weight);
+                if((dy_MN > 6.)&&(dy_MN < 9.4)) this->dphi[3]->Fill(dphi_MN,event->weight);
+
+                this->cos_1->Fill(dy_MN, event->weight*cos(pi - dphi_MN));
+                this->cos2_1->Fill(dy_MN,event->weight*pow(cos(pi - dphi_MN),2));
+                this->cos_2->Fill(dy_MN,event->weight*cos(2*(pi - dphi_MN)));
+                this->cos2_2->Fill(dy_MN,event->weight*pow(cos(2*(pi - dphi_MN)),2));
+                this->cos_3->Fill(dy_MN,event->weight*cos(3*(pi - dphi_MN)));
+                this->cos2_3->Fill(dy_MN,event->weight*pow(cos(3*(pi - dphi_MN)),2));
+
+                if((pt_v_1.size() > 0)&&(pt_v_2.size() == 2)&&veto){
+                        this->excl_dy->Fill(dy_MN,event->weight);
+                }
+
+        }//only CNTR events
+        }//enough jets
+        }//nPV == 1
 
 }
 

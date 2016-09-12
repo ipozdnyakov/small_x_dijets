@@ -1,6 +1,6 @@
-#include "event.h"
-#include "observable.h"
-#include "CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
+#include"event.h"
+#include"observable.h"
+#include"CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
 
 #ifndef _SAMPLE_H
 #define	_SAMPLE_H
@@ -18,26 +18,11 @@ public:
 	Sample(): name("FSQJets_2015_2016") { }
 	Sample(string str): name(str) { }
 
-	template <class Obs> void ReadSample(
-                Obs *,
-                Double_t ,
-                JetCorrectionUncertainty *
-	);
+	template <class Obs> void ReadSample(Obs *);
 
+	template <class Obs> void ReadFile(string , Obs *);
 
-	void ReadFile(
-		string ,
-		MN *, 
-        	Double_t , 
-		JetCorrectionUncertainty *
-	);
-
-	void ReadEvent(
-		Event *,
-		MN *,
-        	Double_t , 
-		JetCorrectionUncertainty *
-	);
+	void ReadFile(string , MN *);
 
 };
 #endif	/* _SAMPLE_H */

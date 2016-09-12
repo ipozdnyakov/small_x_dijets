@@ -48,11 +48,11 @@ Source/Include  - *.cpp and *.h files correspondingly
 
 	bining.h		- global definition of bining arrays
 
-	sample.cpp/.h		- class for accessing events from the input data
+	sample.cpp/.h		- class "Sample" for accessing events from the input data
 
-	event.cpp/.h		- class for event data (nPV, triggers, weigth, jets, etc.)
+	event.cpp/.h		- class "Event" for event data (nPV, triggers, weigth, jets, etc.)
 
-	observable.cpp/.h	- base class for each observable
+	observable.cpp/.h	- base class "Observable" for each observable
 
 	finder.cpp/.h		- set of functions to find required dijet in vectors
 
@@ -62,20 +62,22 @@ Source/Include  - *.cpp and *.h files correspondingly
 /access_to_the_data	- [DONE] class "Sample" for access to each event
 			  Sample -> ReadSample() -> ReadFile()
 
-/access_to_the_event	- [IN PROGRESS] incapsulate cuts/weights in Sample/Observable
-			  make clear access and processing framework for each event,
-			  i.e. include sample merging, pile-up, corrections
+/access_to_the_event	- [DONE] class "Observable" for each type of observable,
+			  includes cuts and all relevant parameters and weights
+			  Observable -> ReadEvent()
 
-/introduce_observation	- [TO BE DONE] base class for all further observables
+/efficiency_calc	- [IN PROGRESS]
 
-/define_observable	- [TO BE DONE] framework to define particular observable
+/sample_merging		- [TO BE DONE]
 
-/plot_observables	- [TO BE DONE] plot all defined observable
+/pileup			- [TO BE DONE]
 
 /jec_study		- [TO BE DONE] jet energy correction study of the  data,  for  each 
 			  observable from  the  set  of  observables  it  plots  observable
 			  on  jets   with pt_plus_unc and pt_minus_unc results  are  stored
 			  in  two  .root files, for each set of observables
+
+/unfolding		- [TO BE DONE]
 
 5. NEED TO BE COMPATIBLE WITH CMSSW 
 -----------------------------------
