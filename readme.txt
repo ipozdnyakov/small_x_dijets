@@ -66,13 +66,13 @@ Source/Include  - *.cpp and *.h files correspondingly
 			  includes cuts and all relevant parameters and weights
 			  Observable -> ReadEvent()
 
-/efficiency_calc	- [IN PROGRESS]
+/efficiency_calc	- [TO BE DONE]
 
 /sample_merging		- [TO BE DONE]
 
 /pileup			- [TO BE DONE]
 
-/jec_study		- [TO BE DONE] jet energy correction study of the  data,  for  each 
+/jec_study		- [IN PROGRESS] jet energy correction study of the  data,  for  each 
 			  observable from  the  set  of  observables  it  plots  observable
 			  on  jets   with pt_plus_unc and pt_minus_unc results  are  stored
 			  in  two  .root files, for each set of observables

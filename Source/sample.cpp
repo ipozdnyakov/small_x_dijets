@@ -6,6 +6,9 @@
 #include"event.h"
 #include"sample.h"
 
+JetCorrectionUncertainty *jecUnc2015 = new JetCorrectionUncertainty("./jec_txt/2015/Fall15_25nsV2_DATA_Uncertainty_AK4PFchs.txt");
+JetCorrectionUncertainty *jecUnc2016 = new JetCorrectionUncertainty("./jec_txt/2016/Spring16_25nsV6_DATA_Uncertainty_AK4PFchs.txt");
+
 #define pi 3.1415926
 using namespace std;
 
@@ -62,6 +65,11 @@ template <class Obs> void Sample::ReadFile(string name, Obs *observable){
 	for(int i = 0 ; i < nentries ; i++){
 		tree->GetEntry(i);
 		if(iEvent == nEvent){				//in Event
+
+	jecUnc2015->setJetEta(eta);
+        jecUnc2015->setJetPt(pt);
+        unc = jecUnc2015->getUncertainty(true);
+
 			event->AddJet(pt,eta,phi,rap);
 		}else{						//out Event
 			nEvent = iEvent;

@@ -21,7 +21,9 @@ class Observable {
 	public:
 		string specification;
 		int  n_events = 0, n_entries = 0;
+
 		Observable(TString , TString);
+
 		void ReadEvent(Event *);
 		void WriteToFile(TString );
 };
