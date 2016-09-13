@@ -10,7 +10,7 @@ using namespace std;
 int main(int argc, char** argv) {
 
 //	Observable *jets = new Observable("distributions","_FSQJets_2015_2016_data_13TeV_LowPU");
-	MN *jets = new MN("distributions","_FSQJets_2015_2016_data_13TeV_LowPU_35GeV", 35., 35., 35.);
+	MN *jets = new MN("distributions","_FSQJets_2015_2016_data_13TeV_LowPU_MN_35GeV", 35., 35., 35.);
 
 	Sample *data = new Sample("FSQJets_2015_2016");
 	

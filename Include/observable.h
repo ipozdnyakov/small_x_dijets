@@ -14,9 +14,9 @@ using namespace std;
 class Observable {
 
 	private:
-		TH1D *pt, *eta, *y, *phi;
 
 	protected:
+		TH1D *pt, *eta, *y, *phi;
 
 	public:
 		string specification;
@@ -40,7 +40,7 @@ class MN : virtual public Observable
 
 		int  n_event_cntr, n_event_fwd;	
 
-		TH1D *pt, *y, *phi, *dphi[4], *dy;
+		TH1D *dphi[4], *dy;
 		TH1D *w2_dy, *excl_dy, *k_factor;
 		TH1D *cos_1, *cos_2, *cos_3, *cos2_1, *cos2_2, *cos2_3;
 		TH2D *dphi_dy;

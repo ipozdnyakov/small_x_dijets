@@ -45,6 +45,7 @@ void Observable::ReadEvent(Event *event){
 void Observable::WriteToFile(TString addres){
 	TFile file_res(addres + this->specification + ".root","RECREATE");
 	pt->Write();
+	eta->Write();
 	y->Write();
 	phi->Write();
 }
@@ -191,6 +192,7 @@ dcos_2 = sqrt(
 }
 
 void MN::ReadEvent(Event *event){
+
         vector<Double_t> pt_v_1, y_v_1, phi_v_1, eta_v_1;
         vector<Double_t> pt_v_2, y_v_2, phi_v_2, eta_v_2;
         vector<Double_t>::iterator m, n, q;
@@ -221,11 +223,12 @@ void MN::ReadEvent(Event *event){
                 if(event->CNTR > 0) this->n_event_cntr++;
                 if(event->FWD > 0) this->n_event_fwd++;
         if(event->CNTR > 0){
+	this->n_events++;
+	this->n_entries++;
                 MN_index = find_MN(y_v_1, y_v_2);
                 this->pt->Fill(pt_v_1[MN_index[0]],event->weight);
                 this->y->Fill(y_v_1[MN_index[0]],event->weight);
                 this->phi->Fill(phi_v_1[MN_index[0]],event->weight);
-
                 this->pt->Fill(pt_v_2[MN_index[1]],event->weight);
                 this->y->Fill(y_v_2[MN_index[1]],event->weight);
                 this->phi->Fill(phi_v_2[MN_index[1]],event->weight);
@@ -252,7 +255,6 @@ void MN::ReadEvent(Event *event){
                 if((pt_v_1.size() > 0)&&(pt_v_2.size() == 2)&&veto){
                         this->excl_dy->Fill(dy_MN,event->weight);
                 }
-
         }//only CNTR events
         }//enough jets
         }//nPV == 1

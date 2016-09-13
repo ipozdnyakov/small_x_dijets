@@ -22,7 +22,5 @@ public:
 
 	template <class Obs> void ReadFile(string , Obs *);
 
-	void ReadFile(string , MN *);
-
 };
 #endif	/* _SAMPLE_H */
