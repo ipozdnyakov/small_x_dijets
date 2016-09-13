@@ -31,9 +31,9 @@ template <class Obs> void Sample::ReadFile(string name, Obs *observable){
 
 	TString file_name = name;
 	Int_t nentries = 0, nEvent = 0;
-        Double_t pt = 0, eta = 0, phi = 0, rap = 0, weight = 1.;
+        Double_t pt = 0, phi = 0, eta = 0, rap = 0, cor = 0, unc = 0;
         Int_t iEvent, iRun, nPV;
-	Int_t CNTR = -1, FWD = -1;
+	Int_t CNTR = -1, FWD2 = -1, FWD3 = -1;
 
 	TFile Jfile(file_name);
 	TTree* tree;
@@ -41,20 +41,23 @@ template <class Obs> void Sample::ReadFile(string name, Obs *observable){
 	nentries = tree->GetEntries();
 	cout << "Entries: " << nentries << "\r";
 
-	tree->SetBranchAddress("pt",&pt);
-	tree->SetBranchAddress("eta",&eta);
-	tree->SetBranchAddress("phi",&phi);
-	tree->SetBranchAddress("rap",&rap);
-	//tree->SetBranchAddress("weight",&weight);
-	tree->SetBranchAddress("nPV",&nPV);
 	tree->SetBranchAddress("iEvt",&iEvent);
+	tree->SetBranchAddress("iRun",&iRun);
+	tree->SetBranchAddress("nPV",&nPV);
 	tree->SetBranchAddress("CNTR",&CNTR);
-	tree->SetBranchAddress("FWD3",&FWD);
+	tree->SetBranchAddress("FWD2",&FWD2);
+	tree->SetBranchAddress("FWD3",&FWD3);
+	tree->SetBranchAddress("pt",&pt);
+	tree->SetBranchAddress("phi",&phi);
+	tree->SetBranchAddress("eta",&eta);
+	tree->SetBranchAddress("rap",&rap);
+	tree->SetBranchAddress("cor",&cor);
+	tree->SetBranchAddress("unc",&unc);
 
 	tree->GetEntry(0);
 	nEvent = iEvent;
 
-	Event *event = new Event(iEvent,nPV,CNTR,FWD,weight);
+	Event *event = new Event(iEvent,nPV,CNTR,FWD2,1.);
 
 	for(int i = 0 ; i < nentries ; i++){
 		tree->GetEntry(i);
@@ -64,7 +67,7 @@ template <class Obs> void Sample::ReadFile(string name, Obs *observable){
 			nEvent = iEvent;
 			observable->ReadEvent(event);
 			delete event;
-			event = new Event(iEvent,nPV,CNTR,FWD,weight);
+			event = new Event(iEvent,nPV,CNTR,FWD2,1.);
    		}
 	}
 
