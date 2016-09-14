@@ -16,10 +16,9 @@ template void Sample::ReadSample<Observable>(Observable *);
 template void Sample::ReadSample<MN>(MN *);
 template <class Obs> void Sample::ReadSample(Obs *observable){
 
+        string file_name;
         ifstream data_files("./listing/" + this->name);
 	cout << "\t-reading data files from " << this->name << ":\n";
-
-        string file_name;
         while(getline(data_files, file_name)){
                 cout << "\t" << file_name << "\t";
                 this->ReadFile(file_name, observable);
@@ -33,16 +32,15 @@ template void Sample::ReadFile<MN>(string , MN *);
 template <class Obs> void Sample::ReadFile(string name, Obs *observable){
 
 	TString file_name = name;
-	Int_t nentries = 0, nEvent = 0;
-        Double_t pt = 0, phi = 0, eta = 0, rap = 0, cor = 0, unc = 0;
-        Int_t iEvent, iRun, nPV;
-	Int_t CNTR = -1, FWD2 = -1, FWD3 = -1;
-
 	TFile Jfile(file_name);
 	TTree* tree;
 	tree = (TTree*) Jfile.Get("JetCollection/jet_tree");
-	nentries = tree->GetEntries();
+	Int_t nentries = tree->GetEntries();
 	cout << "Entries: " << nentries << "\r";
+
+        Int_t iEvent = 0, iRun = 0, nPV = 0;
+	Int_t CNTR = -1, FWD2 = -1, FWD3 = -1;
+        Double_t pt = 0, phi = 0, eta = 0, rap = 0, cor = 0, unc = 0;
 
 	tree->SetBranchAddress("iEvt",&iEvent);
 	tree->SetBranchAddress("iRun",&iRun);
@@ -58,7 +56,7 @@ template <class Obs> void Sample::ReadFile(string name, Obs *observable){
 	tree->SetBranchAddress("unc",&unc);
 
 	tree->GetEntry(0);
-	nEvent = iEvent;
+	Int_t nEvent = iEvent;
 
 	Event *event = new Event(iEvent,nPV,CNTR,FWD2,1.);
 

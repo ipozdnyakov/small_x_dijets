@@ -43,12 +43,14 @@ void Observable::ReadEvent(Event *event){
 }
 
 void Observable::WriteToFile(TString addres){
+
 	TFile file_res(addres + this->specification + ".root","RECREATE");
 	pt->Write();
 	eta->Write();
 	y->Write();
 	phi->Write();
-}
+
+};
 
 MN::MN(TString dir_name, TString specification, double pt_min_1, double pt_min_2, double pt_veto)
 :Observable(dir_name, specification){
@@ -67,9 +69,9 @@ MN::MN(TString dir_name, TString specification, double pt_min_1, double pt_min_2
 
 	this->specification = specification + Pt_min + Pt_veto; 
 
-    TString histname;
+	TString histname;
 
-    for(int i = 0; i < 11; i++){dphi_bins[i] = dphi_bins[i]*pi;}
+	for(int i = 0; i < 11; i++){dphi_bins[i] = dphi_bins[i]*pi;}
     
         histname = "dphi_0";  histname += specification;
         dphi[0] = new TH1D(histname, dir_name, n_dphi_bins - 1, dphi_bins);
@@ -134,62 +136,59 @@ MN::MN(TString dir_name, TString specification, double pt_min_1, double pt_min_2
 }
 
 void MN::CalculateErrors(){
-//Errors calculation
-Double_t w_ = 0., x_ = 0., y_ = 0., dx_ = 0., dy_ = 0., s_ = 0., ds_ = 0.;//k=s/x, s = x+y
-Double_t dcos = 0., dcos_2 = 0., dcos_3 = 0.;
 
-//                k_factor->Divide(dy,excl_dy,1.,1.,"b");
+	Double_t w_ = 0., x_ = 0., y_ = 0., dx_ = 0., dy_ = 0., s_ = 0., ds_ = 0.;//k=s/x, s = x+y
+	Double_t dcos = 0., dcos_2 = 0., dcos_3 = 0.;
 
-for(int i = 1; i < n_dy_bins; i++){
-//K-factor-Errors
- x_ = excl_dy->GetBinContent(i);
- dx_ = excl_dy->GetBinError(i);
- s_ = dy->GetBinContent(i);
- ds_ = dy->GetBinError(i);
- y_ = s_ - x_;
- w_ = y_/x_;
- dy_ = sqrt(pow(ds_,2) - pow(dx_,2));
- if(x_ != 0){k_factor->SetBinContent(i,s_/x_);}else{k_factor->SetBinContent(i,0);}
- k_factor->SetBinError(i,sqrt(fabs( ( dy_*dy_ + w_*w_*dx_*dx_ )/(x_*x_) )));
+//	k_factor->Divide(dy,excl_dy,1.,1.,"b");
 
-//COS_Errors
- cos_1->SetBinContent(i,cos_1->GetBinContent(i)/s_);
- cos2_1->SetBinContent(i,cos2_1->GetBinContent(i)/s_);
+	for(int i = 1; i < n_dy_bins; i++){
 
- cos_2->SetBinContent(i,cos_2->GetBinContent(i)/s_);
- cos2_2->SetBinContent(i,cos2_2->GetBinContent(i)/s_);
+		//K-factor-Errors
+		x_ = excl_dy->GetBinContent(i);
+		dx_ = excl_dy->GetBinError(i);
+		s_ = dy->GetBinContent(i);
+		ds_ = dy->GetBinError(i);
+		y_ = s_ - x_;
+		w_ = y_/x_;
+		dy_ = sqrt(pow(ds_,2) - pow(dx_,2));
+		if(x_ != 0){k_factor->SetBinContent(i,s_/x_);}else{k_factor->SetBinContent(i,0);}
+		k_factor->SetBinError(i,sqrt(fabs( ( dy_*dy_ + w_*w_*dx_*dx_ )/(x_*x_) )));
 
- cos_3->SetBinContent(i,cos_3->GetBinContent(i)/s_);
- cos2_3->SetBinContent(i,cos2_3->GetBinContent(i)/s_);
+		//COS_Errors
+		cos_1->SetBinContent(i,cos_1->GetBinContent(i)/s_);
+		cos2_1->SetBinContent(i,cos2_1->GetBinContent(i)/s_);
 
- dcos = sqrt(
-         (fabs(cos2_1->GetBinContent(i)
-         -
-         pow(cos_1->GetBinContent(i),2))
-         ));
+		cos_2->SetBinContent(i,cos_2->GetBinContent(i)/s_);
+		cos2_2->SetBinContent(i,cos2_2->GetBinContent(i)/s_);
 
- cos_1->SetBinError(i,dcos*sqrt(w2_dy->GetBinContent(i))/s_);
+		cos_3->SetBinContent(i,cos_3->GetBinContent(i)/s_);
+		cos2_3->SetBinContent(i,cos2_3->GetBinContent(i)/s_);
+
+		dcos = sqrt(
+			(fabs(cos2_1->GetBinContent(i)
+         		-
+         		pow(cos_1->GetBinContent(i),2))
+         		));
+		cos_1->SetBinError(i,dcos*sqrt(w2_dy->GetBinContent(i))/s_);
 
 
-dcos_2 = sqrt(
-         (fabs(cos2_2->GetBinContent(i)
-         -
-         pow(cos_2->GetBinContent(i),2))
-         ));
+		dcos_2 = sqrt(
+			(fabs(cos2_2->GetBinContent(i)
+			-
+         		pow(cos_2->GetBinContent(i),2))
+         		));
+ 		cos_2->SetBinError(i,dcos_2*sqrt(w2_dy->GetBinContent(i))/s_);
 
- cos_2->SetBinError(i,dcos_2*sqrt(w2_dy->GetBinContent(i))/s_);
+		dcos_3 = sqrt(
+			(fabs(cos2_3->GetBinContent(i)
+         		-
+         		pow(cos_3->GetBinContent(i),2))
+         		));
+		cos_3->SetBinError(i,dcos_3*sqrt(w2_dy->GetBinContent(i))/s_);
+	}
 
- dcos_3 = sqrt(
-         (fabs(cos2_3->GetBinContent(i)
-         -
-         pow(cos_3->GetBinContent(i),2))
-         ));
-
- cos_3->SetBinError(i,dcos_3*sqrt(w2_dy->GetBinContent(i))/s_);
-
-}
-
-}
+};
 
 void MN::ReadEvent(Event *event){
 
@@ -219,64 +218,70 @@ void MN::ReadEvent(Event *event){
         }
 	if(event->nPV == 1){
 
-        if((pt_v_2.size() > 1)&&(pt_v_1.size() > 0)){
-                if(event->CNTR > 0) this->n_event_cntr++;
-                if(event->FWD > 0) this->n_event_fwd++;
-        if(event->CNTR > 0){
-	this->n_events++;
-	this->n_entries++;
-                MN_index = find_MN(y_v_1, y_v_2);
-                this->pt->Fill(pt_v_1[MN_index[0]],event->weight);
-                this->y->Fill(y_v_1[MN_index[0]],event->weight);
-                this->phi->Fill(phi_v_1[MN_index[0]],event->weight);
-                this->pt->Fill(pt_v_2[MN_index[1]],event->weight);
-                this->y->Fill(y_v_2[MN_index[1]],event->weight);
-                this->phi->Fill(phi_v_2[MN_index[1]],event->weight);
+	        if((pt_v_2.size() > 1)&&(pt_v_1.size() > 0)){
 
-                dy_MN = find_dy_MN(y_v_1, y_v_2);
-                dphi_MN = find_dphi_MN(y_v_1, phi_v_1, y_v_2, phi_v_2);
+        	        if(event->CNTR > 0) this->n_event_cntr++;
+                	if(event->FWD > 0) this->n_event_fwd++;
 
-                this->dphi[0]->Fill(dphi_MN,event->weight);
-                this->dy->Fill(dy_MN,event->weight);
-                this->w2_dy->Fill(dy_MN,event->weight*event->weight);
-                this->dphi_dy->Fill(dphi_MN,dy_MN,event->weight);
+		        if(event->CNTR > 0){
 
-                if((dy_MN > 0.)&&(dy_MN < 3.))  this->dphi[1]->Fill(dphi_MN,event->weight);
-                if((dy_MN > 3.)&&(dy_MN < 6.))  this->dphi[2]->Fill(dphi_MN,event->weight);
-                if((dy_MN > 6.)&&(dy_MN < 9.4)) this->dphi[3]->Fill(dphi_MN,event->weight);
+				this->n_events++;
+				this->n_entries++;
+		                MN_index = find_MN(y_v_1, y_v_2);
+                		this->pt->Fill(pt_v_1[MN_index[0]],event->weight);
+		                this->y->Fill(y_v_1[MN_index[0]],event->weight);
+		                this->phi->Fill(phi_v_1[MN_index[0]],event->weight);
+		                this->pt->Fill(pt_v_2[MN_index[1]],event->weight);
+		                this->y->Fill(y_v_2[MN_index[1]],event->weight);
+		                this->phi->Fill(phi_v_2[MN_index[1]],event->weight);
 
-                this->cos_1->Fill(dy_MN, event->weight*cos(pi - dphi_MN));
-                this->cos2_1->Fill(dy_MN,event->weight*pow(cos(pi - dphi_MN),2));
-                this->cos_2->Fill(dy_MN,event->weight*cos(2*(pi - dphi_MN)));
-                this->cos2_2->Fill(dy_MN,event->weight*pow(cos(2*(pi - dphi_MN)),2));
-                this->cos_3->Fill(dy_MN,event->weight*cos(3*(pi - dphi_MN)));
-                this->cos2_3->Fill(dy_MN,event->weight*pow(cos(3*(pi - dphi_MN)),2));
+                		dy_MN = find_dy_MN(y_v_1, y_v_2);
+		                dphi_MN = find_dphi_MN(y_v_1, phi_v_1, y_v_2, phi_v_2);
 
-                if((pt_v_1.size() > 0)&&(pt_v_2.size() == 2)&&veto){
-                        this->excl_dy->Fill(dy_MN,event->weight);
-                }
-        }//only CNTR events
-        }//enough jets
+		                this->dphi[0]->Fill(dphi_MN,event->weight);
+		                this->dy->Fill(dy_MN,event->weight);
+                		this->w2_dy->Fill(dy_MN,event->weight*event->weight);
+		                this->dphi_dy->Fill(dphi_MN,dy_MN,event->weight);
+
+                		if((dy_MN > 0.)&&(dy_MN < 3.))  this->dphi[1]->Fill(dphi_MN,event->weight);
+		                if((dy_MN > 3.)&&(dy_MN < 6.))  this->dphi[2]->Fill(dphi_MN,event->weight);
+                		if((dy_MN > 6.)&&(dy_MN < 9.4)) this->dphi[3]->Fill(dphi_MN,event->weight);
+
+		                this->cos_1->Fill(dy_MN, event->weight*cos(pi - dphi_MN));
+                		this->cos2_1->Fill(dy_MN,event->weight*pow(cos(pi - dphi_MN),2));
+		                this->cos_2->Fill(dy_MN,event->weight*cos(2*(pi - dphi_MN)));
+                		this->cos2_2->Fill(dy_MN,event->weight*pow(cos(2*(pi - dphi_MN)),2));
+                		this->cos_3->Fill(dy_MN,event->weight*cos(3*(pi - dphi_MN)));
+		                this->cos2_3->Fill(dy_MN,event->weight*pow(cos(3*(pi - dphi_MN)),2));
+
+                		if((pt_v_1.size() > 0)&&(pt_v_2.size() == 2)&&veto){
+                        		this->excl_dy->Fill(dy_MN,event->weight);
+                		}
+
+        		}//only CNTR events
+        	}//enough jets
         }//nPV == 1
 
 }
 
 void MN::WriteToFile(TString addres){
-TFile file_res(addres + this->specification + ".root","RECREATE");
-pt->Write();
-y->Write();
-phi->Write();
-dphi[0]->Write();
-dphi[1]->Write();
-dphi[2]->Write();
-dphi[3]->Write();
-dphi_dy->Write();
-dy->Write();
-excl_dy->Write();
-k_factor->Write();
-w2_dy->Write();
-cos_1->Write();
-cos_2->Write();
-cos_3->Write();
-}   
+
+	TFile file_res(addres + this->specification + ".root","RECREATE");
+	pt->Write();
+	y->Write();
+	phi->Write();
+	dphi[0]->Write();
+	dphi[1]->Write();
+	dphi[2]->Write();
+	dphi[3]->Write();
+	dphi_dy->Write();
+	dy->Write();
+	excl_dy->Write();
+	k_factor->Write();
+	w2_dy->Write();
+	cos_1->Write();
+	cos_2->Write();
+	cos_3->Write();
+
+};   
 
