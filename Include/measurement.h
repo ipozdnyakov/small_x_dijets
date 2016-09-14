@@ -1,6 +1,7 @@
 #include<TH1.h>
 #include<TH2.h>
 #include<TROOT.h>
+#include"observable.h"
 #include"event.h"
 
 #ifndef MEASUREMENT_H
@@ -13,7 +14,7 @@ class Measurement {
 	private:
 
 	protected:
-		TH1D *pt, *eta, *y, *phi;
+		Observable *pt, *eta, *y, *phi;
 
 	public:
 		string specification;

@@ -1,3 +1,4 @@
+#include<TFile.h>
 #include<TH1.h>
 #include<TGraphAsymmErrors.h>
 #include"event.h"
@@ -27,11 +28,11 @@ class Observable {
 		int n_events = 0;
 		int n_entries = 0;
 
-		Observable(TString , TString , double *, int );
+		Observable(TString , TString , const double *, int );
 
-		void catchEvent(Event *);
-		void writeToFile(TString );
-		void plotToFile(TString );
+		void CatchEvent(Event *);
+		void WriteToFile(TFile *);
+		void PlotToFile(TString );
 };
 
 #endif // OBSERVABLE_H

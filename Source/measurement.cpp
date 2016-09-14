@@ -5,50 +5,43 @@
 
 using namespace std;
 
-Measurement::Measurement(TString dir_name, TString specification){
+Measurement::Measurement(TString title, TString specification){
 
 	this->specification = specification;
 
-	TString histname;
+	TString name;
 
-	histname = "pt";  histname += specification;
-        pt = new TH1D(histname, dir_name, n_pt_bins - 1, pt_bins);
-        pt->Sumw2();
+	name = "pt";  name += specification;
+        pt = new Observable(name, title, pt_bins, n_pt_bins);
 
-        histname = "eta";  histname += specification;
-        eta = new TH1D(histname, dir_name, n_eta_towers - 1, eta_towers);
-        eta->Sumw2();
+	name = "eta";  name += specification;
+        eta = new Observable(name, title, eta_towers, n_eta_towers);
 
-        histname = "y";  histname += specification;
-        y = new TH1D(histname, dir_name, n_eta_towers - 1, eta_towers);
-        y->Sumw2();
+	name = "y";  name += specification;
+        y = new Observable(name, title, eta_towers, n_eta_towers);
 
-        histname = "phi";  histname += specification;
-        phi = new TH1D(histname, dir_name, n_phi_towers, -pi, pi);
-        phi->Sumw2();
+	name = "phi";  name += specification;
+        phi = new Observable(name, title, phi_towers, n_phi_towers);
 }
 
 void Measurement::ReadEvent(Event *event){
 	
 	this->n_events++;
-
-	for(int i = 0; i < event->pt.size(); i++){
-                this->pt->Fill(event->pt[i]);
-                this->eta->Fill(event->eta[i]);
-                this->y->Fill(event->rap[i]);
-                this->phi->Fill(event->phi[i]);
-		this->n_entries++;
-	}
+        this->pt->CatchEvent(event);
+        this->eta->CatchEvent(event);
+        this->y->CatchEvent(event);
+        this->phi->CatchEvent(event);
 
 }
 
-void Measurement::WriteToFile(TString addres){
+void Measurement::WriteToFile(TString prefix){
 
-	TFile file_res(addres + this->specification + ".root","RECREATE");
-	pt->Write();
-	eta->Write();
-	y->Write();
-	phi->Write();
+	TFile *file_res = new TFile(prefix + this->specification + ".root","RECREATE");
+
+	pt->WriteToFile(file_res);
+	eta->WriteToFile(file_res);
+	y->WriteToFile(file_res);
+	phi->WriteToFile(file_res);
 
 };
 
@@ -72,63 +65,63 @@ MN::MN(TString dir_name, TString specification, double pt_min_1, double pt_min_2
 	TString histname;
 
         histname = "dphi_0";  histname += specification;
-        dphi[0] = new TH1D(histname, dir_name, n_dphi_bins - 1, dphi_bins);
+        dphi[0] = new TH1D(histname, dir_name, n_dphi_bins, dphi_bins);
         dphi[0]->Sumw2();
 
         histname = "dphi_1";  histname += specification;
-        dphi[1] = new TH1D(histname, dir_name, n_dphi_bins - 1, dphi_bins);
+        dphi[1] = new TH1D(histname, dir_name, n_dphi_bins, dphi_bins);
         dphi[1]->Sumw2();
 
         histname = "dphi_2";  histname += specification;
-        dphi[2] = new TH1D(histname, dir_name, n_dphi_bins - 1, dphi_bins);
+        dphi[2] = new TH1D(histname, dir_name, n_dphi_bins, dphi_bins);
         dphi[2]->Sumw2();
 
         histname = "dphi_3";  histname += specification;
-        dphi[3] = new TH1D(histname, dir_name, n_dphi_bins - 1, dphi_bins);
+        dphi[3] = new TH1D(histname, dir_name, n_dphi_bins, dphi_bins);
         dphi[3]->Sumw2();
 
         histname = "dy";  histname += specification;
-        dy = new TH1D(histname, dir_name, n_dy_bins - 1, dy_bins);
+        dy = new TH1D(histname, dir_name, n_dy_bins, dy_bins);
         dy->Sumw2();
 
         histname = "w2";  histname += specification;
-        w2_dy = new TH1D(histname, dir_name, n_dy_bins - 1, dy_bins);
+        w2_dy = new TH1D(histname, dir_name, n_dy_bins, dy_bins);
         w2_dy->Sumw2();
 
         histname = "excl_dy";  histname += specification;
-        excl_dy = new TH1D(histname, dir_name, n_dy_bins - 1, dy_bins);
+        excl_dy = new TH1D(histname, dir_name, n_dy_bins, dy_bins);
         excl_dy->Sumw2();
 
         histname = "k_factor";  histname += specification;
-        k_factor = new TH1D(histname, dir_name, n_dy_bins - 1, dy_bins);
+        k_factor = new TH1D(histname, dir_name, n_dy_bins, dy_bins);
         k_factor->Sumw2();
 
         histname = "cos_1";  histname += specification;
-        cos_1 = new TH1D(histname, dir_name, n_dy_bins - 1, dy_bins);
+        cos_1 = new TH1D(histname, dir_name, n_dy_bins, dy_bins);
         cos_1->Sumw2();
 
         histname = "cos_2";  histname += specification;
-        cos_2 = new TH1D(histname, dir_name, n_dy_bins - 1, dy_bins);
+        cos_2 = new TH1D(histname, dir_name, n_dy_bins, dy_bins);
         cos_2->Sumw2();
 
         histname = "cos_3";  histname += specification;
-        cos_3 = new TH1D(histname, dir_name, n_dy_bins - 1, dy_bins);
+        cos_3 = new TH1D(histname, dir_name, n_dy_bins, dy_bins);
         cos_3->Sumw2();
 
         histname = "cos2_1";  histname += specification;
-        cos2_1 = new TH1D(histname, dir_name, n_dy_bins - 1, dy_bins);
+        cos2_1 = new TH1D(histname, dir_name, n_dy_bins, dy_bins);
         cos2_1->Sumw2();
 
         histname = "cos2_2";  histname += specification;
-        cos2_2 = new TH1D(histname, dir_name, n_dy_bins - 1, dy_bins);
+        cos2_2 = new TH1D(histname, dir_name, n_dy_bins, dy_bins);
         cos2_2->Sumw2();
 
         histname = "cos2_3";  histname += specification;
-        cos2_3 = new TH1D(histname, dir_name, n_dy_bins - 1, dy_bins);
+        cos2_3 = new TH1D(histname, dir_name, n_dy_bins, dy_bins);
         cos2_3->Sumw2();
 
         histname = "dphi_dy";  histname += specification;
-        dphi_dy = new TH2D(histname, dir_name, n_dphi_bins - 1, dphi_bins, n_dy_bins - 1, dy_bins);
+        dphi_dy = new TH2D(histname, dir_name, n_dphi_bins, dphi_bins, n_dy_bins, dy_bins);
         dphi_dy->Sumw2();
 
 }
@@ -226,12 +219,12 @@ void MN::ReadEvent(Event *event){
 				this->n_events++;
 				this->n_entries++;
 		                MN_index = find_MN(y_v_1, y_v_2);
-                		this->pt->Fill(pt_v_1[MN_index[0]],event->weight);
+                		/*this->pt->Fill(pt_v_1[MN_index[0]],event->weight);
 		                this->y->Fill(y_v_1[MN_index[0]],event->weight);
 		                this->phi->Fill(phi_v_1[MN_index[0]],event->weight);
 		                this->pt->Fill(pt_v_2[MN_index[1]],event->weight);
 		                this->y->Fill(y_v_2[MN_index[1]],event->weight);
-		                this->phi->Fill(phi_v_2[MN_index[1]],event->weight);
+		                this->phi->Fill(phi_v_2[MN_index[1]],event->weight);*/
 
                 		dy_MN = find_dy_MN(y_v_1, y_v_2);
 		                dphi_MN = find_dphi_MN(y_v_1, phi_v_1, y_v_2, phi_v_2);
@@ -262,12 +255,12 @@ void MN::ReadEvent(Event *event){
 
 }
 
-void MN::WriteToFile(TString addres){
+void MN::WriteToFile(TString prefix){
 
-	TFile file_res(addres + this->specification + ".root","RECREATE");
-	pt->Write();
-	y->Write();
-	phi->Write();
+	TFile *file_res = new TFile(prefix + this->specification + ".root","RECREATE");
+	pt->WriteToFile(file_res);
+	y->WriteToFile(file_res);
+	phi->WriteToFile(file_res);
 	dphi[0]->Write();
 	dphi[1]->Write();
 	dphi[2]->Write();
