@@ -48,15 +48,17 @@ Source/Include  - *.cpp and *.h files correspondingly
 
 	bining.h		- global definition of bining arrays
 
-	sample.cpp/.h		- class "Sample" for accessing events from the input data
+	finder.cpp/.h		- set of functions to find required dijet in vectors
 
 	event.cpp/.h		- class "Event" for event data (nPV, triggers, weigth, jets, etc.)
 
-	observable.cpp/.h	- base class "Observable" for each observable
+	object.cpp/.h		- class "Object" for phenomena from event (MN, incl dijets, etc.)
+
+	observable.cpp/.h	- class "Observable" for function on object (k_factor, decorr, etc.)
 
 	measurement.cpp/.h	- class "Measurement" - combination of several observables
 
-	finder.cpp/.h		- set of functions to find required dijet in vectors
+	sample.cpp/.h		- class "Sample" for accessing events from the input data
 
 4. FUNCTIONALITY
 ----------------------------
@@ -65,7 +67,6 @@ Source/Include  - *.cpp and *.h files correspondingly
 			  Sample -> ReadSample() -> ReadFile()
 
 /access_to_the_event	- [DONE] class "Measurement" - combination of several observables,
-			  includes cuts and all relevant parameters and weights
 			  Measurement -> ReadEvent()
 
 /efficiency_calc	- [TO BE DONE]
