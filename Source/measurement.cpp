@@ -1,11 +1,11 @@
 #include<TFile.h>
-#include"observable.h"
+#include"measurement.h"
 #include"bining.h"
 
 using namespace std;
 #define pi 3.1415926
 
-Observable::Observable(TString dir_name, TString specification){
+Measurement::Measurement(TString dir_name, TString specification){
 
 	this->specification = specification;
 
@@ -28,7 +28,7 @@ Observable::Observable(TString dir_name, TString specification){
         phi->Sumw2();
 }
 
-void Observable::ReadEvent(Event *event){
+void Measurement::ReadEvent(Event *event){
 	
 	this->n_events++;
 
@@ -42,7 +42,7 @@ void Observable::ReadEvent(Event *event){
 
 }
 
-void Observable::WriteToFile(TString addres){
+void Measurement::WriteToFile(TString addres){
 
 	TFile file_res(addres + this->specification + ".root","RECREATE");
 	pt->Write();
@@ -53,7 +53,7 @@ void Observable::WriteToFile(TString addres){
 };
 
 MN::MN(TString dir_name, TString specification, double pt_min_1, double pt_min_2, double pt_veto)
-:Observable(dir_name, specification){
+:Measurement(dir_name, specification){
 
 	this->pt_min_1 = pt_min_1;
 	this->pt_min_2 = pt_min_2;

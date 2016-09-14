@@ -54,17 +54,19 @@ Source/Include  - *.cpp and *.h files correspondingly
 
 	observable.cpp/.h	- base class "Observable" for each observable
 
+	measurement.cpp/.h	- class "Measurement" - combination of several observables
+
 	finder.cpp/.h		- set of functions to find required dijet in vectors
 
-4. TASK FLOW (FUNCTIONALITY)
+4. FUNCTIONALITY
 ----------------------------
 
 /access_to_the_data	- [DONE] class "Sample" for access to each event
 			  Sample -> ReadSample() -> ReadFile()
 
-/access_to_the_event	- [DONE] class "Observable" for each type of observable,
+/access_to_the_event	- [DONE] class "Measurement" - combination of several observables,
 			  includes cuts and all relevant parameters and weights
-			  Observable -> ReadEvent()
+			  Measurement -> ReadEvent()
 
 /efficiency_calc	- [TO BE DONE]
 

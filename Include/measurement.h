@@ -6,12 +6,12 @@
 #include"finder.h"
 
 
-#ifndef OBSERVABLE_H
-#define OBSERVABLE_H
+#ifndef MEASUREMENT_H
+#define MEASUREMENT_H
 
 using namespace std;
 
-class Observable {
+class Measurement {
 
 	private:
 
@@ -22,14 +22,14 @@ class Observable {
 		string specification;
 		int  n_events = 0, n_entries = 0;
 
-		Observable(TString , TString);
+		Measurement(TString , TString);
 
 		void ReadEvent(Event *);
 		void WriteToFile(TString );
 };
 
 
-class MN : virtual public Observable
+class MN : virtual public Measurement
 {
 	private:
 
@@ -58,4 +58,4 @@ class MN : virtual public Observable
 
 };
 
-#endif // OBSERVABLE_H
+#endif // MEASUREMENT_H

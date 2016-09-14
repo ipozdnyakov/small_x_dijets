@@ -2,7 +2,7 @@
 #include<TFile.h>
 #include<fstream>
 #include"CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
-#include"observable.h"
+#include"measurement.h"
 #include"event.h"
 #include"sample.h"
 
@@ -12,24 +12,24 @@ JetCorrectionUncertainty *jecUnc2016 = new JetCorrectionUncertainty("./jec_txt/2
 #define pi 3.1415926
 using namespace std;
 
-template void Sample::ReadSample<Observable>(Observable *);
+template void Sample::ReadSample<Measurement>(Measurement *);
 template void Sample::ReadSample<MN>(MN *);
-template <class Obs> void Sample::ReadSample(Obs *observable){
+template <class M> void Sample::ReadSample(M *measurement){
 
         string file_name;
         ifstream data_files("./listing/" + this->name);
 	cout << "\t-reading data files from " << this->name << ":\n";
         while(getline(data_files, file_name)){
                 cout << "\t" << file_name << "\t";
-                this->ReadFile(file_name, observable);
+                this->ReadFile(file_name, measurement);
         }
 	cout << "\n";
 
 };
 
-template void Sample::ReadFile<Observable>(string , Observable *);
+template void Sample::ReadFile<Measurement>(string , Measurement *);
 template void Sample::ReadFile<MN>(string , MN *);
-template <class Obs> void Sample::ReadFile(string name, Obs *observable){
+template <class M> void Sample::ReadFile(string name, M *measurement){
 
 	TString file_name = name;
 	TFile Jfile(file_name);
@@ -71,7 +71,7 @@ template <class Obs> void Sample::ReadFile(string name, Obs *observable){
 			event->AddJet(pt,eta,phi,rap);
 		}else{						//out Event
 			nEvent = iEvent;
-			observable->ReadEvent(event);
+			measurement->ReadEvent(event);
 			delete event;
 			event = new Event(iEvent,nPV,CNTR,FWD2,1.);
    		}

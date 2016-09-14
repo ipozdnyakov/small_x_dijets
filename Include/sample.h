@@ -1,5 +1,5 @@
 #include"event.h"
-#include"observable.h"
+#include"measurement.h"
 #include"CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
 
 #ifndef _SAMPLE_H
@@ -18,9 +18,9 @@ public:
 	Sample(): name("FSQJets_2015_2016") { }
 	Sample(string str): name(str) { }
 
-	template <class Obs> void ReadSample(Obs *);
+	template<class M> void ReadSample(M *);
 
-	template <class Obs> void ReadFile(string , Obs *);
+	template<class M> void ReadFile(string , M *);
 
 };
 #endif	/* _SAMPLE_H */
