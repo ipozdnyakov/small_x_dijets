@@ -27,7 +27,7 @@ class Measurement {
 };
 
 
-class MN : virtual public Measurement
+class Decorrelations : virtual public Measurement
 {
 	private:
 
@@ -48,7 +48,7 @@ class MN : virtual public Measurement
 		void CalculateErrors();
 		void WriteToFile(TString );
 
-		MN(TString , TString , double , double , double);
+		Decorrelations(TString , TString , double , double , double);
 		void ReadEvent(Event *);
 
 		//int NumberOfDijets();

@@ -19,7 +19,7 @@ void Observable::CatchEvent(Event *event){
 	
 	this->n_events++;
 
-	this->sum_of_weights->Fill(,event->weight);
+	this->sum_of_weights->Fill(1.,event->weight);
 
 /*        for(int i = 0; i < event->pt.size(); i++){
                 this->pt->Fill(event->pt[i]);

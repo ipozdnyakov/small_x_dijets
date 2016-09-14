@@ -10,7 +10,7 @@
 using namespace std;
 
 template void Sample::ReadSample<Measurement>(Measurement *);
-template void Sample::ReadSample<MN>(MN *);
+template void Sample::ReadSample<Decorrelations>(Decorrelations *);
 template <class M> void Sample::ReadSample(M *measurement){
 
         string file_name;
@@ -25,7 +25,7 @@ template <class M> void Sample::ReadSample(M *measurement){
 };
 
 template void Sample::ReadFile<Measurement>(string , Measurement *);
-template void Sample::ReadFile<MN>(string , MN *);
+template void Sample::ReadFile<Decorrelations>(string , Decorrelations *);
 template <class M> void Sample::ReadFile(string name, M *measurement){
 
 	TString file_name = name;

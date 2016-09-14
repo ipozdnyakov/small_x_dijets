@@ -45,7 +45,7 @@ void Measurement::WriteToFile(TString prefix){
 
 };
 
-MN::MN(TString dir_name, TString specification, double pt_min_1, double pt_min_2, double pt_veto)
+Decorrelations::Decorrelations(TString dir_name, TString specification, double pt_min_1, double pt_min_2, double pt_veto)
 :Measurement(dir_name, specification){
 
 	this->pt_min_1 = pt_min_1;
@@ -126,7 +126,7 @@ MN::MN(TString dir_name, TString specification, double pt_min_1, double pt_min_2
 
 }
 
-void MN::CalculateErrors(){
+void Decorrelations::CalculateErrors(){
 
 	Double_t w_ = 0., x_ = 0., y_ = 0., dx_ = 0., dy_ = 0., s_ = 0., ds_ = 0.;//k=s/x, s = x+y
 	Double_t dcos = 0., dcos_2 = 0., dcos_3 = 0.;
@@ -181,7 +181,7 @@ void MN::CalculateErrors(){
 
 };
 
-void MN::ReadEvent(Event *event){
+void Decorrelations::ReadEvent(Event *event){
 
         vector<Double_t> pt_v_1, y_v_1, phi_v_1, eta_v_1;
         vector<Double_t> pt_v_2, y_v_2, phi_v_2, eta_v_2;
@@ -255,7 +255,7 @@ void MN::ReadEvent(Event *event){
 
 }
 
-void MN::WriteToFile(TString prefix){
+void Decorrelations::WriteToFile(TString prefix){
 
 	TFile *file_res = new TFile(prefix + this->specification + ".root","RECREATE");
 	pt->WriteToFile(file_res);
