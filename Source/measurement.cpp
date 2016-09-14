@@ -3,7 +3,6 @@
 #include"bining.h"
 
 using namespace std;
-#define pi 3.1415926
 
 Measurement::Measurement(TString dir_name, TString specification){
 
@@ -71,8 +70,6 @@ MN::MN(TString dir_name, TString specification, double pt_min_1, double pt_min_2
 
 	TString histname;
 
-	for(int i = 0; i < 11; i++){dphi_bins[i] = dphi_bins[i]*pi;}
-    
         histname = "dphi_0";  histname += specification;
         dphi[0] = new TH1D(histname, dir_name, n_dphi_bins - 1, dphi_bins);
         dphi[0]->Sumw2();

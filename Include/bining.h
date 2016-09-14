@@ -1,6 +1,8 @@
 #ifndef _BINING_H
 #define _BINING_H
 
+#define pi 3.1415926
+
 const int n_pt_bins = 14;
 const int n_eta_towers = 83;
 const int n_phi_towers = 72;
@@ -30,14 +32,14 @@ const double eta_towers[n_eta_towers]={
 		4.363,	4.538,	4.716,	4.889,	5.191};
 
 
-double dy_bins[n_dy_bins]={
+const double dy_bins[n_dy_bins]={
 		0,	0.5,	1.0,	1.5,	2.0,	2.5,
 		3.0,	3.5,	4.0,	4.5,	5.0,	5.5,
 		6.0,	7.0,	8.0,	9.4};
 
-double dphi_bins[n_dphi_bins]={
-		0.,	0.1,	0.2,	0.3,	0.4,	0.5,
-		0.6,	0.70,	0.8,	0.9,	1.};
+const double dphi_bins[n_dphi_bins]={
+		0.*pi,	0.1*pi,	0.2*pi,	0.3*pi,	0.4*pi,	0.5*pi,
+		0.6*pi,	0.7*pi,	0.8*pi,	0.9*pi,	1.*pi};
 
 #endif  /* _BINING_H */
 
