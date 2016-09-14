@@ -1,9 +1,6 @@
+#include<iostream>
 #include"sample.h"
 #include"measurement.h"
-#include"CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
-
-//JetCorrectionUncertainty *jecUnc2015 = new JetCorrectionUncertainty("./jec_txt/2015/Fall15_25nsV2_DATA_Uncertainty_AK4PFchs.txt");
-//JetCorrectionUncertainty *jecUnc2016 = new JetCorrectionUncertainty("./jec_txt/2016/Spring16_25nsV6_DATA_Uncertainty_AK4PFchs.txt");
 
 using namespace std;
 

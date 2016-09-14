@@ -1,6 +1,7 @@
 #include<TFile.h>
 #include"measurement.h"
 #include"bining.h"
+#include"finder.h"
 
 using namespace std;
 

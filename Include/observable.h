@@ -1,7 +1,5 @@
 #include<TH1.h>
-#include<TH2.h>
 #include<TGraphAsymmErrors.h>
-#include<TROOT.h>
 #include"event.h"
 
 #ifndef OBSERVABLE_H

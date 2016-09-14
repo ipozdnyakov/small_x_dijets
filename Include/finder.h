@@ -1,3 +1,6 @@
+#include<vector>
+#include<TROOT.h>
+
 using namespace std;
 
 #ifndef _FINDER_H

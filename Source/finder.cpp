@@ -1,6 +1,4 @@
 #include<iostream>
-#include<vector>
-#include<TROOT.h>
 #include"finder.h"
 using namespace std;
 #define pi 3.1415926

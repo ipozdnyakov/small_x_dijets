@@ -1,9 +1,8 @@
 #include"event.h"
-#include"measurement.h"
-#include"CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
 
 #ifndef _SAMPLE_H
 #define	_SAMPLE_H
+
 using namespace std;
 
 class Sample {

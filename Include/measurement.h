@@ -1,10 +1,7 @@
 #include<TH1.h>
 #include<TH2.h>
 #include<TROOT.h>
-#include"CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
 #include"event.h"
-#include"finder.h"
-
 
 #ifndef MEASUREMENT_H
 #define MEASUREMENT_H
