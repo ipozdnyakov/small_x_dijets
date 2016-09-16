@@ -7,13 +7,23 @@ using namespace std;
 
 class Object {
 
-//Event is a set of jets and parameters
+	protected:
+
+		double pt_min_1 = 0.;
+		double pt_min_2 = 0.;
+		double pt_veto = 0.;
 
 	public:
-		Event event;
-		string type;
+
+		vector<double> pt;
+		vector<double> eta;
+		vector<double> rap;
+		vector<double> phi;
+
+		vector<double> dphi;
+		vector<double> dy;
 	
-		Object(Event , string);
+		Object(double , double , double);
 
 };
 #endif	/* _OBJECT_H */

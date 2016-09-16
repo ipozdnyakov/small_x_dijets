@@ -27,6 +27,7 @@ Measurement::Measurement(TString title, TString specification){
 void Measurement::ReadEvent(Event *event){
 	
 	this->n_events++;
+
         this->pt->CatchEvent(event);
         this->eta->CatchEvent(event);
         this->y->CatchEvent(event);
