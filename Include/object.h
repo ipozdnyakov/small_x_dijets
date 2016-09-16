@@ -24,6 +24,6 @@ class Object {
 		vector<double> dy;
 	
 		Object(double , double , double);
-
+		void ReadEvent(Event *);
 };
 #endif	/* _OBJECT_H */

@@ -17,3 +17,7 @@ Object::Object(double pt_min_1, double pt_min_2, double pt_veto){
 
 	this->pt_veto = pt_veto;
 };
+
+void Object::ReadEvent(Event *event){
+
+};

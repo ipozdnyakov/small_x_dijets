@@ -2,6 +2,7 @@
 #include<TH2.h>
 #include<TROOT.h>
 #include"observable.h"
+#include"object.h"
 #include"event.h"
 
 #ifndef MEASUREMENT_H
@@ -22,7 +23,7 @@ class Measurement {
 
 		Measurement(TString , TString);
 
-		void ReadEvent(Event *);
+		void ReadEvent(Event *, Object *);
 		void WriteToFile(TString );
 };
 
@@ -49,7 +50,7 @@ class Decorrelations : virtual public Measurement
 		void WriteToFile(TString );
 
 		Decorrelations(TString , TString , double , double , double);
-		void ReadEvent(Event *);
+		void ReadEvent(Event *, Object *);
 
 		//int NumberOfDijets();
 		//void CalculateDerivatives();

@@ -24,7 +24,7 @@ Measurement::Measurement(TString title, TString specification){
         phi = new Observable(name, title, phi_towers, n_phi_towers);
 }
 
-void Measurement::ReadEvent(Event *event){
+void Measurement::ReadEvent(Event *event, Object *object){
 	
 	this->n_events++;
 
@@ -182,7 +182,7 @@ void Decorrelations::CalculateErrors(){
 
 };
 
-void Decorrelations::ReadEvent(Event *event){
+void Decorrelations::ReadEvent(Event *event, Object *object){
 
         vector<Double_t> pt_v_1, y_v_1, phi_v_1, eta_v_1;
         vector<Double_t> pt_v_2, y_v_2, phi_v_2, eta_v_2;
@@ -208,6 +208,8 @@ void Decorrelations::ReadEvent(Event *event){
                 }
                 if((event->pt[i] < this->pt_min_2)&&(event->pt[i] > this->pt_veto)) veto = false;
         }
+
+
 	if(event->nPV == 1){
 
 	        if((pt_v_2.size() > 1)&&(pt_v_1.size() > 0)){
