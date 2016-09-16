@@ -173,35 +173,11 @@ void Decorrelations::ReadEvent(Event *event, Object *object){
 
 	object->ReadEvent(event);
 
-        vector<Double_t> pt_v_1, y_v_1, phi_v_1, eta_v_1;
-        vector<Double_t> pt_v_2, y_v_2, phi_v_2, eta_v_2;
-        vector<Double_t>::iterator m, n, q;
-        vector<int> MN_index;
-
-        Bool_t veto = true;
-        Double_t dy_MN = 0., dphi_MN = 0.;
-
-        for(int i = 0; i < event->pt.size(); i++){
-
-                if((event->pt[i] > this->pt_min_1) && (fabs(event->rap[i]) < 4.7)){
-                  pt_v_1.push_back(event->pt[i]);
-                  phi_v_1.push_back(event->phi[i]);
-                  y_v_1.push_back(event->rap[i]);
-                  eta_v_1.push_back(event->eta[i]);
-                }
-                if((event->pt[i] > this->pt_min_2) && (fabs(event->rap[i]) < 4.7)){
-                  pt_v_2.push_back(event->pt[i]);
-                  phi_v_2.push_back(event->phi[i]);
-                  y_v_2.push_back(event->rap[i]);
-                  eta_v_2.push_back(event->eta[i]);
-                }
-                if((event->pt[i] < this->pt_min_2)&&(event->pt[i] > this->pt_veto)) veto = false;
-        }
-
+	double dy_MN, dphi_MN;
 
 	if(event->nPV == 1){
 
-	        if((pt_v_2.size() > 1)&&(pt_v_1.size() > 0)){
+	        if((object->pt_v_2.size() > 1)&&(object->pt_v_1.size() > 0)){
 
         	        if(event->CNTR > 0) this->n_event_cntr++;
                 	if(event->FWD > 0) this->n_event_fwd++;
@@ -210,16 +186,23 @@ void Decorrelations::ReadEvent(Event *event, Object *object){
 
 				this->n_events++;
 				this->n_entries++;
-		                MN_index = find_MN(y_v_1, y_v_2);
-                		/*this->pt->Fill(pt_v_1[MN_index[0]],event->weight);
+
+			        this->pt->CatchEvent(event);
+			        this->eta->CatchEvent(event);
+			        this->y->CatchEvent(event);
+			        this->phi->CatchEvent(event);
+
+/*		                MN_index = find_MN(y_v_1, y_v_2);
+                		this->pt->Fill(pt_v_1[MN_index[0]],event->weight);
 		                this->y->Fill(y_v_1[MN_index[0]],event->weight);
 		                this->phi->Fill(phi_v_1[MN_index[0]],event->weight);
 		                this->pt->Fill(pt_v_2[MN_index[1]],event->weight);
 		                this->y->Fill(y_v_2[MN_index[1]],event->weight);
-		                this->phi->Fill(phi_v_2[MN_index[1]],event->weight);*/
+		                this->phi->Fill(phi_v_2[MN_index[1]],event->weight);
+*/
 
-                		dy_MN = find_dy_MN(y_v_1, y_v_2);
-		                dphi_MN = find_dphi_MN(y_v_1, phi_v_1, y_v_2, phi_v_2);
+                		dy_MN = find_dy_MN(object->y_v_1, object->y_v_2);
+		                dphi_MN = find_dphi_MN(object->y_v_1, object->phi_v_1, object->y_v_2, object->phi_v_2);
 
 		                this->dphi[0]->Fill(dphi_MN,event->weight);
 		                this->dy->Fill(dy_MN,event->weight);
@@ -237,7 +220,7 @@ void Decorrelations::ReadEvent(Event *event, Object *object){
                 		this->cos_3->Fill(dy_MN,event->weight*cos(3*(pi - dphi_MN)));
 		                this->cos2_3->Fill(dy_MN,event->weight*pow(cos(3*(pi - dphi_MN)),2));
 
-                		if((pt_v_1.size() > 0)&&(pt_v_2.size() == 2)&&veto){
+                		if((object->pt_v_1.size() > 0)&&(object->pt_v_2.size() == 2)&&object->veto){
                         		this->excl_dy->Fill(dy_MN,event->weight);
                 		}
 

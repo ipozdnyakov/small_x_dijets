@@ -16,6 +16,10 @@ class Object {
 
 	public:
 
+	        vector<Double_t> pt_v_1, y_v_1, phi_v_1, eta_v_1;
+        	vector<Double_t> pt_v_2, y_v_2, phi_v_2, eta_v_2;
+	        Bool_t veto = true;
+
 		vector<double> pt;
 		vector<double> eta;
 		vector<double> rap;

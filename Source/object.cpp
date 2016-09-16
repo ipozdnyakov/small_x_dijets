@@ -30,4 +30,22 @@ Object::Object(double pt_min_1, double pt_min_2, double pt_veto){
 
 void Object::ReadEvent(Event *event){
 
+        for(int i = 0; i < event->pt.size(); i++){
+
+                if((event->pt[i] > this->pt_min_1) && (fabs(event->rap[i]) < 4.7)){
+                  this->pt_v_1.push_back(event->pt[i]);
+                  this->phi_v_1.push_back(event->phi[i]);
+                  this->y_v_1.push_back(event->rap[i]);
+                  this->eta_v_1.push_back(event->eta[i]);
+                }
+                if((event->pt[i] > this->pt_min_2) && (fabs(event->rap[i]) < 4.7)){
+                  this->pt_v_2.push_back(event->pt[i]);
+                  this->phi_v_2.push_back(event->phi[i]);
+                  this->y_v_2.push_back(event->rap[i]);
+                  this->eta_v_2.push_back(event->eta[i]);
+                }
+                if((event->pt[i] < this->pt_min_2)&&(event->pt[i] > this->pt_veto)) this->veto = false;
+
+        }
+
 };
