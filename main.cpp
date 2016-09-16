@@ -8,7 +8,7 @@ using namespace std;
 int main(int argc, char** argv) {
 
 //	Measurement *jets = new Measurement("basic distributions","_FSQJets_2015_2016_data_13TeV_LowPU");
-	Decorrelations *decorr = new Decorrelations("decorrelations","_FSQJets_2015_2016_data_13TeV_LowPU_MN_35GeV", 35., 35., 35.);
+	Decorrelations *decorr = new Decorrelations("decorrelations","_FSQJets_2015_2016_data_13TeV_LowPU_MN_35GeV");
 	Object *dijets = new Object(35., 35., 35.);
 	Sample *data = new Sample("FSQJets_2015_2016");
 	

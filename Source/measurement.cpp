@@ -26,6 +26,8 @@ Measurement::Measurement(TString title, TString specification){
 
 void Measurement::ReadEvent(Event *event, Object *object){
 	
+	object->ReadEvent(event);
+
 	this->n_events++;
 
         this->pt->CatchEvent(event);
@@ -46,22 +48,7 @@ void Measurement::WriteToFile(TString prefix){
 
 };
 
-Decorrelations::Decorrelations(TString dir_name, TString specification, double pt_min_1, double pt_min_2, double pt_veto)
-:Measurement(dir_name, specification){
-
-	this->pt_min_1 = pt_min_1;
-	this->pt_min_2 = pt_min_2;
-	this->pt_veto = pt_veto;
-
-	TString Pt_min = "_pt";
-                           	Pt_min += pt_min_1;
-                                Pt_min += "_";
-                                Pt_min += pt_min_2;
-	TString Pt_veto = "_veto";
-                              	Pt_veto += pt_veto;
-
-
-	this->specification = specification + Pt_min + Pt_veto; 
+Decorrelations::Decorrelations(TString dir_name, TString specification):Measurement(dir_name, specification){
 
 	TString histname;
 
@@ -183,6 +170,8 @@ void Decorrelations::CalculateErrors(){
 };
 
 void Decorrelations::ReadEvent(Event *event, Object *object){
+
+	object->ReadEvent(event);
 
         vector<Double_t> pt_v_1, y_v_1, phi_v_1, eta_v_1;
         vector<Double_t> pt_v_2, y_v_2, phi_v_2, eta_v_2;

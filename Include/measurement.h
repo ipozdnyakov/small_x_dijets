@@ -49,7 +49,7 @@ class Decorrelations : virtual public Measurement
 		void CalculateErrors();
 		void WriteToFile(TString );
 
-		Decorrelations(TString , TString , double , double , double);
+		Decorrelations(TString , TString );
 		void ReadEvent(Event *, Object *);
 
 		//int NumberOfDijets();
