@@ -1,25 +1,25 @@
 #include<vector>
-#include<TROOT.h>
+#include<math.h>
 
 using namespace std;
 
 #ifndef _FINDER_H
 #define	_FINDER_H
-	vector<int> find_MN(vector<Double_t> , vector<Double_t>);
+	vector<int> find_MN(vector<double> , vector<double>);
 
-	Double_t find_dy_MN(vector<Double_t> , vector<Double_t>);
+	double find_dy_MN(vector<double> , vector<double>);
 
-	Double_t find_dphi_MN(vector<Double_t> , vector<Double_t> , vector<Double_t> , vector<Double_t>);
+	double find_dphi_MN(vector<double> , vector<double> , vector<double> , vector<double>);
 
-	Int_t find_closest(Double_t , Double_t , vector<Double_t> , vector<Double_t> , Double_t *, Int_t );
+	int find_closest(double , double , vector<double> , vector<double> , double *, int );
 
-	Double_t find_dy(vector<Double_t> );
+	double find_dy(vector<double> );
 
-	Double_t find_dphi(vector<Double_t> , vector<Double_t> );
+	double find_dphi(vector<double> , vector<double> );
 
-	Int_t find_i_min(vector<Double_t> );
+	int find_i_min(vector<double> );
 
-	Int_t find_i_max(vector<Double_t> );
+	int find_i_max(vector<double> );
 
 #endif	/* _FINDER_H */
 

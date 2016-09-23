@@ -5,14 +5,14 @@ using namespace std;
 
 //////////////////
 //FIND MN INDEX
-vector<int> find_MN(vector<Double_t> y_v_1, vector<Double_t> y_v_2){
+vector<int> find_MN(vector<double> y_v_1, vector<double> y_v_2){
 	vector<int> MN_index;
 	MN_index.push_back(-1);
 	MN_index.push_back(-1);
 
-	Int_t i = 0, j = 0;
+	int i = 0, j = 0;
 
-	Double_t dy = 0, dy_max = 0;
+	double dy = 0, dy_max = 0;
 
 	for(i = 0; i < y_v_1.size(); i++){
 		for(j = 0; j < y_v_2.size(); j++){
@@ -29,10 +29,10 @@ vector<int> find_MN(vector<Double_t> y_v_1, vector<Double_t> y_v_2){
 
 //////////////////
 //FIND MN DY
-Double_t find_dy_MN(vector<Double_t> y_v_1, vector<Double_t> y_v_2){
+double find_dy_MN(vector<double> y_v_1, vector<double> y_v_2){
 
 	vector<int> MN_index = find_MN(y_v_1, y_v_2);
-	Double_t dy = fabs(y_v_1[MN_index[0]] - y_v_2[MN_index[1]]);
+	double dy = fabs(y_v_1[MN_index[0]] - y_v_2[MN_index[1]]);
 
 return dy;
 }
@@ -40,11 +40,11 @@ return dy;
 
 //////////////////
 //FIND MN DPHI
-Double_t find_dphi_MN(vector<Double_t> y_v_1, vector<Double_t> phi_v_1,
-	              vector<Double_t> y_v_2, vector<Double_t> phi_v_2){
+double find_dphi_MN(vector<double> y_v_1, vector<double> phi_v_1,
+	              vector<double> y_v_2, vector<double> phi_v_2){
 
 	vector<int> MN_index = find_MN(y_v_1, y_v_2);
-	Double_t dphi = fabs(phi_v_1[MN_index[0]] - phi_v_2[MN_index[1]]);                     
+	double dphi = fabs(phi_v_1[MN_index[0]] - phi_v_2[MN_index[1]]);                     
 	if(dphi > pi){
                dphi = (2*pi - dphi);
         };
@@ -57,15 +57,15 @@ return dphi;
 
 //////////////////
 //FIND CLOSEST JET
-Int_t find_closest(Double_t phi_v, Double_t y_v, vector<Double_t> phi_v_m, vector<Double_t> y_v_m, Double_t *dr, Int_t except){
-if( (y_v_m.size() != phi_v_m.size()) || (except > (Int_t) phi_v_m.size()) ){
-	cout << except << " beyond vector size " << (Int_t) phi_v_m.size() << " :Error in <find_closest()> \n";
+int find_closest(double phi_v, double y_v, vector<double> phi_v_m, vector<double> y_v_m, double *dr, int except){
+if( (y_v_m.size() != phi_v_m.size()) || (except > (int) phi_v_m.size()) ){
+	cout << except << " beyond vector size " << (int) phi_v_m.size() << " :Error in <find_closest()> \n";
 	return -1;
 }
 
-Int_t 		i = 0,
+int 		i = 0,
 		j = 0;
-Double_t	dr_i = 0.;
+double	dr_i = 0.;
 	
 	(*dr) = 100.;
 	for( i = 0; i < phi_v_m.size(); i++){
@@ -82,10 +82,10 @@ Double_t	dr_i = 0.;
 
 /////////////////////////
 //FIND MAX DY IN A VECTOR
-Double_t find_dy(vector<Double_t> y_v){
-	Double_t dy = 0;
-	Double_t dphi = 0;
-	Int_t i = 0, j = 0;
+double find_dy(vector<double> y_v){
+	double dy = 0;
+	double dphi = 0;
+	int i = 0, j = 0;
 	i = find_i_min(y_v);
 	j = find_i_max(y_v);        
 	dy = fabs(y_v[j] - y_v[i]);	
@@ -96,13 +96,13 @@ Double_t find_dy(vector<Double_t> y_v){
 
 ////////////////////////////////
 //FIND DPHI of dijet with max DY
-Double_t find_dphi(vector<Double_t> y_v, vector<Double_t> phi_v){
+double find_dphi(vector<double> y_v, vector<double> phi_v){
 if(y_v.size() != phi_v.size()){
 	cout << "Error in <find_dphi()> \n";
 	return -100.;
 }
-	Double_t dphi = 0;
-	Int_t i = 0, j = 0;
+	double dphi = 0;
+	int i = 0, j = 0;
 	i = find_i_min(y_v);
 	j = find_i_max(y_v);
         
@@ -116,9 +116,9 @@ if(y_v.size() != phi_v.size()){
 
 ////////////////////////////////
 //FIND INDEX ofjet with min Y
-Int_t find_i_min(vector<Double_t> y_v){
-Int_t i = 0, j = 0;
-Double_t y_min = 10;
+int find_i_min(vector<double> y_v){
+int i = 0, j = 0;
+double y_min = 10;
 	for( j = 0; j < y_v.size(); j++){
 		if(y_v[j] < y_min){
 			y_min = y_v[j];
@@ -132,9 +132,9 @@ Double_t y_min = 10;
 
 ////////////////////////////////
 //FIND INDEX of jet with max Y
-Int_t find_i_max(vector<Double_t> y_v){
-Int_t i = 0, j = 0;
-Double_t y_max = -10;
+int find_i_max(vector<double> y_v){
+int i = 0, j = 0;
+double y_max = -10;
 	for( j = 0; j < y_v.size(); j++){
 		if(y_v[j] > y_max){
 			y_max = y_v[j];

@@ -15,7 +15,8 @@ class Measurement {
 	private:
 
 	protected:
-		Observable *pt, *eta, *y, *phi;
+		bool averaged_and_normalized = false;
+		Observable *pt, *eta, *rap, *phi;
 
 	public:
 		string specification;
@@ -25,6 +26,7 @@ class Measurement {
 
 		void ReadEvent(Event *, Object *);
 		void WriteToFile(TString );
+		void AverageAndNormalize();
 };
 
 

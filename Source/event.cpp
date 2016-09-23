@@ -17,14 +17,14 @@ void Event::AddJet(
 	
 		double jet_pt_unc = 0.;
 
-		if(this->number > 1000000){
-	        	jecUnc2015->setJetEta(jet_eta);
-        		jecUnc2015->setJetPt(jet_pt);
-        		jet_pt_unc = jecUnc2015->getUncertainty(true);
-		}else{
+		if(this->run > 273000){
 	        	jecUnc2016->setJetEta(jet_eta);
         		jecUnc2016->setJetPt(jet_pt);
         		jet_pt_unc = jecUnc2016->getUncertainty(true);
+		}else{
+	        	jecUnc2015->setJetEta(jet_eta);
+        		jecUnc2015->setJetPt(jet_pt);
+        		jet_pt_unc = jecUnc2015->getUncertainty(true);
 		}
 
                 this->pt.push_back(jet_pt);

@@ -9,7 +9,7 @@ class Event {
 //Event is a set of jets and parameters
 
 public:
-	int number;
+	int number, run;
 	int nPV;
 	int CNTR, FWD;
 	double weight;
@@ -22,8 +22,8 @@ public:
 	vector<double> rap;	 	
 
 public:
-	Event(): number(-1), nPV(-1), CNTR(-1), FWD(-1), weight(0.) { }
-	Event(int n, int npv, int cntr, int fwd, double w): number(n), nPV(npv), CNTR(cntr), FWD(fwd), weight(w) { }
+	Event(): run(-1), number(-1), nPV(-1), CNTR(-1), FWD(-1), weight(0.) { }
+	Event(int r, int n, int npv, int cntr, int fwd, double w): run(r), number(n), nPV(npv), CNTR(cntr), FWD(fwd), weight(w) { }
 
 	void AddJet(double , double , double , double , double);
 

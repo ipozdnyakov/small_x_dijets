@@ -46,19 +46,24 @@ main.cpp	- main code of the analysis
 
 Source/Include  - *.cpp and *.h files correspondingly
 
+
+	measurement.cpp/.h	- class "Measurement" - combination of several observables
+
+	object.cpp/.h		- class "Object" for phenomena from event (MN, incl dijets, etc.)
+
+	sample.cpp/.h		- class "Sample" for accessing events from the input data
+
+
+
+	event.cpp/.h		- class "Event" for event data (nPV, triggers, weigth, jets, etc.)
+
+	observable.cpp/.h	- class "Observable" for math function on object 
+				  reflecting some physics (k_factor, decorr, etc.)
+
 	bining.h		- global definition of bining arrays
 
 	finder.cpp/.h		- set of functions to find required dijet in vectors
 
-	event.cpp/.h		- class "Event" for event data (nPV, triggers, weigth, jets, etc.)
-
-	object.cpp/.h		- class "Object" for phenomena from event (MN, incl dijets, etc.)
-
-	observable.cpp/.h	- class "Observable" for function on object (k_factor, decorr, etc.)
-
-	measurement.cpp/.h	- class "Measurement" - combination of several observables
-
-	sample.cpp/.h		- class "Sample" for accessing events from the input data
 
 4. FUNCTIONALITY
 ----------------------------

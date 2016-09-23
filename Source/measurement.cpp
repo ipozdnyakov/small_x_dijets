@@ -1,3 +1,4 @@
+#include<iostream>
 #include<TFile.h>
 #include"measurement.h"
 #include"bining.h"
@@ -9,42 +10,52 @@ Measurement::Measurement(TString title, TString specification){
 
 	this->specification = specification;
 
-	TString name;
+        pt = new Observable("pt", title, pt_bins, n_pt_bins);
+        eta = new Observable("eta", title, eta_towers, n_eta_towers);
+        rap = new Observable("rap", title, eta_towers, n_eta_towers);
+        phi = new Observable("phi", title, phi_towers, n_phi_towers);
 
-	name = "pt";  name += specification;
-        pt = new Observable(name, title, pt_bins, n_pt_bins);
-
-	name = "eta";  name += specification;
-        eta = new Observable(name, title, eta_towers, n_eta_towers);
-
-	name = "y";  name += specification;
-        y = new Observable(name, title, eta_towers, n_eta_towers);
-
-	name = "phi";  name += specification;
-        phi = new Observable(name, title, phi_towers, n_phi_towers);
-}
+};
 
 void Measurement::ReadEvent(Event *event, Object *object){
 	
-	object->ReadEvent(event);
+	object->LoadEvent(event);
 
 	this->n_events++;
 
-        this->pt->CatchEvent(event);
-        this->eta->CatchEvent(event);
-        this->y->CatchEvent(event);
-        this->phi->CatchEvent(event);
+        this->pt->CatchObject(object, "pt");
+        this->eta->CatchObject(object, "eta");
+        this->rap->CatchObject(object, "rap");
+        this->phi->CatchObject(object, "phi");
 
-}
+	object->Clear();
+};
+
+void Measurement::AverageAndNormalize(){
+        if(this->averaged_and_normalized){
+                cout << "PROCESSING ERROR: Measurement already averaged and normalized!\n";
+                return;
+        }
+
+        this->pt->AverageAndNormalize();
+        this->eta->AverageAndNormalize();
+        this->rap->AverageAndNormalize();
+        this->phi->AverageAndNormalize();
+
+        this->averaged_and_normalized = true;
+};
 
 void Measurement::WriteToFile(TString prefix){
 
-	TFile *file_res = new TFile(prefix + this->specification + ".root","RECREATE");
+	TString name = prefix + this->specification + ".root";
 
-	pt->WriteToFile(file_res);
-	eta->WriteToFile(file_res);
-	y->WriteToFile(file_res);
-	phi->WriteToFile(file_res);
+	TFile *file = new TFile(name,"RECREATE");
+	file->Close();
+
+	this->pt->WriteToFile(name);
+	this->eta->WriteToFile(name);
+	this->rap->WriteToFile(name);
+	this->phi->WriteToFile(name);
 
 };
 
@@ -171,13 +182,13 @@ void Decorrelations::CalculateErrors(){
 
 void Decorrelations::ReadEvent(Event *event, Object *object){
 
-	object->ReadEvent(event);
+	object->LoadEvent(event);
 
 	double dy_MN, dphi_MN;
 
 	if(event->nPV == 1){
 
-	        if((object->pt_v_2.size() > 1)&&(object->pt_v_1.size() > 0)){
+	        if((object->pt_L.size() > 1)&&(object->pt_H.size() > 0)){
 
         	        if(event->CNTR > 0) this->n_event_cntr++;
                 	if(event->FWD > 0) this->n_event_fwd++;
@@ -187,22 +198,22 @@ void Decorrelations::ReadEvent(Event *event, Object *object){
 				this->n_events++;
 				this->n_entries++;
 
-			        this->pt->CatchEvent(event);
-			        this->eta->CatchEvent(event);
-			        this->y->CatchEvent(event);
-			        this->phi->CatchEvent(event);
+			        this->pt->CatchObject(object, "pt");
+			        this->eta->CatchObject(object, "eta");
+			        this->rap->CatchObject(object, "rap");
+			        this->phi->CatchObject(object, "phi");
 
-/*		                MN_index = find_MN(y_v_1, y_v_2);
-                		this->pt->Fill(pt_v_1[MN_index[0]],event->weight);
-		                this->y->Fill(y_v_1[MN_index[0]],event->weight);
-		                this->phi->Fill(phi_v_1[MN_index[0]],event->weight);
-		                this->pt->Fill(pt_v_2[MN_index[1]],event->weight);
-		                this->y->Fill(y_v_2[MN_index[1]],event->weight);
-		                this->phi->Fill(phi_v_2[MN_index[1]],event->weight);
+/*		                MN_index = find_MN(rap_H, rap_L);
+                		this->pt->Fill(pt_H[MN_index[0]],event->weight);
+		                this->rap->Fill(rap_H[MN_index[0]],event->weight);
+		                this->phi->Fill(phi_H[MN_index[0]],event->weight);
+		                this->pt->Fill(pt_L[MN_index[1]],event->weight);
+		                this->rap->Fill(rap_L[MN_index[1]],event->weight);
+		                this->phi->Fill(phi_L[MN_index[1]],event->weight);
 */
 
-                		dy_MN = find_dy_MN(object->y_v_1, object->y_v_2);
-		                dphi_MN = find_dphi_MN(object->y_v_1, object->phi_v_1, object->y_v_2, object->phi_v_2);
+                		dy_MN = find_dy_MN(object->rap_H, object->rap_L);
+		                dphi_MN = find_dphi_MN(object->rap_H, object->phi_H, object->rap_L, object->phi_L);
 
 		                this->dphi[0]->Fill(dphi_MN,event->weight);
 		                this->dy->Fill(dy_MN,event->weight);
@@ -220,7 +231,7 @@ void Decorrelations::ReadEvent(Event *event, Object *object){
                 		this->cos_3->Fill(dy_MN,event->weight*cos(3*(pi - dphi_MN)));
 		                this->cos2_3->Fill(dy_MN,event->weight*pow(cos(3*(pi - dphi_MN)),2));
 
-                		if((object->pt_v_1.size() > 0)&&(object->pt_v_2.size() == 2)&&object->veto){
+                		if((object->pt_H.size() > 0)&&(object->pt_L.size() == 2)&&(!(object->veto))){
                         		this->excl_dy->Fill(dy_MN,event->weight);
                 		}
 
@@ -228,14 +239,21 @@ void Decorrelations::ReadEvent(Event *event, Object *object){
         	}//enough jets
         }//nPV == 1
 
+	object->Clear();
 }
 
 void Decorrelations::WriteToFile(TString prefix){
 
-	TFile *file_res = new TFile(prefix + this->specification + ".root","RECREATE");
-	pt->WriteToFile(file_res);
-	y->WriteToFile(file_res);
-	phi->WriteToFile(file_res);
+	TString name = prefix + this->specification + ".root";
+
+	TFile *file = new TFile(name,"RECREATE");
+	file->Close();
+
+	pt->WriteToFile(name);
+	eta->WriteToFile(name);
+	rap->WriteToFile(name);
+	phi->WriteToFile(name);
+
 	dphi[0]->Write();
 	dphi[1]->Write();
 	dphi[2]->Write();
