@@ -14,14 +14,10 @@ class Observable {
 		bool averaged_and_normalized = false;
 
 		TH1D *sum_w;
+		TH1D *sum_w_jecunc_plus;
+		TH1D *sum_w_jecunc_minus;
+
 		TH1D *sum_w2;
-		TGraphAsymmErrors *values_and_stats;
-		TGraphAsymmErrors *syst_jec;
-		TGraphAsymmErrors *syst_jer;
-		TGraphAsymmErrors *syst_pile_up;
-		TGraphAsymmErrors *syst_merging;
-		TGraphAsymmErrors *syst_efficiency;
-		TGraphAsymmErrors *syst_total;
 
 		TH1D *jec;
 		TH1D *unc;

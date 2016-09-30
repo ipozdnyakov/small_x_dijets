@@ -85,7 +85,19 @@ Source/Include  - *.cpp and *.h files correspondingly
 			  on  jets   with pt_plus_unc and pt_minus_unc results  are  stored
 			  in  two  .root files, for each set of observables
 
+/jer_study		- [TO BE DONE]
+
+/phi_res		- [TO BE DONE]
+
+/eta_res		- [TO BE DONE]
+
 /unfolding		- [TO BE DONE]
+
+/normalisation		- [TO BE DONE]
+
+/final_values		- [TO BE DONE]
+
+/total_syst		- [TO BE DONE]
 
 5. NEED TO BE COMPATIBLE WITH CMSSW 
 -----------------------------------

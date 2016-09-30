@@ -10,16 +10,20 @@ Observable::Observable(TString name, TString title, const double *bins, int n_bi
 
         sum_w = new TH1D(name + "_sum_w", title, n_bins, bins);
         sum_w->Sumw2();
+        sum_w_jecunc_plus = new TH1D(name + "_sum_w_jecunc_plus", title, n_bins, bins);
+        sum_w_jecunc_plus->Sumw2();
+        sum_w_jecunc_minus = new TH1D(name + "_sum_w_jecunc_minus", title, n_bins, bins);
+        sum_w_jecunc_minus->Sumw2();
 
         sum_w2 = new TH1D(name + "_sum_w2", title, n_bins, bins);
         sum_w2->Sumw2();
 
+
+
         jec = new TH1D(name + "_jec", title, n_bins, bins);
         jec->Sumw2();
-
         unc = new TH1D(name + "_unc", title, n_bins, bins);
         unc->Sumw2();
-
         average_jec = new TH1D(name + "_average_jec", title, n_bins, bins);
         average_unc = new TH1D(name + "_average_unc", title, n_bins, bins);
 
