@@ -17,8 +17,6 @@ class Observable {
 		TH1D *sum_w_jecunc_plus;
 		TH1D *sum_w_jecunc_minus;
 
-		TH1D *sum_w2;
-
 		TH1D *jec;
 		TH1D *unc;
 		TH1D *average_jec;

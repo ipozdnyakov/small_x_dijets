@@ -15,11 +15,6 @@ Observable::Observable(TString name, TString title, const double *bins, int n_bi
         sum_w_jecunc_minus = new TH1D(name + "_sum_w_jecunc_minus", title, n_bins, bins);
         sum_w_jecunc_minus->Sumw2();
 
-        sum_w2 = new TH1D(name + "_sum_w2", title, n_bins, bins);
-        sum_w2->Sumw2();
-
-
-
         jec = new TH1D(name + "_jec", title, n_bins, bins);
         jec->Sumw2();
         unc = new TH1D(name + "_unc", title, n_bins, bins);
@@ -49,7 +44,6 @@ void Observable::FillData(vector<vector<double>> data, double weight){
 
         for(int i = 0; i < data[0].size(); i++){
 		this->sum_w->Fill(data[2][i], weight);
-		this->sum_w2->Fill(data[2][i], weight*weight);
 		this->unc->Fill(data[2][i], data[1][i]*weight);
 		this->jec->Fill(data[2][i], data[0][i]*weight);
                 this->n_entries++;
@@ -63,7 +57,6 @@ void Observable::WriteToFile(TString name){
 	TFile file_res(name,"UPDATE");
 
 	sum_w->Write();
-	sum_w2->Write();
 	average_jec->Write();
 	average_unc->Write();
 
