@@ -55,6 +55,36 @@ void Object::LoadEvent(Event *event){
                 }
                 if((event->pt[i] < this->pt_min_L)&&(event->pt[i] > this->pt_veto)) this->veto = true;
 
+	//JEC PLUS
+                if((event->pt[i]*(1+event->pt_unc[i]) > this->pt_min_H) && (fabs(event->rap[i]) < 4.7)){
+                  this->pt_H_jecunc_plus.push_back(event->pt[i]*(1+event->pt_unc[i]));
+                  this->eta_H_jecunc_plus.push_back(event->eta[i]);
+                  this->rap_H_jecunc_plus.push_back(event->rap[i]);
+                  this->phi_H_jecunc_plus.push_back(event->phi[i]);
+                }
+                if((event->pt[i]*(1+event->pt_unc[i]) > this->pt_min_L) && (fabs(event->rap[i]) < 4.7)){
+                  this->pt_L_jecunc_plus.push_back(event->pt[i]*(1+event->pt_unc[i]));
+                  this->eta_L_jecunc_plus.push_back(event->eta[i]);
+                  this->rap_L_jecunc_plus.push_back(event->rap[i]);
+                  this->phi_L_jecunc_plus.push_back(event->phi[i]);
+                }
+                if((event->pt[i]*(1+event->pt_unc[i]) < this->pt_min_L)&&(event->pt[i]*(1+event->pt_unc[i]) > this->pt_veto)) this->veto_jecunc_plus = true;
+
+	//JEC MINUS
+                if((event->pt[i]*(1-event->pt_unc[i]) > this->pt_min_H) && (fabs(event->rap[i]) < 4.7)){
+                  this->pt_H_jecunc_minus.push_back(event->pt[i]*(1-event->pt_unc[i]));
+                  this->eta_H_jecunc_minus.push_back(event->eta[i]);
+                  this->rap_H_jecunc_minus.push_back(event->rap[i]);
+                  this->phi_H_jecunc_minus.push_back(event->phi[i]);
+                }
+                if((event->pt[i]*(1-event->pt_unc[i]) > this->pt_min_L) && (fabs(event->rap[i]) < 4.7)){
+                  this->pt_L_jecunc_minus.push_back(event->pt[i]*(1-event->pt_unc[i]));
+                  this->eta_L_jecunc_minus.push_back(event->eta[i]);
+                  this->rap_L_jecunc_minus.push_back(event->rap[i]);
+                  this->phi_L_jecunc_minus.push_back(event->phi[i]);
+                }
+                if((event->pt[i]*(1-event->pt_unc[i]) < this->pt_min_L)&&(event->pt[i]*(1-event->pt_unc[i]) > this->pt_veto)) this->veto_jecunc_minus = true;
+
         }
 	
 	this->weight = event->weight;
@@ -71,6 +101,16 @@ void Object::Clear(){
 	this->corr_H.clear();
 	this->unc_H.clear();
 
+	this->pt_H_jecunc_plus.clear();
+	this->eta_H_jecunc_plus.clear();
+	this->rap_H_jecunc_plus.clear();
+	this->phi_H_jecunc_plus.clear();
+	this->pt_H_jecunc_minus.clear();
+	this->eta_H_jecunc_minus.clear();
+	this->rap_H_jecunc_minus.clear();
+	this->phi_H_jecunc_minus.clear();
+
+
 	this->pt_L.clear();
 	this->eta_L.clear();
 	this->rap_L.clear();
@@ -78,7 +118,19 @@ void Object::Clear(){
 	this->corr_L.clear();
 	this->unc_L.clear();
 
+	this->pt_L_jecunc_plus.clear();
+	this->eta_L_jecunc_plus.clear();
+	this->rap_L_jecunc_plus.clear();
+	this->phi_L_jecunc_plus.clear();
+	this->pt_L_jecunc_minus.clear();
+	this->eta_L_jecunc_minus.clear();
+	this->rap_L_jecunc_minus.clear();
+	this->phi_L_jecunc_minus.clear();
+
+
 	this->veto = false;
+	this->veto_jecunc_plus = false;
+	this->veto_jecunc_minus = false;
 
 	this->loaded = false;
 
@@ -93,15 +145,23 @@ vector<vector<double>> Object::GetJetsData(string data_name){
 
 	if(data_name == "pt"){
 		jets.push_back(this->pt_L);
+		jets.push_back(this->pt_L_jecunc_plus);
+		jets.push_back(this->pt_L_jecunc_minus);
 	}
 	else if(data_name == "eta"){
 		jets.push_back(this->eta_L);
+		jets.push_back(this->eta_L_jecunc_plus);
+		jets.push_back(this->eta_L_jecunc_minus);
 	}
 	else if(data_name == "rap"){
 		jets.push_back(this->rap_L);
+		jets.push_back(this->rap_L_jecunc_plus);
+		jets.push_back(this->rap_L_jecunc_minus);
 	}
 	else if(data_name == "phi"){
 		jets.push_back(this->phi_L);
+		jets.push_back(this->phi_L_jecunc_plus);
+		jets.push_back(this->phi_L_jecunc_minus);
 	}
 	else{
 		cout << "PROCESSING ERROR: There are no jets data in the Object for name " << data_name << "\n";

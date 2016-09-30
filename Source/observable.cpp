@@ -35,7 +35,7 @@ void Observable::CatchObject(Object *object, string data_name){
 
 void Observable::FillData(vector<vector<double>> data, double weight){
 
-        for(int i = 1; i < data.size(); i++){
+        for(int i = 1; i < 3; i++){
 		if(data[i-1].size() != data[i].size()){
 			cout << "PROCESSING ERROR: vectors of data do not match - data lost\n";
 			return;
@@ -43,11 +43,18 @@ void Observable::FillData(vector<vector<double>> data, double weight){
 	}
 
         for(int i = 0; i < data[0].size(); i++){
-		this->sum_w->Fill(data[2][i], weight);
-		this->unc->Fill(data[2][i], data[1][i]*weight);
-		this->jec->Fill(data[2][i], data[0][i]*weight);
                 this->n_entries++;
+		this->jec->Fill(data[2][i], data[0][i]*weight);
+		this->unc->Fill(data[2][i], data[1][i]*weight);
+		this->sum_w->Fill(data[2][i], weight);
+	}
 
+        for(int i = 0; i < data[3].size(); i++){
+		this->sum_w_jecunc_plus->Fill(data[3][i], weight);
+	}
+
+        for(int i = 0; i < data[4].size(); i++){
+		this->sum_w_jecunc_minus->Fill(data[4][i], weight);
 	}
 
 };
@@ -57,6 +64,8 @@ void Observable::WriteToFile(TString name){
 	TFile file_res(name,"UPDATE");
 
 	sum_w->Write();
+	sum_w_jecunc_plus->Write();
+	sum_w_jecunc_minus->Write();
 	average_jec->Write();
 	average_unc->Write();
 
