@@ -13,10 +13,8 @@ class Observable {
 	protected:
 		bool averaged_and_normalized = false;
 
-		TH1D *sum_of_weights;
-		TH1D *sum_of_square_weights;
-		TH1D *jec;
-		TH1D *unc;
+		TH1D *sum_w;
+		TH1D *sum_w2;
 		TGraphAsymmErrors *values_and_stats;
 		TGraphAsymmErrors *syst_jec;
 		TGraphAsymmErrors *syst_jer;
@@ -25,6 +23,8 @@ class Observable {
 		TGraphAsymmErrors *syst_efficiency;
 		TGraphAsymmErrors *syst_total;
 
+		TH1D *jec;
+		TH1D *unc;
 		TH1D *average_jec;
 		TH1D *average_unc;
 	public:

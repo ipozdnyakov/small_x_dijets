@@ -72,7 +72,7 @@ Source/Include  - *.cpp and *.h files correspondingly
 			  Sample -> ReadSample() -> ReadFile()
 
 /access_to_the_event	- [DONE] class "Measurement" - combination of several observables,
-			  Measurement -> ReadEvent()
+			  Measurement -> ReadEvent(), Observable -> CatchObject(Object )
 
 /efficiency_calc	- [TO BE DONE]
 
