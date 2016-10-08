@@ -51,14 +51,15 @@ Source/Include  - *.cpp and *.h files correspondingly
 
 	object.cpp/.h		- class "Object" for phenomena from event (MN, incl dijets, etc.)
 
+	function.cpp/.h		- class "Function" for particular values from  phenomena (pt, dphi, etc.)
+
 	sample.cpp/.h		- class "Sample" for accessing events from the input data
 
 
 
 	event.cpp/.h		- class "Event" for event data (nPV, triggers, weigth, jets, etc.)
 
-	observable.cpp/.h	- class "Observable" for math function on object 
-				  reflecting some physics (k_factor, decorr, etc.)
+	observable.cpp/.h	- class "Observable" = object + function = some plot (k_factor, decorr, etc.)
 
 	bining.h		- global definition of bining arrays
 

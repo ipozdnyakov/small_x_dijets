@@ -1,5 +1,6 @@
 #include<iostream>
 #include"measurement.h"
+#include"function.h"
 #include"object.h"
 #include"sample.h"
 
@@ -9,7 +10,8 @@ int main(int argc, char** argv) {
 
 //	Decorrelations *decorr = new Decorrelations("decorrelations","_FSQJets_2015_2016_data_13TeV_LowPU_MN_35GeV");
 	Object *dijets = new Object(35., 35., 35.);
-
+	Function *pt = new Function("pt_");
+	
 	Measurement *distr = new Measurement("basic_distributions","_FSQJets_2015_2016_data_13TeV_LowPU_MN_35GeV");
 	distr->IncludeObject(dijets);
 
