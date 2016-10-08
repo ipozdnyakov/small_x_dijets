@@ -4,15 +4,12 @@
 #include<TFile.h>
 #include"sample.h"
 #include"object.h"
-#include"measurement.h"
 #include"event.h"
 
 #define pi 3.1415926
 using namespace std;
 
-template void Sample::ReadSample<Measurement>(Measurement *);
-template void Sample::ReadSample<Decorrelations>(Decorrelations *);
-template <class M> void Sample::ReadSample(M *measurement){
+void Sample::ReadSample(Measurement *measurement){
 
         string file_name;
         ifstream data_files("./listing/" + this->name);
@@ -25,9 +22,7 @@ template <class M> void Sample::ReadSample(M *measurement){
 
 };
 
-template void Sample::ReadFile<Measurement>(string , Measurement *);
-template void Sample::ReadFile<Decorrelations>(string , Decorrelations *);
-template <class M> void Sample::ReadFile(string name, M *measurement){
+void Sample::ReadFile(string name, Measurement *measurement){
 
 	TString file_name = name;
 	TFile Jfile(file_name);

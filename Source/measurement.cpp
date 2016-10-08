@@ -1,20 +1,11 @@
 #include<iostream>
 #include<TFile.h>
 #include"measurement.h"
-#include"bining.h"
-#include"finder.h"
 
 using namespace std;
 
 Measurement::Measurement(TString title, TString specification){
-
 	this->specification = specification;
-
-        pt = new Observable("pt", title, pt_bins, n_pt_bins);
-        eta = new Observable("eta", title, eta_towers, n_eta_towers);
-        rap = new Observable("rap", title, eta_towers, n_eta_towers);
-        phi = new Observable("phi", title, phi_towers, n_phi_towers);
-
 };
 
 void Measurement::IncludeObject(Object *object){
@@ -23,41 +14,29 @@ void Measurement::IncludeObject(Object *object){
 
 	vector<Observable*> new_object_obs;
 
-	for(int i; i < this->functions.size(); i++){
+	for(int i = 0; i < this->functions.size(); i++){
 		new_object_obs.push_back(new Observable(object,functions[i]));
 	}
 
 	this->observables.push_back(new_object_obs);
 	
-}
+};
 
 void Measurement::IncludeFunction(Function *function){
 	this->functions.push_back(function);
 
-	for(int i; i < this->objects.size(); i++){
+	for(int i = 0; i < this->objects.size(); i++){
 		this->observables[i].push_back(new Observable(objects[i],function));
 	}
 
-}
+};
 
 void Measurement::ReadEvent(Event *event){
-
-	for(int i; i < this->objects.size(); i++){	
-
-		this->objects[i]->LoadEvent(event);
-
-		for(int j; j < this->functions.size(); j++){	
-
+	for(int i = 0; i < this->objects.size(); i++){	
+		for(int j = 0; j < this->functions.size(); j++){	
 			this->n_events++;
-
-		        this->pt->CatchObject(this->objects[i], "pt");
-	        	this->eta->CatchObject(this->objects[i], "eta");
-		        this->rap->CatchObject(this->objects[i], "rap");
-	        	this->phi->CatchObject(this->objects[i], "phi");
-
+			this->observables[i][j]->ReadEvent(event);
 		}
-
-		this->objects[i]->Clear();
 	}
 };
 
@@ -67,10 +46,11 @@ void Measurement::AverageAndNormalize(){
                 return;
         }
 
-        this->pt->AverageAndNormalize();
-        this->eta->AverageAndNormalize();
-        this->rap->AverageAndNormalize();
-        this->phi->AverageAndNormalize();
+	for(int i = 0; i < this->objects.size(); i++){	
+		for(int j = 0; j < this->functions.size(); j++){	
+		        this->observables[i][j]->AverageAndNormalize();
+		}
+	}
 
         this->averaged_and_normalized = true;
 };
@@ -82,32 +62,17 @@ void Measurement::WriteToFile(TString prefix){
 	TFile *file = new TFile(name,"RECREATE");
 	file->Close();
 
-	this->pt->WriteToFile(name);
-	this->eta->WriteToFile(name);
-	this->rap->WriteToFile(name);
-	this->phi->WriteToFile(name);
+	for(int i = 0; i < this->objects.size(); i++){	
+		for(int j = 0; j < this->functions.size(); j++){	
+		        this->observables[i][j]->WriteToFile(name);
+		}
+	}
 
 };
 
-Decorrelations::Decorrelations(TString dir_name, TString specification):Measurement(dir_name, specification){
+/*Decorrelations::Decorrelations(TString dir_name, TString specification):Measurement(dir_name, specification){
 
 	TString histname;
-
-        histname = "dphi_0";  histname += specification;
-        dphi[0] = new TH1D(histname, dir_name, n_dphi_bins, dphi_bins);
-        dphi[0]->Sumw2();
-
-        histname = "dphi_1";  histname += specification;
-        dphi[1] = new TH1D(histname, dir_name, n_dphi_bins, dphi_bins);
-        dphi[1]->Sumw2();
-
-        histname = "dphi_2";  histname += specification;
-        dphi[2] = new TH1D(histname, dir_name, n_dphi_bins, dphi_bins);
-        dphi[2]->Sumw2();
-
-        histname = "dphi_3";  histname += specification;
-        dphi[3] = new TH1D(histname, dir_name, n_dphi_bins, dphi_bins);
-        dphi[3]->Sumw2();
 
         histname = "dy";  histname += specification;
         dy = new TH1D(histname, dir_name, n_dy_bins, dy_bins);
@@ -216,8 +181,6 @@ void Decorrelations::ReadEvent(Event *event){
 
 		this->objects[i]->LoadEvent(event);
 
-		double dy_MN, dphi_MN;
-
 		if(event->nPV == 1){
 
 		        if((this->objects[i]->pt_L.size() > 1)&&(this->objects[i]->pt_H.size() > 0)){
@@ -235,14 +198,6 @@ void Decorrelations::ReadEvent(Event *event){
 				        this->rap->CatchObject(this->objects[i], "rap");
 				        this->phi->CatchObject(this->objects[i], "phi");
 
-/*		                MN_index = find_MN(rap_H, rap_L);
-                		this->pt->Fill(pt_H[MN_index[0]],event->weight);
-		                this->rap->Fill(rap_H[MN_index[0]],event->weight);
-		                this->phi->Fill(phi_H[MN_index[0]],event->weight);
-		                this->pt->Fill(pt_L[MN_index[1]],event->weight);
-		                this->rap->Fill(rap_L[MN_index[1]],event->weight);
-		                this->phi->Fill(phi_L[MN_index[1]],event->weight);
-*/
 
                 			dy_MN = find_dy_MN(this->objects[i]->rap_H, this->objects[i]->rap_L);
 			                dphi_MN = find_dphi_MN(this->objects[i]->rap_H, this->objects[i]->phi_H, this->objects[i]->rap_L, this->objects[i]->phi_L);
@@ -251,10 +206,6 @@ void Decorrelations::ReadEvent(Event *event){
 			                this->dy->Fill(dy_MN,event->weight);
        		         		this->w2_dy->Fill(dy_MN,event->weight*event->weight);
 			                this->dphi_dy->Fill(dphi_MN,dy_MN,event->weight);
-
-                			if((dy_MN > 0.)&&(dy_MN < 3.))  this->dphi[1]->Fill(dphi_MN,event->weight);
-		                	if((dy_MN > 3.)&&(dy_MN < 6.))  this->dphi[2]->Fill(dphi_MN,event->weight);
-	                		if((dy_MN > 6.)&&(dy_MN < 9.4)) this->dphi[3]->Fill(dphi_MN,event->weight);
 
 			                this->cos_1->Fill(dy_MN, event->weight*cos(pi - dphi_MN));
                 			this->cos2_1->Fill(dy_MN,event->weight*pow(cos(pi - dphi_MN),2));
@@ -282,15 +233,6 @@ void Decorrelations::WriteToFile(TString prefix){
 	TFile *file = new TFile(name,"RECREATE");
 	file->Close();
 
-	pt->WriteToFile(name);
-	eta->WriteToFile(name);
-	rap->WriteToFile(name);
-	phi->WriteToFile(name);
-
-	dphi[0]->Write();
-	dphi[1]->Write();
-	dphi[2]->Write();
-	dphi[3]->Write();
 	dphi_dy->Write();
 	dy->Write();
 	excl_dy->Write();
@@ -300,5 +242,5 @@ void Decorrelations::WriteToFile(TString prefix){
 	cos_2->Write();
 	cos_3->Write();
 
-};   
+};*/   
 

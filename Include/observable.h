@@ -11,30 +11,24 @@ using namespace std;
 
 class Observable {
 
-	protected:
+	private:
 		bool averaged_and_normalized = false;
-
+		Object* object;
+		Function* function;
 		TH1D *sum_w;
-		TH1D *sum_w_jecunc_plus;
-		TH1D *sum_w_jecunc_minus;
-
-		TH1D *jec;
-		TH1D *unc;
-		TH1D *average_jec;
-		TH1D *average_unc;
+		TH1D *sum_i;
+		int n_events = 0;
 	public:
 		string name;
-		int n_events = 0;
-		int n_entries = 0;
 
-		Observable(TString , TString , const double *, int );
 		Observable(Object *, Function *);
-
-		void CatchObject(Object *, string );
-		void FillData(vector<vector<double>> , double);
-		void WriteToFile(TString );
-		void PlotToFile(TString );
+		void ReadEvent(Event *);
 		void AverageAndNormalize();
+		void WriteToFile(TString );
+//-----------------------------------------
+		void FillValues(vector<double> , vector<double>);
+		Observable(TString , TString , const double *, int );
+		void FillData(vector<vector<double>> , double);
 };
 
 #endif // OBSERVABLE_H

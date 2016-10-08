@@ -1,9 +1,10 @@
 #include<iostream>
+#include"finder.h"
 #include"object.h"
 
 using namespace std;
 
-Object::Object(double pt_min_1, double pt_min_2, double pt_veto){
+Object::Object(string name, double pt_min_1, double pt_min_2, double pt_veto):name(name){
 
 	if(pt_min_1 > pt_min_2){
 		this->pt_min_H = pt_min_1;
@@ -87,12 +88,52 @@ void Object::LoadEvent(Event *event){
 
         }
 	
+	if(this->name == "MN") this->LoadMN(event);
+	if(this->name == "INCL") this->LoadINCL(event);
+
 	this->weight = event->weight;
 	this->loaded = true;
 
 };
 
+void Object::LoadMN(Event *event){
+
+	vector<int> MN_index = find_MN(this->rap_H, this->rap_L);
+
+	if((MN_index[0] != -1)&&(MN_index[1] != -1)){
+		this->pt.push_back(this->pt_H[MN_index[0]]);
+		this->eta.push_back(this->eta_H[MN_index[0]]);
+		this->rap.push_back(this->rap_H[MN_index[0]]);
+		this->phi.push_back(this->phi_H[MN_index[0]]);
+		this->corr.push_back(this->corr_H[MN_index[0]]);
+		this->unc.push_back(this->unc_H[MN_index[0]]);
+		this->i_jet1.push_back(0);
+
+		this->pt.push_back(this->pt_L[MN_index[1]]);
+		this->eta.push_back(this->eta_L[MN_index[1]]);
+		this->rap.push_back(this->rap_L[MN_index[1]]);
+		this->phi.push_back(this->phi_L[MN_index[1]]);
+		this->corr.push_back(this->corr_L[MN_index[1]]);
+		this->unc.push_back(this->unc_L[MN_index[1]]);
+		this->i_jet1.push_back(1);
+	}
+}
+
+void Object::LoadINCL(Event *event){
+	
+}
+
 void Object::Clear(){
+
+	this->pt.clear();
+	this->eta.clear();
+	this->rap.clear();
+	this->phi.clear();
+	this->corr.clear();
+	this->unc.clear();
+	this->i_jet1.clear();
+	this->i_jet2.clear();
+
 
 	this->pt_H.clear();
 	this->eta_H.clear();
@@ -134,48 +175,4 @@ void Object::Clear(){
 
 	this->loaded = false;
 
-};
-
-vector<vector<double>> Object::GetJetsData(string data_name){
-
-	vector<vector<double>> jets;
-
-	jets.push_back(this->corr_L);
-	jets.push_back(this->unc_L);
-
-	if(data_name == "pt"){
-		jets.push_back(this->pt_L);
-		jets.push_back(this->pt_L_jecunc_plus);
-		jets.push_back(this->pt_L_jecunc_minus);
-	}
-	else if(data_name == "eta"){
-		jets.push_back(this->eta_L);
-		jets.push_back(this->eta_L_jecunc_plus);
-		jets.push_back(this->eta_L_jecunc_minus);
-	}
-	else if(data_name == "rap"){
-		jets.push_back(this->rap_L);
-		jets.push_back(this->rap_L_jecunc_plus);
-		jets.push_back(this->rap_L_jecunc_minus);
-	}
-	else if(data_name == "phi"){
-		jets.push_back(this->phi_L);
-		jets.push_back(this->phi_L_jecunc_plus);
-		jets.push_back(this->phi_L_jecunc_minus);
-	}
-	else{
-		cout << "PROCESSING ERROR: There are no jets data in the Object for name " << data_name << "\n";
-		jets.clear();
-	}
-
-	return jets;
-
-};
-
-vector<double> Object::GetCorr(){
-	return this->corr_L;
-};
-
-vector<double> Object::GetUnc(){
-	return this->unc_L;
 };

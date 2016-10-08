@@ -1,3 +1,5 @@
+#include"measurement.h"
+
 #ifndef _SAMPLE_H
 #define	_SAMPLE_H
 
@@ -15,9 +17,9 @@ public:
 	Sample(): name("FSQJets_2015_2016") { }
 	Sample(string str): name(str) { }
 
-	template<class M> void ReadSample(M *);
+	void ReadSample(Measurement *);
 
-	template<class M> void ReadFile(string , M *);
+	void ReadFile(string , Measurement *);
 
 };
 #endif	/* _SAMPLE_H */
