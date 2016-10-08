@@ -14,6 +14,7 @@ int main(int argc, char** argv) {
 	
 	Measurement *distr = new Measurement("basic_distributions","_FSQJets_2015_2016_data_13TeV_LowPU_MN_35GeV");
 	distr->IncludeObject(dijets);
+	distr->IncludeFunction(pt);
 
 	Sample *data = new Sample("FSQJets_2015_2016");
 	

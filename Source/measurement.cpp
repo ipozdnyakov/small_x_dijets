@@ -21,6 +21,10 @@ void Measurement::IncludeObject(Object *object){
 	this->objects.push_back(object);
 }
 
+void Measurement::IncludeFunction(Function *function){
+	this->functions.push_back(function);
+}
+
 void Measurement::ReadEvent(Event *event){
 
 	for(int i; i < this->objects.size(); i++){	

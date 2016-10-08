@@ -2,6 +2,7 @@
 #include<TH2.h>
 #include<TROOT.h>
 #include"observable.h"
+#include"function.h"
 #include"object.h"
 #include"event.h"
 
@@ -18,6 +19,7 @@ class Measurement {
 		bool averaged_and_normalized = false;
 		Observable *pt, *eta, *rap, *phi;
 		vector<Object*> objects;
+		vector<Function*> functions;
 
 	public:
 		string specification;
@@ -26,6 +28,8 @@ class Measurement {
 		Measurement(TString , TString);
 
 		void IncludeObject(Object *);
+		void IncludeFunction(Function *);
+
 		void ReadEvent(Event *);
 		void WriteToFile(TString );
 		void AverageAndNormalize();
