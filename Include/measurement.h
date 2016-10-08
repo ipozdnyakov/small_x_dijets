@@ -17,6 +17,7 @@ class Measurement {
 	protected:
 		bool averaged_and_normalized = false;
 		Observable *pt, *eta, *rap, *phi;
+		vector<Object*> objects;
 
 	public:
 		string specification;
@@ -24,7 +25,8 @@ class Measurement {
 
 		Measurement(TString , TString);
 
-		void ReadEvent(Event *, Object *);
+		void IncludeObject(Object *);
+		void ReadEvent(Event *);
 		void WriteToFile(TString );
 		void AverageAndNormalize();
 };
@@ -52,7 +54,7 @@ class Decorrelations : virtual public Measurement
 		void WriteToFile(TString );
 
 		Decorrelations(TString , TString );
-		void ReadEvent(Event *, Object *);
+		void ReadEvent(Event *);
 
 		//int NumberOfDijets();
 		//void CalculateDerivatives();

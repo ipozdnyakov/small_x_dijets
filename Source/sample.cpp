@@ -10,24 +10,24 @@
 #define pi 3.1415926
 using namespace std;
 
-template void Sample::ReadSample<Measurement, Object>(Measurement *, Object *);
-template void Sample::ReadSample<Decorrelations, Object>(Decorrelations *, Object *);
-template <class M, class O> void Sample::ReadSample(M *measurement, O *object){
+template void Sample::ReadSample<Measurement>(Measurement *);
+template void Sample::ReadSample<Decorrelations>(Decorrelations *);
+template <class M> void Sample::ReadSample(M *measurement){
 
         string file_name;
         ifstream data_files("./listing/" + this->name);
 	cout << "\t-reading data files from set " << this->name << ":\n";
         while(getline(data_files, file_name)){
                 cout << "\t" << file_name << "\t";
-                this->ReadFile(file_name, measurement, object);
+                this->ReadFile(file_name, measurement);
         }
 	cout << "\n";
 
 };
 
-template void Sample::ReadFile<Measurement, Object>(string , Measurement *, Object *);
-template void Sample::ReadFile<Decorrelations, Object>(string , Decorrelations *, Object *);
-template <class M, class O> void Sample::ReadFile(string name, M *measurement, O *object){
+template void Sample::ReadFile<Measurement>(string , Measurement *);
+template void Sample::ReadFile<Decorrelations>(string , Decorrelations *);
+template <class M> void Sample::ReadFile(string name, M *measurement){
 
 	TString file_name = name;
 	TFile Jfile(file_name);
@@ -65,7 +65,7 @@ template <class M, class O> void Sample::ReadFile(string name, M *measurement, O
 			event->AddJet(pt,eta,phi,rap,cor);
 		}else{						//out Event
 			nEvent = iEvent;
-			measurement->ReadEvent(event, object);
+			measurement->ReadEvent(event);
 			delete event;
 			event = new Event(iRun,iEvent,nPV,CNTR,FWD2,1.);
    		}

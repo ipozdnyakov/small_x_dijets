@@ -17,18 +17,24 @@ Measurement::Measurement(TString title, TString specification){
 
 };
 
-void Measurement::ReadEvent(Event *event, Object *object){
-	
-	object->LoadEvent(event);
+void Measurement::IncludeObject(Object *object){
+	this->objects.push_back(object);
+}
 
-	this->n_events++;
+void Measurement::ReadEvent(Event *event){
 
-        this->pt->CatchObject(object, "pt");
-        this->eta->CatchObject(object, "eta");
-        this->rap->CatchObject(object, "rap");
-        this->phi->CatchObject(object, "phi");
+	for(int i; i < this->objects.size(); i++){	
+		this->objects[i]->LoadEvent(event);
 
-	object->Clear();
+		this->n_events++;
+
+	        this->pt->CatchObject(this->objects[i], "pt");
+        	this->eta->CatchObject(this->objects[i], "eta");
+	        this->rap->CatchObject(this->objects[i], "rap");
+        	this->phi->CatchObject(this->objects[i], "phi");
+
+		this->objects[i]->Clear();
+	}
 };
 
 void Measurement::AverageAndNormalize(){
@@ -180,28 +186,30 @@ void Decorrelations::CalculateErrors(){
 
 };
 
-void Decorrelations::ReadEvent(Event *event, Object *object){
+void Decorrelations::ReadEvent(Event *event){
 
-	object->LoadEvent(event);
+	for(int i; i < this->objects.size(); i++){	
 
-	double dy_MN, dphi_MN;
+		this->objects[i]->LoadEvent(event);
 
-	if(event->nPV == 1){
+		double dy_MN, dphi_MN;
 
-	        if((object->pt_L.size() > 1)&&(object->pt_H.size() > 0)){
+		if(event->nPV == 1){
 
-        	        if(event->CNTR > 0) this->n_event_cntr++;
-                	if(event->FWD > 0) this->n_event_fwd++;
+		        if((this->objects[i]->pt_L.size() > 1)&&(this->objects[i]->pt_H.size() > 0)){
 
-		        if(event->CNTR > 0){
+        		        if(event->CNTR > 0) this->n_event_cntr++;
+                		if(event->FWD > 0) this->n_event_fwd++;
 
-				this->n_events++;
-				this->n_entries++;
+			        if(event->CNTR > 0){
 
-			        this->pt->CatchObject(object, "pt");
-			        this->eta->CatchObject(object, "eta");
-			        this->rap->CatchObject(object, "rap");
-			        this->phi->CatchObject(object, "phi");
+					this->n_events++;
+					this->n_entries++;
+	
+				        this->pt->CatchObject(this->objects[i], "pt");
+				        this->eta->CatchObject(this->objects[i], "eta");
+				        this->rap->CatchObject(this->objects[i], "rap");
+				        this->phi->CatchObject(this->objects[i], "phi");
 
 /*		                MN_index = find_MN(rap_H, rap_L);
                 		this->pt->Fill(pt_H[MN_index[0]],event->weight);
@@ -212,34 +220,35 @@ void Decorrelations::ReadEvent(Event *event, Object *object){
 		                this->phi->Fill(phi_L[MN_index[1]],event->weight);
 */
 
-                		dy_MN = find_dy_MN(object->rap_H, object->rap_L);
-		                dphi_MN = find_dphi_MN(object->rap_H, object->phi_H, object->rap_L, object->phi_L);
+                			dy_MN = find_dy_MN(this->objects[i]->rap_H, this->objects[i]->rap_L);
+			                dphi_MN = find_dphi_MN(this->objects[i]->rap_H, this->objects[i]->phi_H, this->objects[i]->rap_L, this->objects[i]->phi_L);
 
-		                this->dphi[0]->Fill(dphi_MN,event->weight);
-		                this->dy->Fill(dy_MN,event->weight);
-                		this->w2_dy->Fill(dy_MN,event->weight*event->weight);
-		                this->dphi_dy->Fill(dphi_MN,dy_MN,event->weight);
+			                this->dphi[0]->Fill(dphi_MN,event->weight);
+			                this->dy->Fill(dy_MN,event->weight);
+       		         		this->w2_dy->Fill(dy_MN,event->weight*event->weight);
+			                this->dphi_dy->Fill(dphi_MN,dy_MN,event->weight);
 
-                		if((dy_MN > 0.)&&(dy_MN < 3.))  this->dphi[1]->Fill(dphi_MN,event->weight);
-		                if((dy_MN > 3.)&&(dy_MN < 6.))  this->dphi[2]->Fill(dphi_MN,event->weight);
-                		if((dy_MN > 6.)&&(dy_MN < 9.4)) this->dphi[3]->Fill(dphi_MN,event->weight);
+                			if((dy_MN > 0.)&&(dy_MN < 3.))  this->dphi[1]->Fill(dphi_MN,event->weight);
+		                	if((dy_MN > 3.)&&(dy_MN < 6.))  this->dphi[2]->Fill(dphi_MN,event->weight);
+	                		if((dy_MN > 6.)&&(dy_MN < 9.4)) this->dphi[3]->Fill(dphi_MN,event->weight);
 
-		                this->cos_1->Fill(dy_MN, event->weight*cos(pi - dphi_MN));
-                		this->cos2_1->Fill(dy_MN,event->weight*pow(cos(pi - dphi_MN),2));
-		                this->cos_2->Fill(dy_MN,event->weight*cos(2*(pi - dphi_MN)));
-                		this->cos2_2->Fill(dy_MN,event->weight*pow(cos(2*(pi - dphi_MN)),2));
-                		this->cos_3->Fill(dy_MN,event->weight*cos(3*(pi - dphi_MN)));
-		                this->cos2_3->Fill(dy_MN,event->weight*pow(cos(3*(pi - dphi_MN)),2));
+			                this->cos_1->Fill(dy_MN, event->weight*cos(pi - dphi_MN));
+                			this->cos2_1->Fill(dy_MN,event->weight*pow(cos(pi - dphi_MN),2));
+		        	        this->cos_2->Fill(dy_MN,event->weight*cos(2*(pi - dphi_MN)));
+                			this->cos2_2->Fill(dy_MN,event->weight*pow(cos(2*(pi - dphi_MN)),2));
+	                		this->cos_3->Fill(dy_MN,event->weight*cos(3*(pi - dphi_MN)));
+			                this->cos2_3->Fill(dy_MN,event->weight*pow(cos(3*(pi - dphi_MN)),2));
 
-                		if((object->pt_H.size() > 0)&&(object->pt_L.size() == 2)&&(!(object->veto))){
-                        		this->excl_dy->Fill(dy_MN,event->weight);
-                		}
+                			if((this->objects[i]->pt_H.size() > 0)&&(this->objects[i]->pt_L.size() == 2)&&(!(this->objects[i]->veto))){
+                        			this->excl_dy->Fill(dy_MN,event->weight);
+                			}
 
-        		}//only CNTR events
-        	}//enough jets
-        }//nPV == 1
+	        		}//only CNTR events
+        		}//enough jets
+        	}//nPV == 1
 
-	object->Clear();
+		this->objects[i]->Clear();
+	}
 }
 
 void Decorrelations::WriteToFile(TString prefix){

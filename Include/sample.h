@@ -15,9 +15,9 @@ public:
 	Sample(): name("FSQJets_2015_2016") { }
 	Sample(string str): name(str) { }
 
-	template<class M, class O> void ReadSample(M *, O *);
+	template<class M> void ReadSample(M *);
 
-	template<class M, class O> void ReadFile(string , M *, O *);
+	template<class M> void ReadFile(string , M *);
 
 };
 #endif	/* _SAMPLE_H */
