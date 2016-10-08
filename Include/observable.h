@@ -1,6 +1,7 @@
 #include<TFile.h>
 #include<TH1.h>
 #include<TGraphAsymmErrors.h>
+#include"function.h"
 #include"object.h"
 
 #ifndef OBSERVABLE_H
@@ -27,6 +28,7 @@ class Observable {
 		int n_entries = 0;
 
 		Observable(TString , TString , const double *, int );
+		Observable(Object *, Function *);
 
 		void CatchObject(Object *, string );
 		void FillData(vector<vector<double>> , double);

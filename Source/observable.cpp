@@ -6,6 +6,10 @@
 using namespace std;
 #define pi 3.1415926
 
+Observable::Observable(Object *object, Function *function){
+
+}
+
 Observable::Observable(TString name, TString title, const double *bins, int n_bins):name(name){
 
         sum_w = new TH1D(name + "_sum_w", title, n_bins, bins);

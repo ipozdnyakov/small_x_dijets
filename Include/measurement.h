@@ -18,6 +18,7 @@ class Measurement {
 	protected:
 		bool averaged_and_normalized = false;
 		Observable *pt, *eta, *rap, *phi;
+		vector<vector<Observable*>> observables;
 		vector<Object*> objects;
 		vector<Function*> functions;
 

@@ -18,24 +18,44 @@ Measurement::Measurement(TString title, TString specification){
 };
 
 void Measurement::IncludeObject(Object *object){
+
 	this->objects.push_back(object);
+
+	vector<Observable*> new_object_obs;
+
+	for(int i; i < this->functions.size(); i++){
+		new_object_obs.push_back(new Observable(object,functions[i]));
+	}
+
+	this->observables.push_back(new_object_obs);
+	
 }
 
 void Measurement::IncludeFunction(Function *function){
 	this->functions.push_back(function);
+
+	for(int i; i < this->objects.size(); i++){
+		this->observables[i].push_back(new Observable(objects[i],function));
+	}
+
 }
 
 void Measurement::ReadEvent(Event *event){
 
 	for(int i; i < this->objects.size(); i++){	
+
 		this->objects[i]->LoadEvent(event);
 
-		this->n_events++;
+		for(int j; j < this->functions.size(); j++){	
 
-	        this->pt->CatchObject(this->objects[i], "pt");
-        	this->eta->CatchObject(this->objects[i], "eta");
-	        this->rap->CatchObject(this->objects[i], "rap");
-        	this->phi->CatchObject(this->objects[i], "phi");
+			this->n_events++;
+
+		        this->pt->CatchObject(this->objects[i], "pt");
+	        	this->eta->CatchObject(this->objects[i], "eta");
+		        this->rap->CatchObject(this->objects[i], "rap");
+	        	this->phi->CatchObject(this->objects[i], "phi");
+
+		}
 
 		this->objects[i]->Clear();
 	}
