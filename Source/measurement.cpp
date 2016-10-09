@@ -32,10 +32,12 @@ void Measurement::IncludeFunction(Function *function){
 };
 
 void Measurement::ReadEvent(Event *event){
-	for(int i = 0; i < this->objects.size(); i++){	
-		for(int j = 0; j < this->functions.size(); j++){	
-			this->n_events++;
-			this->observables[i][j]->ReadEvent(event);
+	if(event->nPV == 1){
+		this->n_events++;
+		for(int i = 0; i < this->objects.size(); i++){	
+			for(int j = 0; j < this->functions.size(); j++){	
+				this->observables[i][j]->ReadEvent(event);
+			}
 		}
 	}
 };
@@ -177,70 +179,30 @@ void Decorrelations::CalculateErrors(){
 
 void Decorrelations::ReadEvent(Event *event){
 
-	for(int i; i < this->objects.size(); i++){	
+        if((this->objects[i]->pt_L.size() > 1)&&(this->objects[i]->pt_H.size() > 0)){
 
-		this->objects[i]->LoadEvent(event);
+	        if(event->CNTR > 0) this->n_event_cntr++;
+       		if(event->FWD > 0) this->n_event_fwd++;
 
-		if(event->nPV == 1){
+	        if(event->CNTR > 0){
 
-		        if((this->objects[i]->pt_L.size() > 1)&&(this->objects[i]->pt_H.size() > 0)){
+	                this->dy->Fill(dy_MN,event->weight);
+         		this->w2_dy->Fill(dy_MN,event->weight*event->weight);
+	                this->dphi_dy->Fill(dphi_MN,dy_MN,event->weight);
 
-        		        if(event->CNTR > 0) this->n_event_cntr++;
-                		if(event->FWD > 0) this->n_event_fwd++;
+	                this->cos_1->Fill(dy_MN, event->weight*cos(pi - dphi_MN));
+      			this->cos2_1->Fill(dy_MN,event->weight*pow(cos(pi - dphi_MN),2));
+        	        this->cos_2->Fill(dy_MN,event->weight*cos(2*(pi - dphi_MN)));
+       			this->cos2_2->Fill(dy_MN,event->weight*pow(cos(2*(pi - dphi_MN)),2));
+              		this->cos_3->Fill(dy_MN,event->weight*cos(3*(pi - dphi_MN)));
+	                this->cos2_3->Fill(dy_MN,event->weight*pow(cos(3*(pi - dphi_MN)),2));
 
-			        if(event->CNTR > 0){
+      			if((this->objects[i]->pt_H.size() > 0)&&(this->objects[i]->pt_L.size() == 2)&&(!(this->objects[i]->veto))){
+               			this->excl_dy->Fill(dy_MN,event->weight);
+       			}
 
-					this->n_events++;
-					this->n_entries++;
-	
-				        this->pt->CatchObject(this->objects[i], "pt");
-				        this->eta->CatchObject(this->objects[i], "eta");
-				        this->rap->CatchObject(this->objects[i], "rap");
-				        this->phi->CatchObject(this->objects[i], "phi");
-
-
-                			dy_MN = find_dy_MN(this->objects[i]->rap_H, this->objects[i]->rap_L);
-			                dphi_MN = find_dphi_MN(this->objects[i]->rap_H, this->objects[i]->phi_H, this->objects[i]->rap_L, this->objects[i]->phi_L);
-
-			                this->dphi[0]->Fill(dphi_MN,event->weight);
-			                this->dy->Fill(dy_MN,event->weight);
-       		         		this->w2_dy->Fill(dy_MN,event->weight*event->weight);
-			                this->dphi_dy->Fill(dphi_MN,dy_MN,event->weight);
-
-			                this->cos_1->Fill(dy_MN, event->weight*cos(pi - dphi_MN));
-                			this->cos2_1->Fill(dy_MN,event->weight*pow(cos(pi - dphi_MN),2));
-		        	        this->cos_2->Fill(dy_MN,event->weight*cos(2*(pi - dphi_MN)));
-                			this->cos2_2->Fill(dy_MN,event->weight*pow(cos(2*(pi - dphi_MN)),2));
-	                		this->cos_3->Fill(dy_MN,event->weight*cos(3*(pi - dphi_MN)));
-			                this->cos2_3->Fill(dy_MN,event->weight*pow(cos(3*(pi - dphi_MN)),2));
-
-                			if((this->objects[i]->pt_H.size() > 0)&&(this->objects[i]->pt_L.size() == 2)&&(!(this->objects[i]->veto))){
-                        			this->excl_dy->Fill(dy_MN,event->weight);
-                			}
-
-	        		}//only CNTR events
-        		}//enough jets
-        	}//nPV == 1
-
-		this->objects[i]->Clear();
-	}
+       		}//only CNTR events
+	}//enough jets
 }
-
-void Decorrelations::WriteToFile(TString prefix){
-
-	TString name = prefix + this->specification + ".root";
-
-	TFile *file = new TFile(name,"RECREATE");
-	file->Close();
-
-	dphi_dy->Write();
-	dy->Write();
-	excl_dy->Write();
-	k_factor->Write();
-	w2_dy->Write();
-	cos_1->Write();
-	cos_2->Write();
-	cos_3->Write();
-
-};*/   
+*/   
 
