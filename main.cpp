@@ -12,6 +12,7 @@ int main(int argc, char** argv) {
 //DECLARATION OF OBJECTS	
 	Object	 *incl = new Object("INCL", 35., 35., 35.);
 	Object	 *mn = new Object("MN", 35., 35., 35.);
+	Object	 *excl = new Object("EXCL", 35., 35., 35.);
 
 //DECLARATION OF SAMPLES
 	Sample *data = new Sample("FSQJets_2015_2016");

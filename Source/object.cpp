@@ -88,13 +88,15 @@ void Object::LoadEvent(Event *event){
 
         }
 
-	if((this->pt_L.size() > 1)&&(this->pt_H.size() > 0)&&(!(this->veto))){
+	if((this->pt_H.size() > 0)&&(this->pt_L.size() > 1)&&(!(this->veto))){
+
 		if(this->name == "MN") this->LoadMN(event);
 		if(this->name == "INCL") this->LoadINCL(event);
+
+	        if((this->pt_H.size() > 0)&&(this->pt_L.size() == 2)){
+			if(this->name == "EXCL") this->LoadINCL(event);
+	        }
 	}
-        if((this->pt_H.size() > 0)&&(this->pt_L.size() == 2)&&(!(this->veto))){
-		if(this->name == "EXCL");// this->LoadEXCL(event);
-        }
 	this->weight = event->weight;
 	this->loaded = true;
 };
