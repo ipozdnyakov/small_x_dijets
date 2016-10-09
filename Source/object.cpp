@@ -152,6 +152,29 @@ void Object::LoadINCL(Event *event){
 		}		
 	}
 };
+void Object::Print(){
+        cout << "\nPrint object\n pt: ";
+        for(int i = 0; i < this->pt.size(); i++){
+                cout << this->pt[i] << "\t";
+        }
+	cout << "\n eta: ";
+        for(int i = 0; i < this->eta.size(); i++){
+                cout << this->eta[i] << "\t";
+        }
+	cout << "\n phi: ";
+        for(int i = 0; i < this->phi.size(); i++){
+                cout << this->phi[i] << "\t";
+        }
+	cout << "\n jet1: ";
+        for(int i = 0; i < this->i_jet1.size(); i++){
+                cout << this->i_jet1[i] << "\t";
+        }
+	cout << "\n jet2: ";
+        for(int i = 0; i < this->i_jet2.size(); i++){
+                cout << this->i_jet2[i] << "\t";
+        }
+	cout << "\n";
+}
 
 void Object::Clear(){
 
@@ -204,5 +227,4 @@ void Object::Clear(){
 	this->veto_jecunc_minus = false;
 
 	this->loaded = false;
-
 };

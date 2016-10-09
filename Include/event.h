@@ -25,7 +25,7 @@ public:
 	Event(): run(-1), number(-1), nPV(-1), CNTR(-1), FWD(-1), MB(-1), weight(0.) { }
 	Event(int r, int n, int npv, int cntr, int fwd, int mb, double w): 
 		run(r), number(n), nPV(npv), CNTR(cntr), FWD(fwd), MB(mb), weight(w) { }
-
+	void Print();
 	void AddJet(double , double , double , double , double);
 
 };

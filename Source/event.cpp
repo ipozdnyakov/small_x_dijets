@@ -7,6 +7,22 @@ using namespace std;
 JetCorrectionUncertainty *jecUnc2015 = new JetCorrectionUncertainty("./jec_txt/2015/Fall15_25nsV2_DATA_Uncertainty_AK4PFchs.txt");
 JetCorrectionUncertainty *jecUnc2016 = new JetCorrectionUncertainty("./jec_txt/2016/Spring16_25nsV6_DATA_Uncertainty_AK4PFchs.txt");
 
+void Event::Print(){
+	cout << "\nPrint event:\n pt: ";
+	for(int i = 0; i < this->pt.size(); i++){
+		cout << this->pt[i] << "\t";
+	}
+	cout << "\n eta: ";
+	for(int i = 0; i < this->eta.size(); i++){
+		cout << this->eta[i] << "\t";
+	}
+	cout << "\n phi: ";
+	for(int i = 0; i < this->phi.size(); i++){
+		cout << this->phi[i] << "\t";
+	}
+	cout << "\n";
+};
+
 void Event::AddJet( 
 		double jet_pt,
 		double jet_eta,

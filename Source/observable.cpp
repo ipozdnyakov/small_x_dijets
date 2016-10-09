@@ -19,6 +19,11 @@ void Observable::ReadEvent(Event *event){
 	this->n_events++;
 	object->LoadEvent(event);
 	function->CalculateValues(object);
+	if(function->values.size() > 0){
+		event->Print();
+		object->Print();
+		function->Print();
+	}
 	this->FillValues(function->values,function->weights);
 	function->Clear();
 	object->Clear();
@@ -27,7 +32,7 @@ void Observable::ReadEvent(Event *event){
 void Observable::FillValues(vector<double> values, vector<double> weights){
 
 	if(values.size() != weights.size()){
-		cout << "PROCESSING ERROR: vectors of data do not match - data lost\n";
+		cout << "Observable FillValues Error: vectors from function do not match - data lost\n";
 		return;
 	}
 
@@ -40,7 +45,7 @@ void Observable::FillValues(vector<double> values, vector<double> weights){
 void Observable::AverageAndNormalize(){
 
 	if(this->averaged_and_normalized){
-		cout << "PROCESSING ERROR: Observable already averaged and normalized!\n";
+		cout << "Observable AverageAndNormalize Error: Observable already averaged and normalized!\n";
 		return;
 	}
 

@@ -44,6 +44,7 @@ class Object {
 		void LoadEvent(Event *);
 		void LoadMN(Event *);
 		void LoadINCL(Event *);
+		void Print();
 		void Clear();
 };
 #endif	/* _OBJECT_H */
