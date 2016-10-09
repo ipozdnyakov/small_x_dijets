@@ -87,13 +87,16 @@ void Object::LoadEvent(Event *event){
                 if((event->pt[i]*(1-event->pt_unc[i]) < this->pt_min_L)&&(event->pt[i]*(1-event->pt_unc[i]) > this->pt_veto)) this->veto_jecunc_minus = true;
 
         }
-	
-	if(this->name == "MN") this->LoadMN(event);
-	if(this->name == "INCL") this->LoadINCL(event);
 
+	if((this->pt_L.size() > 1)&&(this->pt_H.size() > 0)&&(!(this->veto))){
+		if(this->name == "MN") this->LoadMN(event);
+		if(this->name == "INCL") this->LoadINCL(event);
+	}
+        if((this->pt_H.size() > 0)&&(this->pt_L.size() == 2)&&(!(this->veto))){
+		if(this->name == "EXCL");// this->LoadEXCL(event);
+        }
 	this->weight = event->weight;
 	this->loaded = true;
-
 };
 
 void Object::LoadMN(Event *event){
@@ -124,7 +127,7 @@ void Object::LoadINCL(Event *event){
 	int k = 0;
 
 	for(int i = 0; i < this->pt_L.size(); i++){
-		for(int j = i; j < this->pt_L.size(); j++){
+		for(int j = i+1; j < this->pt_L.size(); j++){
 			if((this->pt_L[i] > this->pt_min_H)||(this->pt_L[j] > this->pt_min_H)){
 				this->pt.push_back(this->pt_L[i]);
 				this->eta.push_back(this->eta_L[i]);

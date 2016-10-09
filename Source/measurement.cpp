@@ -179,30 +179,23 @@ void Decorrelations::CalculateErrors(){
 
 void Decorrelations::ReadEvent(Event *event){
 
-        if((this->objects[i]->pt_L.size() > 1)&&(this->objects[i]->pt_H.size() > 0)){
+        if(event->CNTR > 0) this->n_event_cntr++;
+	if(event->FWD > 0) this->n_event_fwd++;
 
-	        if(event->CNTR > 0) this->n_event_cntr++;
-       		if(event->FWD > 0) this->n_event_fwd++;
+        if(event->CNTR > 0){
 
-	        if(event->CNTR > 0){
+                this->dy->Fill(dy_MN,event->weight);
+     		this->w2_dy->Fill(dy_MN,event->weight*event->weight);
+                this->dphi_dy->Fill(dphi_MN,dy_MN,event->weight);
 
-	                this->dy->Fill(dy_MN,event->weight);
-         		this->w2_dy->Fill(dy_MN,event->weight*event->weight);
-	                this->dphi_dy->Fill(dphi_MN,dy_MN,event->weight);
+                this->cos_1->Fill(dy_MN, event->weight*cos(pi - dphi_MN));
+		this->cos2_1->Fill(dy_MN,event->weight*pow(cos(pi - dphi_MN),2));
+      	        this->cos_2->Fill(dy_MN,event->weight*cos(2*(pi - dphi_MN)));
+		this->cos2_2->Fill(dy_MN,event->weight*pow(cos(2*(pi - dphi_MN)),2));
+       		this->cos_3->Fill(dy_MN,event->weight*cos(3*(pi - dphi_MN)));
+                this->cos2_3->Fill(dy_MN,event->weight*pow(cos(3*(pi - dphi_MN)),2));
 
-	                this->cos_1->Fill(dy_MN, event->weight*cos(pi - dphi_MN));
-      			this->cos2_1->Fill(dy_MN,event->weight*pow(cos(pi - dphi_MN),2));
-        	        this->cos_2->Fill(dy_MN,event->weight*cos(2*(pi - dphi_MN)));
-       			this->cos2_2->Fill(dy_MN,event->weight*pow(cos(2*(pi - dphi_MN)),2));
-              		this->cos_3->Fill(dy_MN,event->weight*cos(3*(pi - dphi_MN)));
-	                this->cos2_3->Fill(dy_MN,event->weight*pow(cos(3*(pi - dphi_MN)),2));
-
-      			if((this->objects[i]->pt_H.size() > 0)&&(this->objects[i]->pt_L.size() == 2)&&(!(this->objects[i]->veto))){
-               			this->excl_dy->Fill(dy_MN,event->weight);
-       			}
-
-       		}//only CNTR events
-	}//enough jets
+	}//only CNTR events
 }
 */   
 
