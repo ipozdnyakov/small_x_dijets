@@ -15,7 +15,6 @@ class Observable {
 		Object* object;
 		Function* function;
 		TH1D *sum_w;
-		TH1D *sum_i;
 		int n_events = 0;
 	public:
 		TString name;
