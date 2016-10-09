@@ -12,13 +12,22 @@ void Measurement::IncludeObject(Object *object){
 
 	this->objects.push_back(object);
 
-	vector<Observable*> new_object_obs;
+	vector<Observable*> new_central;
+	vector<Observable*> new_central_no_fwd;
+	vector<Observable*> new_forward;
+	vector<Observable*> new_minimum_bias;
 
 	for(int i = 0; i < this->functions.size(); i++){
-		new_object_obs.push_back(new Observable(object,functions[i]));
+		new_central.push_back(new Observable(object,functions[i],"CNTR"));
+		new_central_no_fwd.push_back(new Observable(object,functions[i],"CNTRnoFWD"));
+		new_forward.push_back(new Observable(object,functions[i],"FWD"));
+		new_minimum_bias.push_back(new Observable(object,functions[i],"MINBIAS"));
 	}
 
-	this->observables.push_back(new_object_obs);
+	this->central.push_back(new_central);
+	this->central_no_fwd.push_back(new_central_no_fwd);
+	this->forward.push_back(new_forward);
+	this->minimum_bias.push_back(new_minimum_bias);
 	
 };
 
@@ -26,7 +35,10 @@ void Measurement::IncludeFunction(Function *function){
 	this->functions.push_back(function);
 
 	for(int i = 0; i < this->objects.size(); i++){
-		this->observables[i].push_back(new Observable(objects[i],function));
+		this->central[i].push_back(new Observable(objects[i],function,"CNTR"));
+		this->central_no_fwd[i].push_back(new Observable(objects[i],function,"CNTRnoFWD"));
+		this->forward[i].push_back(new Observable(objects[i],function,"FWD"));
+		this->minimum_bias[i].push_back(new Observable(objects[i],function,"MINBIAS"));
 	}
 
 };
@@ -35,8 +47,13 @@ void Measurement::ReadEvent(Event *event){
 	if(event->nPV == 1){
 		this->n_events++;
 		for(int i = 0; i < this->objects.size(); i++){	
-			for(int j = 0; j < this->functions.size(); j++){	
-				this->observables[i][j]->ReadEvent(event);
+			for(int j = 0; j < this->functions.size(); j++){
+				if(event->CNTR > 0){
+					this->central[i][j]->ReadEvent(event);
+					if(event->FWD == 0.) this->central_no_fwd[i][j]->ReadEvent(event);
+				}
+				if(event->FWD > 0) this->forward[i][j]->ReadEvent(event);
+				if(event->MB > 0) this->minimum_bias[i][j]->ReadEvent(event);
 			}
 		}
 	}
@@ -50,7 +67,10 @@ void Measurement::AverageAndNormalize(){
 
 	for(int i = 0; i < this->objects.size(); i++){	
 		for(int j = 0; j < this->functions.size(); j++){	
-		        this->observables[i][j]->AverageAndNormalize();
+		        this->central[i][j]->AverageAndNormalize();
+		        this->central_no_fwd[i][j]->AverageAndNormalize();
+		        this->forward[i][j]->AverageAndNormalize();
+		        this->minimum_bias[i][j]->AverageAndNormalize();
 		}
 	}
 
@@ -66,7 +86,10 @@ void Measurement::WriteToFile(TString prefix){
 
 	for(int i = 0; i < this->objects.size(); i++){	
 		for(int j = 0; j < this->functions.size(); j++){	
-		        this->observables[i][j]->WriteToFile(name);
+		        this->central[i][j]->WriteToFile(name);
+		        this->central_no_fwd[i][j]->WriteToFile(name);
+		        this->forward[i][j]->WriteToFile(name);
+		        this->minimum_bias[i][j]->WriteToFile(name);
 		}
 	}
 
@@ -182,8 +205,6 @@ void Decorrelations::ReadEvent(Event *event){
         if(event->CNTR > 0) this->n_event_cntr++;
 	if(event->FWD > 0) this->n_event_fwd++;
 
-        if(event->CNTR > 0){
-
                 this->dy->Fill(dy_MN,event->weight);
      		this->w2_dy->Fill(dy_MN,event->weight*event->weight);
                 this->dphi_dy->Fill(dphi_MN,dy_MN,event->weight);
@@ -194,8 +215,6 @@ void Decorrelations::ReadEvent(Event *event){
 		this->cos2_2->Fill(dy_MN,event->weight*pow(cos(2*(pi - dphi_MN)),2));
        		this->cos_3->Fill(dy_MN,event->weight*cos(3*(pi - dphi_MN)));
                 this->cos2_3->Fill(dy_MN,event->weight*pow(cos(3*(pi - dphi_MN)),2));
-
-	}//only CNTR events
 }
 */   
 

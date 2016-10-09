@@ -120,7 +120,7 @@ void Object::LoadMN(Event *event){
 		this->phi.push_back(this->phi_L[MN_index[1]]);
 		this->corr.push_back(this->corr_L[MN_index[1]]);
 		this->unc.push_back(this->unc_L[MN_index[1]]);
-		this->i_jet1.push_back(1);
+		this->i_jet2.push_back(1);
 	}
 }
 
@@ -145,7 +145,7 @@ void Object::LoadINCL(Event *event){
 				this->phi.push_back(this->phi_L[j]);
 				this->corr.push_back(this->corr_L[j]);
 				this->unc.push_back(this->unc_L[j]);
-				this->i_jet1.push_back(2*k+1);
+				this->i_jet2.push_back(2*k+1);
 				
 				k++;
 			}

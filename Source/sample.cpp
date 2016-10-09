@@ -52,7 +52,7 @@ void Sample::ReadFile(string name, Measurement *measurement){
 	cout << "Run: " << iRun << "\r";
 	Int_t nEvent = iEvent;
 
-	Event *event = new Event(iRun, iEvent,nPV,CNTR,FWD2,1.);
+	Event *event = new Event(iRun, iEvent,nPV,CNTR,FWD2,-1,1.);
 
 	for(int i = 0 ; i < nentries ; i++){
 		tree->GetEntry(i);
@@ -62,7 +62,7 @@ void Sample::ReadFile(string name, Measurement *measurement){
 			nEvent = iEvent;
 			measurement->ReadEvent(event);
 			delete event;
-			event = new Event(iRun,iEvent,nPV,CNTR,FWD2,1.);
+			event = new Event(iRun,iEvent,nPV,CNTR,FWD2,-1,1.);
    		}
 	}
 

@@ -14,7 +14,10 @@ using namespace std;
 class Measurement {
 	private:
 		bool averaged_and_normalized = false;
-		vector<vector<Observable*>> observables;
+		vector<vector<Observable*>> central;
+		vector<vector<Observable*>> central_no_fwd;
+		vector<vector<Observable*>> forward;
+		vector<vector<Observable*>> minimum_bias;
 		vector<Object*> objects;
 		vector<Function*> functions;
 	public:

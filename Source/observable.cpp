@@ -5,13 +5,13 @@
 using namespace std;
 #define pi 3.1415926
 
-Observable::Observable(Object *object, Function *function){
+Observable::Observable(Object *object, Function *function, TString name){
 	this->object = object;
 	this->function = function;
-	TString title = object->name + "_" + function->name;
-        sum_w = new TH1D(title + "_w", title, function->n_bins, function->bins);
+	this->name =  function->name + "_" + object->name + "_" + name;
+        sum_w = new TH1D(this->name + "_w", this->name, function->n_bins, function->bins);
         sum_w->Sumw2();
-        sum_i = new TH1D(title + "_i", title, function->n_bins, function->bins);
+        sum_i = new TH1D(this->name + "_i", this->name, function->n_bins, function->bins);
         sum_i->Sumw2();
 };
 

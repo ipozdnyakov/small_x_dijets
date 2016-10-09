@@ -81,10 +81,10 @@ void Function::SetDphiInDrap(double drap_min, double drap_max, Object *object){
 		drap = fabs(rap1 - rap2);
 
         	dphi = fabs(phi1 - phi2);
-	        if(dphi > pi)dphi = (2*pi - dphi);
+	        if(dphi > pi) dphi = (2*pi - dphi);
 
 		if((drap > drap_min)&&(drap < drap_max)){
 			this->values.push_back(dphi);
 		}
 	}
-}
+};

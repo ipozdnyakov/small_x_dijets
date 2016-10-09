@@ -11,7 +11,7 @@ class Event {
 public:
 	int number, run;
 	int nPV;
-	int CNTR, FWD;
+	int CNTR, FWD, MB;
 	double weight;
 
 	vector<double> pt;	//corrected jet pt 	
@@ -22,8 +22,9 @@ public:
 	vector<double> rap;	 	
 
 public:
-	Event(): run(-1), number(-1), nPV(-1), CNTR(-1), FWD(-1), weight(0.) { }
-	Event(int r, int n, int npv, int cntr, int fwd, double w): run(r), number(n), nPV(npv), CNTR(cntr), FWD(fwd), weight(w) { }
+	Event(): run(-1), number(-1), nPV(-1), CNTR(-1), FWD(-1), MB(-1), weight(0.) { }
+	Event(int r, int n, int npv, int cntr, int fwd, int mb, double w): 
+		run(r), number(n), nPV(npv), CNTR(cntr), FWD(fwd), MB(mb), weight(w) { }
 
 	void AddJet(double , double , double , double , double);
 

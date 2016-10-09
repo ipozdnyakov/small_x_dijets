@@ -10,7 +10,6 @@
 using namespace std;
 
 class Observable {
-
 	private:
 		bool averaged_and_normalized = false;
 		Object* object;
@@ -19,16 +18,11 @@ class Observable {
 		TH1D *sum_i;
 		int n_events = 0;
 	public:
-		string name;
-
-		Observable(Object *, Function *);
+		TString name;
+		Observable(Object *, Function *, TString);
 		void ReadEvent(Event *);
+		void FillValues(vector<double> , vector<double>);
 		void AverageAndNormalize();
 		void WriteToFile(TString );
-//-----------------------------------------
-		void FillValues(vector<double> , vector<double>);
-		Observable(TString , TString , const double *, int );
-		void FillData(vector<vector<double>> , double);
 };
-
 #endif // OBSERVABLE_H
