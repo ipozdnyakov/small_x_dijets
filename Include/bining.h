@@ -9,6 +9,7 @@ const int n_phi_towers = 72;
 
 const int n_drap_bins = 15;
 const int n_dphi_bins = 10;
+const int n_fine_dphi_bins = 100;
 
 const double pt_bins[n_pt_bins + 1]={
 		15,	20,	25,	30,	35,	40,
@@ -53,6 +54,30 @@ const double drap_bins[n_drap_bins + 1]={
 const double dphi_bins[n_dphi_bins + 1]={
 		0.*pi,	0.1*pi,	0.2*pi,	0.3*pi,	0.4*pi,	0.5*pi,
 		0.6*pi,	0.7*pi,	0.8*pi,	0.9*pi,	1.*pi};
+
+const double fine_dphi_bins[n_fine_dphi_bins + 1]={
+		0.00*pi,
+		0.01*pi,0.02*pi,0.03*pi,0.04*pi,0.05*pi,
+		0.06*pi,0.07*pi,0.08*pi,0.09*pi,0.10*pi,
+		0.11*pi,0.12*pi,0.13*pi,0.14*pi,0.15*pi,
+		0.16*pi,0.17*pi,0.18*pi,0.19*pi,0.20*pi,
+		0.21*pi,0.22*pi,0.23*pi,0.24*pi,0.25*pi,
+		0.26*pi,0.27*pi,0.28*pi,0.29*pi,0.30*pi,
+		0.31*pi,0.32*pi,0.33*pi,0.34*pi,0.35*pi,
+		0.36*pi,0.37*pi,0.38*pi,0.39*pi,0.40*pi,
+		0.41*pi,0.42*pi,0.43*pi,0.44*pi,0.45*pi,
+		0.46*pi,0.47*pi,0.48*pi,0.49*pi,0.50*pi,
+		0.51*pi,0.52*pi,0.53*pi,0.54*pi,0.55*pi,
+		0.56*pi,0.57*pi,0.58*pi,0.59*pi,0.60*pi,
+		0.61*pi,0.62*pi,0.63*pi,0.64*pi,0.65*pi,
+		0.66*pi,0.67*pi,0.68*pi,0.69*pi,0.70*pi,
+		0.71*pi,0.72*pi,0.73*pi,0.74*pi,0.75*pi,
+		0.76*pi,0.77*pi,0.78*pi,0.79*pi,0.80*pi,
+		0.81*pi,0.82*pi,0.83*pi,0.84*pi,0.85*pi,
+		0.86*pi,0.87*pi,0.88*pi,0.89*pi,0.90*pi,
+		0.91*pi,0.92*pi,0.93*pi,0.94*pi,0.95*pi,
+		0.96*pi,0.97*pi,0.98*pi,0.99*pi,1.00*pi,
+};
 
 #endif  /* _BINING_H */
 

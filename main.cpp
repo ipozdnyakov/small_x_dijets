@@ -18,7 +18,7 @@ int main(int argc, char** argv) {
 	Function *eta = new Function("eta", eta_towers, n_eta_towers);
 	Function *rap = new Function("rap", eta_towers, n_eta_towers);
 	Function *phi = new Function("phi", phi_towers, n_phi_towers);
-	Function *dphi0 = new Function("dphi0_9.4", dphi_bins, n_dphi_bins);
+	Function *dphi0 = new Function("dphi0_9.4", fine_dphi_bins, n_fine_dphi_bins);
 	Function *dphi1 = new Function("dphi0_3", dphi_bins, n_dphi_bins);
 	Function *dphi2 = new Function("dphi3_6", dphi_bins, n_dphi_bins);
 	Function *dphi3 = new Function("dphi6_9.4", dphi_bins, n_dphi_bins);
@@ -31,20 +31,20 @@ int main(int argc, char** argv) {
 
 
 //CONFIGURE AND PERFORM MEASUREMENTS
-	dijets->IncludeObject(incl);
+	//dijets->IncludeObject(incl);
 	dijets->IncludeObject(mn);
-	dijets->IncludeObject(excl);
+	//dijets->IncludeObject(excl);
 
-	dijets->IncludeFunction(pt);
-	dijets->IncludeFunction(eta);
-	dijets->IncludeFunction(rap);
-	dijets->IncludeFunction(phi);
+	//dijets->IncludeFunction(pt);
+	//dijets->IncludeFunction(eta);
+	//dijets->IncludeFunction(rap);
+	//dijets->IncludeFunction(phi);
 	dijets->IncludeFunction(dphi0);
-	dijets->IncludeFunction(dphi1);
-	dijets->IncludeFunction(dphi2);
-	dijets->IncludeFunction(dphi3);
-	dijets->IncludeFunction(drap);
-	dijets->IncludeFunction(cos_1);
+	//dijets->IncludeFunction(dphi1);
+	//dijets->IncludeFunction(dphi2);
+	//dijets->IncludeFunction(dphi3);
+	//dijets->IncludeFunction(drap);
+	//dijets->IncludeFunction(cos_1);
 
 	cout << dijets->specification << "\t" << dijets->n_events << "\n";
 	data->ReadSample(dijets);
