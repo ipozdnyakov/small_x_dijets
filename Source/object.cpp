@@ -120,8 +120,33 @@ void Object::LoadMN(Event *event){
 }
 
 void Object::LoadINCL(Event *event){
-	
-}
+
+	int k = 0;
+
+	for(int i = 0; i < this->pt_L.size(); i++){
+		for(int j = i; j < this->pt_L.size(); j++){
+			if((this->pt_L[i] > this->pt_min_H)||(this->pt_L[j] > this->pt_min_H)){
+				this->pt.push_back(this->pt_L[i]);
+				this->eta.push_back(this->eta_L[i]);
+				this->rap.push_back(this->rap_L[i]);
+				this->phi.push_back(this->phi_L[i]);
+				this->corr.push_back(this->corr_L[i]);
+				this->unc.push_back(this->unc_L[i]);
+				this->i_jet1.push_back(2*k);
+
+				this->pt.push_back(this->pt_L[j]);
+				this->eta.push_back(this->eta_L[j]);
+				this->rap.push_back(this->rap_L[j]);
+				this->phi.push_back(this->phi_L[j]);
+				this->corr.push_back(this->corr_L[j]);
+				this->unc.push_back(this->unc_L[j]);
+				this->i_jet1.push_back(2*k+1);
+				
+				k++;
+			}
+		}		
+	}
+};
 
 void Object::Clear(){
 
