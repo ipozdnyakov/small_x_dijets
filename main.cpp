@@ -22,6 +22,8 @@ int main(int argc, char** argv) {
 	Function *dphi1 = new Function("dphi0_3", dphi_bins, n_dphi_bins);
 	Function *dphi2 = new Function("dphi3_6", dphi_bins, n_dphi_bins);
 	Function *dphi3 = new Function("dphi6_9.4", dphi_bins, n_dphi_bins);
+	Function *drap = new Function("drap", drap_bins, n_drap_bins);
+	Function *cos_1 = new Function("cos_1(dy)", drap_bins, n_drap_bins);
 //DECLARATION OF OBJECTS	
 	Object	 *incl = new Object("INCL", 35., 35., 35.);
 	Object	 *mn = new Object("MN", 35., 35., 35.);
@@ -41,11 +43,13 @@ int main(int argc, char** argv) {
 	dijets->IncludeFunction(dphi1);
 	dijets->IncludeFunction(dphi2);
 	dijets->IncludeFunction(dphi3);
+	dijets->IncludeFunction(drap);
+	dijets->IncludeFunction(cos_1);
 
 	cout << dijets->specification << "\t" << dijets->n_events << "\n";
 	data->ReadSample(dijets);
 	cout << dijets->specification << "\t" << dijets->n_events << "\n";
-//	dijets->AverageAndNormalize();
+	dijets->AverageAndNormalize();
 	dijets->WriteToFile("./dijets");
 
 	return (EXIT_SUCCESS);

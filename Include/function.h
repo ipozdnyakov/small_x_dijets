@@ -18,6 +18,8 @@ class Function {
 		void CalculateValues(Object *);
 		void SetPlainWeights(Object *);
 		void SetDphiInDrap(double , double , Object *);
+		void SetDrapInDphi(double , double , Object *);
+		void SetCosNDphiVsDrap(double , Object*);
 		void Print();
 		void Clear();
 };

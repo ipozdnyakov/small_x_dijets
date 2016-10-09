@@ -52,6 +52,14 @@ void Function::CalculateValues(Object *object){
 		this->SetPlainWeights(object);
 	}
 
+	if(this->name == "drap"){
+		this->SetDrapInDphi(0., pi, object);
+		this->SetPlainWeights(object);
+	}
+
+	if(this->name == "cos_1(dy)"){
+		this->SetCosNDphiVsDrap(1., object);
+	}
 };
 
 void Function::Clear(){
@@ -63,6 +71,30 @@ void Function::SetPlainWeights(Object* object){
 	for(int i = 0; i < values.size(); i++){
 		this->weights.push_back(object->weight);
 	}
+};
+
+void Function::SetCosNDphiVsDrap(double n, Object* object){
+
+	double rap1 = 0., rap2 = 0., phi1 = 0, phi2 = 0;
+	double drap = 0., dphi = 0.;
+	if(object->i_jet1.size() != object->i_jet2.size()){
+		cout << "Object Error: two index vectors of dijets components (jets) have different lenght!!!\n";
+	}
+	for(int i = 0; i < object->i_jet1.size(); i++){
+		rap1 = object->rap[object->i_jet1[i]];
+		rap2 = object->rap[object->i_jet2[i]];
+		phi1 = object->phi[object->i_jet1[i]];
+		phi2 = object->phi[object->i_jet2[i]];
+	
+		drap = fabs(rap1 - rap2);
+
+        	dphi = fabs(phi1 - phi2);
+	        if(dphi > pi) dphi = (2*pi - dphi);
+
+		this->values.push_back(drap);
+		this->weights.push_back((object->weight)*cos(n*(pi - dphi)));
+	}
+
 };
 
 void Function::SetDphiInDrap(double drap_min, double drap_max, Object *object){
@@ -85,6 +117,30 @@ void Function::SetDphiInDrap(double drap_min, double drap_max, Object *object){
 
 		if((drap > drap_min)&&(drap < drap_max)){
 			this->values.push_back(dphi);
+		}
+	}
+};
+
+void Function::SetDrapInDphi(double dphi_min, double dphi_max, Object *object){
+
+	double rap1 = 0., rap2 = 0., phi1 = 0, phi2 = 0;
+	double drap = 0., dphi = 0.;
+	if(object->i_jet1.size() != object->i_jet2.size()){
+		cout << "Object Error: two index vectors of dijets components (jets) have different lenght!!!\n";
+	}
+	for(int i = 0; i < object->i_jet1.size(); i++){
+		rap1 = object->rap[object->i_jet1[i]];
+		rap2 = object->rap[object->i_jet2[i]];
+		phi1 = object->phi[object->i_jet1[i]];
+		phi2 = object->phi[object->i_jet2[i]];
+	
+		drap = fabs(rap1 - rap2);
+
+        	dphi = fabs(phi1 - phi2);
+	        if(dphi > pi) dphi = (2*pi - dphi);
+
+		if((dphi > dphi_min)&&(dphi < dphi_max)){
+			this->values.push_back(drap);
 		}
 	}
 };
