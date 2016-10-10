@@ -10,9 +10,12 @@ using namespace std;
 int main(int argc, char** argv) {
 
 //DECLARATION OF SAMPLES
-	Sample *data = new Sample("FSQJets_2015_2016");
+//	Sample *data = new Sample("FSQJets_2015_2016");
+//	Sample *data = new Sample("datasets/FSQJets3_2015C_VdMaugust");
+	Sample *data = new Sample("datasets/7TeV_JetMETTau_Centr");
 //DECLARATION OF MEASUREMENTS
-	Measurement *dijets = new Measurement("dijets","_FSQJets_2015_2016_data_13TeV_LowPU");
+	//Measurement *dijets = new Measurement("dijets","_FSQJets_2015_2016_data_13TeV_LowPU");
+	Measurement *dijets = new Measurement("dijets","_FSQJets_2010_data_7TeV_LowPU");
 //DECLARATION OF FUNCTIONS
 	Function *pt = new Function("pt", pt_bins, n_pt_bins);
 	Function *eta = new Function("eta", eta_towers, n_eta_towers);
@@ -43,7 +46,7 @@ int main(int argc, char** argv) {
 	//dijets->IncludeFunction(dphi1);
 	//dijets->IncludeFunction(dphi2);
 	//dijets->IncludeFunction(dphi3);
-	//dijets->IncludeFunction(drap);
+	dijets->IncludeFunction(drap);
 	//dijets->IncludeFunction(cos_1);
 
 	cout << dijets->specification << "\t" << dijets->n_events << "\n";

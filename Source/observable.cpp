@@ -17,7 +17,7 @@ void Observable::ReadEvent(Event *event){
 	this->n_events++;
 	object->LoadEvent(event);
 	function->CalculateValues(object);
-	if(function->values.size() > 0){
+	if((false)&&(function->values.size() > 0)){
 		event->Print();
 		object->Print();
 		function->Print();
