@@ -146,13 +146,13 @@ void Function::SetDrapInDphi(double dphi_min, double dphi_max, Object *object){
 };
 
 void Function::Print(){
-        cout << "\nPrint function:\n values: ";
+//        cout << "\nPrint function:\n values: ";
         for(int i = 0; i < this->values.size(); i++){
                 cout << this->values[i] << "\t";
         }
-	cout << "\n weights: ";
+//	cout << "\n weights: ";
         for(int i = 0; i < this->weights.size(); i++){
-                cout << this->weights[i] << "\t";
+//                cout << this->weights[i] << "\t";
         }
 	cout << "\n";
 };

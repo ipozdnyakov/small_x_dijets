@@ -11,6 +11,7 @@ Observable::Observable(Object *object, Function *function, TString name){
 	this->name =  function->name + "_" + object->name + "_" + name;
         sum_w = new TH1D(this->name, this->name, function->n_bins, function->bins);
         sum_w->Sumw2();
+	sum_w->SetStats(false);
 };
 
 void Observable::ReadEvent(Event *event){	
@@ -49,7 +50,8 @@ void Observable::AverageAndNormalize(){
 
 void Observable::WriteToFile(TString name){
 	TFile file_res(name,"UPDATE");
-	sum_w->Write();
+	cout << "Observable " << this->name << " with " << this->n_events << " events\n";
+	this->sum_w->Write();
 	file_res.Close();
 };
 

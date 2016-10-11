@@ -38,7 +38,7 @@ void Sample::ReadFile(string name, Measurement *measurement){
 
         Int_t iEvent = 0, iRun = 0, nPV = 0;
 	Int_t CNTR = 1, FWD2 = -1, FWD3 = -1;
-        Double_t pt = 0, phi = 0, eta = 0, rap = 0, cor = 0, unc = 0;
+        double pt = 0., phi = 0., eta = 0., rap = 0., cor = 0., unc = 0.;
 
 	if(this->run_num_name != "") tree->SetBranchAddress(this->run_num_name, &iRun);
 	if(this->event_num_name != "") tree->SetBranchAddress(this->event_num_name, &iEvent);
@@ -58,17 +58,24 @@ void Sample::ReadFile(string name, Measurement *measurement){
 	cout << "Run: " << iRun << "\r";
 	Int_t nEvent = iEvent;
 
-	Event *event = new Event(iRun, iEvent, nPV, CNTR, FWD2, -1, 1.);
+	//Event *event = new Event(iRun, iEvent, nPV, CNTR, FWD2, -1, 1.);
+	Event *event = new Event();
+	event->Init(iRun, iEvent, nPV, CNTR, FWD2, -1, 1.);
 
 	for(int i = 0 ; i < nentries ; i++){
 		tree->GetEntry(i);
+		//cout << iRun << " " << iEvent << " " << nPV << " " << CNTR << " " << FWD2 << " " << FWD3 << " " << pt << " " << eta << " " << rap << " " << phi << "\n";
 		if(iEvent == nEvent){				//in Event
 			event->AddJet(pt, eta, phi, rap, cor);
 		}else{						//out Event
+			i = i-1;
 			nEvent = iEvent;
 			measurement->ReadEvent(event);
-			delete event;
-			event = new Event(iRun, iEvent, nPV, CNTR, FWD2, -1, 1.);
+			//event->Print();
+			event->Clear();
+			//delete event;
+			//event = new Event(iRun, iEvent, nPV, CNTR, FWD2, -1, 1.);
+			event->Init(iRun, iEvent, nPV, CNTR, FWD2, -1, 1.);
    		}
 	}
 };

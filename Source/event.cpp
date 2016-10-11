@@ -8,6 +8,16 @@ JetCorrectionUncertainty *jecUnc2015 = new JetCorrectionUncertainty("./jec_txt/2
 JetCorrectionUncertainty *jecUnc2016 = new JetCorrectionUncertainty("./jec_txt/2016/Spring16_25nsV6_DATA_Uncertainty_AK4PFchs.txt");
 
 void Event::Print(){
+
+	cout << "===========================================================";
+	cout << "Event " << this->number;
+	cout << "\nrun " << this->run;
+	cout << "; nPV " << this->nPV;
+	cout << "; CNTR " << this->CNTR;
+	cout << "; FWD " << this->FWD;
+	cout << "; MB " << this->MB;
+	cout << "; weight " << this->weight;
+
 	cout << "\nPrint event:\n pt: ";
 	for(int i = 0; i < this->pt.size(); i++){
 		cout << this->pt[i] << "\t";
@@ -16,11 +26,34 @@ void Event::Print(){
 	for(int i = 0; i < this->eta.size(); i++){
 		cout << this->eta[i] << "\t";
 	}
+	cout << "\n rap: ";
+	for(int i = 0; i < this->rap.size(); i++){
+		cout << this->rap[i] << "\t";
+	}
 	cout << "\n phi: ";
 	for(int i = 0; i < this->phi.size(); i++){
 		cout << this->phi[i] << "\t";
 	}
 	cout << "\n";
+};
+
+void Event::Init(int r, int n, int npv, int cntr, int fwd, int mb, double w){ 
+	this->run = r;
+	this-> number = n;
+	this->nPV = npv;
+	this->CNTR = cntr;
+	this->FWD = fwd;
+	this->MB = mb;
+	this->weight = w;
+};
+
+void Event::Clear(){
+	this->pt.clear();
+	this->pt_unc.clear();
+	this->pt_cor.clear();
+	this->eta.clear();
+	this->phi.clear();
+	this->rap.clear();
 };
 
 void Event::AddJet( 
