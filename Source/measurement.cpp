@@ -44,17 +44,15 @@ void Measurement::IncludeFunction(Function *function){
 };
 
 void Measurement::ReadEvent(Event *event){
-	if(event->nPV == 1){
-		this->n_events++;
-		for(int i = 0; i < this->objects.size(); i++){	
-			for(int j = 0; j < this->functions.size(); j++){
-				if(event->CNTR > 0){
-					this->central[i][j]->ReadEvent(event);
-					if(event->FWD == 0.) this->central_no_fwd[i][j]->ReadEvent(event);
-				}
-				if(event->FWD > 0) this->forward[i][j]->ReadEvent(event);
-				if(event->MB > 0) this->minimum_bias[i][j]->ReadEvent(event);
+	this->n_events++;
+	for(int i = 0; i < this->objects.size(); i++){	
+		for(int j = 0; j < this->functions.size(); j++){
+			if(event->CNTR > 0){
+				this->central[i][j]->ReadEvent(event);
+				if(event->FWD == 0.) this->central_no_fwd[i][j]->ReadEvent(event);
 			}
+			if(event->FWD > 0) this->forward[i][j]->ReadEvent(event);
+			if(event->MB > 0) this->minimum_bias[i][j]->ReadEvent(event);
 		}
 	}
 };

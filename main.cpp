@@ -8,7 +8,6 @@
 using namespace std;
 
 int main(int argc, char** argv) {
-
 //DECLARATION OF SAMPLES
 	Sample *data = new Sample("FSQJets_2015_2016");
 //	Sample *data = new Sample("datasets/FSQJets3_2015C_VdMaugust");
@@ -31,12 +30,11 @@ int main(int argc, char** argv) {
 	Object	 *incl = new Object("INCL", 35., 35., 35.);
 	Object	 *mn = new Object("MN", 35., 35., 35.);
 	Object	 *excl = new Object("EXCL", 35., 35., 35.);
-
-//CONFIGURE AND PERFORM MEASUREMENTS
+//INCLUDING OBJECTS
 	//dijets->IncludeObject(incl);
 	dijets->IncludeObject(mn);
 	//dijets->IncludeObject(excl);
-
+//INCLUDING FUNCTIONS
 	//dijets->IncludeFunction(pt);
 	//dijets->IncludeFunction(eta);
 	//dijets->IncludeFunction(rap);
@@ -47,12 +45,11 @@ int main(int argc, char** argv) {
 	//dijets->IncludeFunction(dphi3);
 	//dijets->IncludeFunction(drap);
 	//dijets->IncludeFunction(cos_1);
-
+//PERFORM MEASUREMENTS
 	cout << dijets->specification << "\t" << dijets->n_events << "\n";
 	data->ReadSample(dijets);
 	cout << dijets->specification << "\t" << dijets->n_events << "\n";
 	dijets->AverageAndNormalize();
 	dijets->WriteToFile("./dijets");
-
 	return (EXIT_SUCCESS);
-}
+};

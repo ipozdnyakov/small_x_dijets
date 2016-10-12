@@ -58,23 +58,20 @@ void Sample::ReadFile(string name, Measurement *measurement){
 	cout << "Run: " << iRun << "\r";
 	Int_t nEvent = iEvent;
 
-	//Event *event = new Event(iRun, iEvent, nPV, CNTR, FWD2, -1, 1.);
 	Event *event = new Event();
 	event->Init(iRun, iEvent, nPV, CNTR, FWD2, -1, 1.);
 
 	for(int i = 0 ; i < nentries ; i++){
 		tree->GetEntry(i);
-		//cout << iRun << " " << iEvent << " " << nPV << " " << CNTR << " " << FWD2 << " " << FWD3 << " " << pt << " " << eta << " " << rap << " " << phi << "\n";
+	//cout << iRun << " " << iEvent << " " << nPV << " " << CNTR << " " << FWD2 << " " << FWD3 
+	//<< " " << pt << " " << eta << " " << rap << " " << phi << "\n";
 		if(iEvent == nEvent){				//in Event
 			event->AddJet(pt, eta, phi, rap, cor);
 		}else{						//out Event
 			i = i-1;
 			nEvent = iEvent;
 			measurement->ReadEvent(event);
-			//event->Print();
 			event->Clear();
-			//delete event;
-			//event = new Event(iRun, iEvent, nPV, CNTR, FWD2, -1, 1.);
 			event->Init(iRun, iEvent, nPV, CNTR, FWD2, -1, 1.);
    		}
 	}

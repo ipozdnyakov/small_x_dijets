@@ -7,7 +7,7 @@ const int n_pt_bins = 14;
 const int n_eta_towers = 82;
 const int n_phi_towers = 72;
 
-const int n_drap_bins = 15;
+const int n_drap_bins = 13;
 const int n_dphi_bins = 10;
 const int n_fine_dphi_bins = 100;
 
@@ -48,8 +48,8 @@ const double phi_towers[n_phi_towers + 1]={
 
 const double drap_bins[n_drap_bins + 1]={
 		0,	0.5,	1.0,	1.5,	2.0,	2.5,
-		3.0,	3.5,	4.0,	4.5,	5.0,	5.5,
-		6.0,	7.0,	8.0,	9.4};
+		3.0,	3.5,	4.0,	4.5,	5.0,	6.0,
+		7.5,	9.4};
 
 const double dphi_bins[n_dphi_bins + 1]={
 		0.*pi,	0.1*pi,	0.2*pi,	0.3*pi,	0.4*pi,	0.5*pi,

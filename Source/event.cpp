@@ -7,6 +7,41 @@ using namespace std;
 JetCorrectionUncertainty *jecUnc2015 = new JetCorrectionUncertainty("./jec_txt/2015/Fall15_25nsV2_DATA_Uncertainty_AK4PFchs.txt");
 JetCorrectionUncertainty *jecUnc2016 = new JetCorrectionUncertainty("./jec_txt/2016/Spring16_25nsV6_DATA_Uncertainty_AK4PFchs.txt");
 
+string Event::RunPileUp(){
+	return "H";
+};
+
+void Event::JecUp(){
+	if(this->jec_cond != "centr"){cout << "Event error: try to JecUp then jec_cond = " << this->jec_cond;
+	}else{
+		for(int i = 0; i < this->pt.size(); i++){
+			this->pt[i] = (1.+this->pt_unc[i])*this->pt[i];
+		}
+		this->jec_cond = "up";
+	}
+};
+
+void Event::JecDown(){
+	if(this->jec_cond != "centr"){cout << "Event error: try to JecDown then jec_cond = " << this->jec_cond;
+	}else{
+		for(int i = 0; i < this->pt.size(); i++){
+			this->pt[i] = (1.-this->pt_unc[i])*this->pt[i];
+		}
+		this->jec_cond = "down";
+	}
+};
+
+void Event::JecCentr(){
+	if(this->jec_cond == "centr"){cout << "Event error: try to JecCentr then already jec_cond = " << this->jec_cond;
+	}else{
+		for(int i = 0; i < this->pt.size(); i++){
+			if(this->jec_cond == "up") this->pt[i] = this->pt[i]/(1.+this->pt_unc[i]);
+			if(this->jec_cond == "down") this->pt[i] = this->pt[i]/(1.-this->pt_unc[i]);
+		}
+		this->jec_cond = "centr";
+	}
+};
+
 void Event::Print(){
 
 	cout << "===========================================================";

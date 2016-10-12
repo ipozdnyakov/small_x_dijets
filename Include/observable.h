@@ -12,15 +12,17 @@ using namespace std;
 class Observable {
 	private:
 		bool averaged_and_normalized = false;
+		int n_events = 0;
 		Object* object;
 		Function* function;
-		TH1D *sum_w;
-		int n_events = 0;
+		TH1D *data,*jecp,*jecm,*hpu,*lpu;
+
+		void FillValues(string , vector<double> , vector<double>);
+
 	public:
 		TString name;
 		Observable(Object *, Function *, TString);
 		void ReadEvent(Event *);
-		void FillValues(vector<double> , vector<double>);
 		void AverageAndNormalize();
 		void WriteToFile(TString );
 };
