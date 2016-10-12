@@ -68,7 +68,7 @@ void Sample::ReadFile(string name, Measurement *measurement){
 		if(iEvent == nEvent){				//in Event
 			event->AddJet(pt, eta, phi, rap, cor);
 		}else{						//out Event
-			i = i-1;
+			//i = i-1;
 			nEvent = iEvent;
 			measurement->ReadEvent(event);
 			event->Clear();

@@ -2,6 +2,7 @@
 #include"measurement.h"
 #include"function.h"
 #include"object.h"
+#include"result.h"
 #include"sample.h"
 #include"bining.h"
 
@@ -65,7 +66,14 @@ int main(int argc, char** argv) {
 	cout << dijets->specification << "\t" << dijets->n_events << "\n";
 	data->ReadSample(dijets);
 	cout << dijets->specification << "\t" << dijets->n_events << "\n";
-	dijets->AverageAndNormalize();
+//POSTPROCESSING
+	dijets->Merge();
+//DECLARATION OF RESULTS
+	Result *dphi_distr_1 = new Result();
+//INCLUDE RESULTS
+	dijets->IncludeResult(dphi_distr_1);
+//CALCULATE AND WRITE RESULTS
+	dijets->CalculateResults();
 	dijets->WriteToFile("./dijets");
 	return (EXIT_SUCCESS);
 };

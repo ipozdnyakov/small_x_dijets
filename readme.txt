@@ -47,19 +47,19 @@ main.cpp	- main code of the analysis
 Source/Include  - *.cpp and *.h files correspondingly
 
 
+	sample.cpp/.h		- class "Sample" for accessing events from the input data
+
 	measurement.cpp/.h	- class "Measurement" - combination of several observables
 
-	object.cpp/.h		- class "Object" for phenomena from event (MN, incl dijets, etc.)
+	observable.cpp/.h	- class "Observable" = object + function = some plot (k_factor, decorr, etc.)
 
 	function.cpp/.h		- class "Function" for particular values from  phenomena (pt, dphi, etc.)
 
-	sample.cpp/.h		- class "Sample" for accessing events from the input data
+	object.cpp/.h		- class "Object" for phenomena from event (MN, incl dijets, etc.)
 
-
+	result.cpp/h.		- class "Result" calculation on several observables
 
 	event.cpp/.h		- class "Event" for event data (nPV, triggers, weigth, jets, etc.)
-
-	observable.cpp/.h	- class "Observable" = object + function = some plot (k_factor, decorr, etc.)
 
 	bining.h		- global definition of bining arrays
 
@@ -73,18 +73,18 @@ Source/Include  - *.cpp and *.h files correspondingly
 			  Sample -> ReadSample() -> ReadFile()
 
 /access_to_the_event	- [DONE] class "Measurement" - combination of several observables,
-			  Measurement -> ReadEvent(), Observable -> CatchObject(Object )
+			  Measurement -> ReadEvent(), Observable -> ReadEvent()
 
-/efficiency_calc	- [TO BE DONE]
+/efficiency_calc	- [IN PROGRESS] family of observables MINBIAS
 
-/sample_merging		- [TO BE DONE]
+/samples_merging	- [IN PROGRESS] families of observables CNTR, FWD. CNTRnoFWD
 
-/pileup			- [TO BE DONE]
+/pileup			- [IN PROGRESS] the   same   as   for  JEC,  but   reference  file 
+			  not written yet
 
-/jec_study		- [IN PROGRESS] jet energy correction study of the  data,  for  each 
+/jec_study		- [DONE] jet energy correction  study  of  the   data,   for   each 
 			  observable from  the  set  of  observables  it  plots  observable
-			  on  jets   with pt_plus_unc and pt_minus_unc results  are  stored
-			  in  two  .root files, for each set of observables
+			  on  jets   with pt_plus_unc and pt_minus_unc
 
 /jer_study		- [TO BE DONE]
 
@@ -94,12 +94,8 @@ Source/Include  - *.cpp and *.h files correspondingly
 
 /unfolding		- [TO BE DONE]
 
-/normalisation		- [TO BE DONE]
+/final_values		- [IN PROGRESS] class "Result"
 
-/final_values		- [TO BE DONE]
+/total_syst		- [IN PROGRESS] class "Result"
 
-/total_syst		- [TO BE DONE]
-
-5. NEED TO BE COMPATIBLE WITH CMSSW 
------------------------------------
-to use internal events (edmEvent) and objects (jets) classes and access to the data, triggers and so on..
+5.!!!!!! NEED TO combine WITH CommonFSQFramework

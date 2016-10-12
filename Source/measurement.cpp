@@ -43,6 +43,10 @@ void Measurement::IncludeFunction(Function *function){
 
 };
 
+void Measurement::IncludeResult(Result *result){
+	this->results.push_back(result);
+};
+
 void Measurement::ReadEvent(Event *event){
 	this->n_events++;
 	for(int i = 0; i < this->objects.size(); i++){	
@@ -57,9 +61,23 @@ void Measurement::ReadEvent(Event *event){
 	}
 };
 
-void Measurement::AverageAndNormalize(){
-        if(this->averaged_and_normalized){
-                cout << "PROCESSING ERROR: Measurement already averaged and normalized!\n";
+void Measurement::CalculateResults(){
+        if(this->results_calculated){
+                cout << "Measurement Error:results already calculated\n";
+                return;
+        }
+
+	for(int i = 0; i < this->objects.size(); i++){	
+		for(int j = 0; j < this->functions.size(); j++){	
+		}
+	}
+
+        this->results_calculated = true;
+};
+
+void Measurement::Merge(){
+        if(this->merged){
+                cout << "Measurement Error: Measurement already merged\n";
                 return;
         }
 
@@ -72,7 +90,7 @@ void Measurement::AverageAndNormalize(){
 		}
 	}
 
-        this->averaged_and_normalized = true;
+        this->merged = true;
 };
 
 void Measurement::WriteToFile(TString prefix){
