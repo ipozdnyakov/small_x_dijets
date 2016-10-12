@@ -14,9 +14,11 @@ int main(int argc, char** argv) {
 //	Sample *data = new Sample("datasets/7TeV_JetMETTau_Centr");
 //DECLARATION OF MEASUREMENTS
 	Measurement *dijets = new Measurement("dijets","_FSQJets_2015_2016_data_13TeV_LowPU");
-	//Measurement *dijets = new Measurement("dijets","_FSQJets_2010_data_7TeV_LowPU");
+//	Measurement *dijets = new Measurement("dijets","_FSQJets_2010_data_7TeV_LowPU");
 //DECLARATION OF FUNCTIONS
 	Function *pt = new Function("pt", pt_bins, n_pt_bins);
+	Function *cor = new Function("cor", pt_bins, n_pt_bins);
+	Function *unc = new Function("unc", pt_bins, n_pt_bins);
 	Function *eta = new Function("eta", eta_towers, n_eta_towers);
 	Function *rap = new Function("rap", eta_towers, n_eta_towers);
 	Function *phi = new Function("phi", phi_towers, n_phi_towers);
@@ -26,25 +28,39 @@ int main(int argc, char** argv) {
 	Function *dphi3 = new Function("dphi6_9.4", dphi_bins, n_dphi_bins);
 	Function *drap = new Function("drap", drap_bins, n_drap_bins);
 	Function *cos_1 = new Function("cos_1(dy)", drap_bins, n_drap_bins);
+	Function *cos_2 = new Function("cos_2(dy)", drap_bins, n_drap_bins);
+	Function *cos_3 = new Function("cos_3(dy)", drap_bins, n_drap_bins);
+	Function *cos2_1 = new Function("cos2_1(dy)", drap_bins, n_drap_bins);
+	Function *cos2_2 = new Function("cos2_2(dy)", drap_bins, n_drap_bins);
+	Function *cos2_3 = new Function("cos2_3(dy)", drap_bins, n_drap_bins);
+	Function *cos_21 = new Function("cos_21(dy)", drap_bins, n_drap_bins);
+	Function *cos_32 = new Function("cos_32(dy)", drap_bins, n_drap_bins);
 //DECLARATION OF OBJECTS	
 	Object	 *incl = new Object("INCL", 35., 35., 35.);
 	Object	 *mn = new Object("MN", 35., 35., 35.);
 	Object	 *excl = new Object("EXCL", 35., 35., 35.);
 //INCLUDING OBJECTS
-	//dijets->IncludeObject(incl);
+	dijets->IncludeObject(incl);
 	dijets->IncludeObject(mn);
-	//dijets->IncludeObject(excl);
+	dijets->IncludeObject(excl);
 //INCLUDING FUNCTIONS
 	//dijets->IncludeFunction(pt);
+	//dijets->IncludeFunction(cor);
+	//dijets->IncludeFunction(unc);
 	//dijets->IncludeFunction(eta);
 	//dijets->IncludeFunction(rap);
 	//dijets->IncludeFunction(phi);
-	dijets->IncludeFunction(dphi0);
-	//dijets->IncludeFunction(dphi1);
-	//dijets->IncludeFunction(dphi2);
-	//dijets->IncludeFunction(dphi3);
-	//dijets->IncludeFunction(drap);
-	//dijets->IncludeFunction(cos_1);
+	//dijets->IncludeFunction(dphi0);
+	dijets->IncludeFunction(dphi1);
+	dijets->IncludeFunction(dphi2);
+	dijets->IncludeFunction(dphi3);
+	dijets->IncludeFunction(drap);
+	dijets->IncludeFunction(cos_1);
+	dijets->IncludeFunction(cos_2);
+	dijets->IncludeFunction(cos_3);
+	dijets->IncludeFunction(cos2_1);
+	dijets->IncludeFunction(cos2_2);
+	dijets->IncludeFunction(cos2_3);
 //PERFORM MEASUREMENTS
 	cout << dijets->specification << "\t" << dijets->n_events << "\n";
 	data->ReadSample(dijets);

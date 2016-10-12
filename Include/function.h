@@ -19,7 +19,7 @@ class Function {
 		void SetPlainWeights(Object *);
 		void SetDphiInDrap(double , double , Object *);
 		void SetDrapInDphi(double , double , Object *);
-		void SetCosNDphiVsDrap(double , Object*);
+		void SetCosNPowerMvsDrap(double , double , Object*);
 		void Print();
 		void Clear();
 };

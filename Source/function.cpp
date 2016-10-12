@@ -17,6 +17,16 @@ void Function::CalculateValues(Object *object){
 		this->SetPlainWeights(object);
 	}
 
+	if(this->name == "cor"){
+		this->values = object->corr;
+		this->SetPlainWeights(object);
+	}
+
+	if(this->name == "unc"){
+		this->values = object->unc;
+		this->SetPlainWeights(object);
+	}
+
 	if(this->name == "eta"){
 		this->values = object->eta;
 		this->SetPlainWeights(object);
@@ -58,8 +68,29 @@ void Function::CalculateValues(Object *object){
 	}
 
 	if(this->name == "cos_1(dy)"){
-		this->SetCosNDphiVsDrap(1., object);
+		this->SetCosNPowerMvsDrap(1., 1., object);
 	}
+
+	if(this->name == "cos_2(dy)"){
+		this->SetCosNPowerMvsDrap(2., 1., object);
+	}
+
+	if(this->name == "cos_3(dy)"){
+		this->SetCosNPowerMvsDrap(3., 1., object);
+	}
+
+	if(this->name == "cos2_1(dy)"){
+		this->SetCosNPowerMvsDrap(1., 2., object);
+	}
+
+	if(this->name == "cos2_2(dy)"){
+		this->SetCosNPowerMvsDrap(2., 2., object);
+	}
+
+	if(this->name == "cos2_3(dy)"){
+		this->SetCosNPowerMvsDrap(3., 2., object);
+	}
+
 };
 
 void Function::Clear(){
@@ -73,7 +104,7 @@ void Function::SetPlainWeights(Object* object){
 	}
 };
 
-void Function::SetCosNDphiVsDrap(double n, Object* object){
+void Function::SetCosNPowerMvsDrap(double n, double m, Object* object){
 
 	double rap1 = 0., rap2 = 0., phi1 = 0, phi2 = 0;
 	double drap = 0., dphi = 0.;
@@ -92,7 +123,7 @@ void Function::SetCosNDphiVsDrap(double n, Object* object){
 	        if(dphi > pi) dphi = (2*pi - dphi);
 
 		this->values.push_back(drap);
-		this->weights.push_back((object->weight)*cos(n*(pi - dphi)));
+		this->weights.push_back((object->weight)*pow(cos(n*(pi - dphi)),m));
 	}
 
 };
