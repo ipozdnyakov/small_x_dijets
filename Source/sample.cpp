@@ -17,7 +17,7 @@ void Sample::ReadSample(Measurement *measurement){
 	if(this->name == "datasets/FSQJets3_2015C_VdMaugust") this->Set13TeVNames();
 	if(this->name == "datasets/7TeV_JetMETTau_Centr") this->Set7TeVNames(); 
 
-        ifstream data_files("./listing/" + this->name);
+        ifstream data_files("./Docs/listing/" + this->name);
 	cout << "\t-reading data files from set " << this->name << ":\n";
         while(getline(data_files, file_name)){
                 cout << "\t" << file_name << "\t";
@@ -59,20 +59,20 @@ void Sample::ReadFile(string name, Measurement *measurement){
 	Int_t nEvent = iEvent;
 
 	Event *event = new Event();
-	event->Init(iRun, iEvent, nPV, CNTR, FWD2, -1, 1.);
+	event->Init(iRun, iEvent, nPV, CNTR, FWD3, -1, 1.);
 
 	for(int i = 0 ; i < nentries ; i++){
 		tree->GetEntry(i);
 	//cout << iRun << " " << iEvent << " " << nPV << " " << CNTR << " " << FWD2 << " " << FWD3 
 	//<< " " << pt << " " << eta << " " << rap << " " << phi << "\n";
 		if(iEvent == nEvent){				//in Event
-			event->AddJet(pt, eta, phi, rap, cor);
+			event->AddJet(pt, eta, phi, rap, cor, -1.);
 		}else{						//out Event
 			//i = i-1;
 			nEvent = iEvent;
 			measurement->ReadEvent(event);
 			event->Clear();
-			event->Init(iRun, iEvent, nPV, CNTR, FWD2, -1, 1.);
+			event->Init(iRun, iEvent, nPV, CNTR, FWD3, -1, 1.);
    		}
 	}
 };

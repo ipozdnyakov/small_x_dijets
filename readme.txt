@@ -5,8 +5,9 @@ particularly for analises like dijets k-factor and dijets decorrelations,
 looking for BFKL effects in pQCD.
 
 This project takes input data from *.root files produced by 
-other project - https://github.com/ipozdnyakov/cmssw_jets.git,
-each file conatains TTree with one entry for each jet in the event.
+other projects
+	 - https://github.com/ipozdnyakov/cmssw_jets.git	-each file conatains TTree with one entry for each jet in the event
+	 - https://github.com/ipozdnyakov/CommonFSQFramework	-each file conatains TTree with one entry for each event
 
 
 2. ENVIRONMENT
@@ -34,11 +35,11 @@ the workflow in the project is organised as follows
 /Docs		- contains detailed information on various aspects of the analysis, 
 		  additional to this readme.txt 
 
-/Listing	- contains lists of files from 13TeV_DATA - output of 
-		  git@github.com:ipozdnyakov/cmssw_jets project
-		  (data stored in /afs/cern.ch/work/i/ivanp/13TeV_DATA/)
+	/listing	- contains lists of files from 13TeV_DATA - output of 
+		  	git@github.com:ipozdnyakov/cmssw_jets project		- data stored in /afs/cern.ch/work/i/ivanp/CMSSW_SKIMS/
+		  	git@github.com:ipozdnyakov/CommonFSQFramework  project	- data stored in /afs/cern.ch/work/i/ivanp/CFF_SOFT/CFF_SKIMS/
 
-/Jec_txt	- contains *.txt files with JEC and uncertainties
+	/jec_txt	- contains *.txt files with JEC and uncertainties
 
 maker_gcc	- script to compile the code to k_factor.exe, wich is the "final button"
 
@@ -97,5 +98,3 @@ Source/Include  - *.cpp and *.h files correspondingly
 /final_values		- [IN PROGRESS] class "Result"
 
 /total_syst		- [IN PROGRESS] class "Result"
-
-5.!!!!!! NEED TO combine WITH CommonFSQFramework

@@ -4,6 +4,10 @@ Example for tutorial	- https://github.com/ajaykumar649/Jets_Short
 
 The following was done in this project:
 1) jets were taken already corrected (see project git@github.com:ipozdnyakov/cmssw_jets), also corr factors were saved
+
+UPD: with using CommonFSQFamework (see project git@github.com/ipozdnyakov/CommonFSQFramework) corrected jets and also uncertainties are
+stored in output trees_*.root files, but procedure described in this file might be useful for deep JEC study
+
 2) .txt files may be  obtained using file /JetMETCorrections/Modules/test/JetCorrectionDBReader_cfg.py with apropriate parameters
 	payloadName    = cms.untracked.string('ak4PFJetsCHS') corresponds to slimmedJets in MiniAOD for 2015 and 2016
 	process.GlobalTag.globaltag = '76X_dataRun2_v15/80X_dataRun2_Prompt_v8'

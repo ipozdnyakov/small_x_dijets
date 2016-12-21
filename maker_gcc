@@ -1,5 +1,7 @@
 #!/bin/tcsh
 
+cmsenv
+
 setenv CMSSW_LIBS '-lJetMETCorrectionsObjects -lFWCoreCommon -FWCoreFramework -lCondFormatsJetMETObjects -lJetMETCorrectionsModules'
 
 g++ -o k_factor.exe main.cpp ./Source/* \

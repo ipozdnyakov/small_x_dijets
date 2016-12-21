@@ -34,7 +34,7 @@ public:
 	void JecCentr();
 	void Print();
 	void Clear();
-	void AddJet(double , double , double , double , double);
+	void AddJet(double , double , double , double , double, double);
 
 };
 #endif	/* _EVENT_H */
