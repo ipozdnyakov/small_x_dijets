@@ -10,7 +10,7 @@ using namespace std;
 
 int main(int argc, char** argv) {
 //DECLARATION OF SAMPLES
-	Sample *data = new Sample("FSQJets_2015_2016");
+	Sample *data = new Sample("13TeV_data_2015C_FSQJets3");
 //	Sample *data = new Sample("datasets/FSQJets3_2015C_VdMaugust");
 //	Sample *data = new Sample("datasets/7TeV_JetMETTau_Centr");
 //DECLARATION OF MEASUREMENTS
