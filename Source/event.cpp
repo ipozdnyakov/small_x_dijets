@@ -120,3 +120,25 @@ void Event::AddJet(
 	        this->rap.push_back(jet_rap);
 
 };
+
+void Event::AddJets(
+		vector<float> jet_pt,
+		vector<float> jet_eta,
+		vector<float> jet_phi,
+		vector<float> jet_rap,
+		vector<float> jet_pt_cor,		
+		vector<float> jet_pt_unc
+        ){
+/*	cout << "\n===========================================================\n";
+	cout << jet_pt.size() << "\n";
+		for(int i = 0; i < jet_pt.size(); ++i){
+			this->pt.push_back(jet_pt[i]);
+		}
+	cout << "===========================================================\n";*/
+        	this->pt = vector<double>(jet_pt.begin(), jet_pt.end());
+        	this->pt_cor = vector<double>(jet_pt_cor.begin(), jet_pt_cor.end());
+        	this->pt_unc = vector<double>(jet_pt_unc.begin(), jet_pt_unc.end());
+        	this->eta = vector<double>(jet_eta.begin(), jet_eta.end());
+        	this->phi = vector<double>(jet_phi.begin(), jet_phi.end());
+        	this->rap = vector<double>(jet_rap.begin(), jet_rap.end());
+};

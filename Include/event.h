@@ -35,6 +35,7 @@ public:
 	void Print();
 	void Clear();
 	void AddJet(double , double , double , double , double, double);
+	void AddJets(vector<float> , vector<float> , vector<float> , vector<float> , vector<float>, vector<float>);
 
 };
 #endif	/* _EVENT_H */
