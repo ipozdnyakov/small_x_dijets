@@ -15,11 +15,12 @@ class Observable {
 		int n_events = 0;
 		Object* object;
 		Function* function;
-		TH1D *data,*jecp,*jecm,*hpu,*lpu;
 
 		void FillValues(string , vector<double> , vector<double>);
 
 	public:
+		TH1D *data,*jecp,*jecm,*hpu,*lpu;
+
 		TString name;
 		Observable(Object *, Function *, TString);
 		void ReadEvent(Event *);

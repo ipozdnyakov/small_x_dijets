@@ -9,12 +9,12 @@ using namespace std;
 
 class Result {
 	private:
-		TH1D *result;
-		TGraphAsymmErrors *syst;
 
 	public:
+		TH1D *result;
+		TGraphAsymmErrors *syst;
 		TString name;
-		Result();
+		Result(TString );
 		void WriteToFile(TString );
 };
 #endif // RESULT_H

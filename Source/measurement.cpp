@@ -1,5 +1,7 @@
 #include<iostream>
 #include<TFile.h>
+#include<TTree.h>
+#include<TString.h>
 #include"measurement.h"
 
 using namespace std;
@@ -47,9 +49,102 @@ void Measurement::IncludeResult(Result *result){
 	this->results.push_back(result);
 };
 
+void Measurement::ReadSample(Sample *sample){
+
+        string file_name;
+
+
+        if(sample->name == "13TeV_data_2015C_FSQJets3") sample->Set13TeVNamesCFF();
+        if(sample->name == "FSQJets_2015_2016") sample->Set13TeVNames();
+        if(sample->name == "datasets/FSQJets3_2015C_VdMaugust") sample->Set13TeVNames();
+        if(sample->name == "datasets/7TeV_JetMETTau_Centr") sample->Set7TeVNames();
+
+        ifstream data_files("./Docs/listing/" + sample->name);
+        cout << "\t-reading data files from set " << sample->name << ":\n";
+        while(getline(data_files, file_name)){
+                cout << "\t" << file_name << "\t";
+                this->ReadFile(file_name, sample);
+        }
+	cout << "\n";
+
+};
+
+void Measurement::ReadFile(string name, Sample *sample){
+
+	TString file_name = name;
+	TFile Jfile(file_name);
+	TTree* tree;
+	tree = (TTree*) Jfile.Get(sample->tree_name);
+	Int_t nentries = tree->GetEntries();
+	cout << "Entries: " << nentries << "\t";
+
+        Int_t iLumi = 0, iEvent = 0, iRun = 0, nPV = 0;
+	Int_t CNTR = 1, FWD2 = -1, FWD3 = -1;
+	Int_t CNTR_ps = 1, FWD2_ps = -1, FWD3_ps = -1;
+        double pt = 0., phi = 0., eta = 0., rap = 0., cor = 0., unc = 0.;
+        vector<float> *pt_v = 0, *phi_v = 0, *eta_v = 0, *rap_v = 0, *cor_v = 0, *unc_v = 0;
+
+	if(sample->lumi_num_name != "") tree->SetBranchAddress(sample->lumi_num_name, &iLumi);
+	if(sample->run_num_name != "") tree->SetBranchAddress(sample->run_num_name, &iRun);
+	if(sample->event_num_name != "") tree->SetBranchAddress(sample->event_num_name, &iEvent);
+	if(sample->nPV_name != "") tree->SetBranchAddress(sample->nPV_name, &nPV);
+	if(sample->CNTR_trg_name != "") tree->SetBranchAddress(sample->CNTR_trg_name, &CNTR);
+	if(sample->FWD2_trg_name != "") tree->SetBranchAddress(sample->FWD2_trg_name, &FWD2);
+	if(sample->FWD3_trg_name != "") tree->SetBranchAddress(sample->FWD3_trg_name, &FWD3);
+	if(sample->CNTR_trg_ps_name != "") tree->SetBranchAddress(sample->CNTR_trg_ps_name, &CNTR_ps);
+	if(sample->FWD2_trg_ps_name != "") tree->SetBranchAddress(sample->FWD2_trg_ps_name, &FWD2_ps);
+	if(sample->FWD3_trg_ps_name != "") tree->SetBranchAddress(sample->FWD3_trg_ps_name, &FWD3_ps);
+
+	if(sample->pt_name != "") tree->SetBranchAddress(sample->pt_name, &pt);
+	if(sample->rap_name != "") tree->SetBranchAddress(sample->rap_name, &rap);
+	if(sample->eta_name != "") tree->SetBranchAddress(sample->eta_name, &eta);
+	if(sample->phi_name != "") tree->SetBranchAddress(sample->phi_name, &phi);
+	if(sample->cor_name != "") tree->SetBranchAddress(sample->cor_name, &cor);
+	if(sample->unc_name != "") tree->SetBranchAddress(sample->unc_name, &unc);
+
+	if(sample->pt_vector_name != "") tree->SetBranchAddress(sample->pt_vector_name, &pt_v);
+	if(sample->rap_vector_name != "") tree->SetBranchAddress(sample->rap_vector_name, &rap_v);
+	if(sample->eta_vector_name != "") tree->SetBranchAddress(sample->eta_vector_name, &eta_v);
+	if(sample->phi_vector_name != "") tree->SetBranchAddress(sample->phi_vector_name, &phi_v);
+	if(sample->cor_vector_name != "") tree->SetBranchAddress(sample->cor_vector_name, &cor_v);
+	if(sample->unc_vector_name != "") tree->SetBranchAddress(sample->unc_vector_name, &unc_v);
+
+	tree->GetEntry(0);
+	cout << "Run: " << iRun << " pt:" << pt_v << "\n";
+	Int_t nEvent = iEvent;
+
+	Event *event = new Event();
+
+	if(pt_v != 0){
+		for(int i = 0 ; i < nentries ; i++){
+			tree->GetEntry(i);
+			event->Init(iRun, iEvent, nPV, CNTR, FWD2, -1, 1.);
+			event->AddJets(*pt_v, *eta_v, *phi_v, *rap_v, *cor_v, *unc_v);
+			this->ReadEvent(event);
+			event->Clear();
+		}
+	}else{
+		event->Init(iRun, iEvent, nPV, CNTR, FWD2, -1, 1.);
+		for(int i = 0 ; i < nentries ; i++){
+			tree->GetEntry(i);
+				//cout << iRun << " " << iEvent << " " << nPV << " " << CNTR << " " << FWD2 << " " << FWD3 
+				//<< " " << pt << " " << eta << " " << rap << " " << phi << "\n";
+			if(iEvent == nEvent){				//in Event
+				event->AddJet(pt, eta, phi, rap, cor, -1.);
+			}else{						//out Event
+				//i = i-1;
+				nEvent = iEvent;
+				this->ReadEvent(event);
+				event->Clear();
+				event->Init(iRun, iEvent, nPV, CNTR, FWD3, -1, 1.);
+	   		}
+		}
+	}
+};
+
 void Measurement::ReadEvent(Event *event){
 	this->n_events++;
-	for(int i = 0; i < this->objects.size(); i++){	
+	for(int i = 0; i < this->objects.size(); i++){
 		for(int j = 0; j < this->functions.size(); j++){
 			if(event->CNTR > 0){
 				this->central[i][j]->ReadEvent(event);
@@ -61,18 +156,19 @@ void Measurement::ReadEvent(Event *event){
 	}
 };
 
-void Measurement::CalculateResults(){
-        if(this->results_calculated){
-                cout << "Measurement Error:results already calculated\n";
-                return;
-        }
 
-	for(int i = 0; i < this->objects.size(); i++){	
-		for(int j = 0; j < this->functions.size(); j++){	
+Observable* Measurement::GetObservableCentral(TString object_name, TString function_name){
+
+	for(int i = 0; i < this->objects.size(); i++){
+		for(int j = 0; j < this->functions.size(); j++){
+			if((objects[i]->name == object_name)&&(functions[i]->name == function_name)){
+				return this->central[i][j];
+			}
 		}
 	}
 
-        this->results_calculated = true;
+	cout << "Observable for object " << object_name << " and function " << function_name << "not found\n";
+	return 0;
 };
 
 void Measurement::Merge(){
@@ -111,55 +207,30 @@ void Measurement::WriteToFile(TString prefix){
 
 };
 
-/*Decorrelations::Decorrelations(TString dir_name, TString specification):Measurement(dir_name, specification){
+void Measurement::CalculateResults(){
+        if(this->results_calculated){
+                cout << "Measurement Error:results already calculated\n";
+                return;
+        }
 
-	TString histname;
+	for(int i = 0; i < this->results.size(); i++){
+		if(results[i]->name == "dphi_all_incl"){
+			Observable* dphi = this->GetObservableCentral("INCL","dphi_0");
+			dphi->data->Scale(1./dphi->data->Integral());
+			results[i]->result = dphi->data;
+		}else if(results[i]->name == "dphi_low_incl"){
+			Observable* dphi = this->GetObservableCentral("INCL","dphi_1");
+			dphi->data->Scale(1./dphi->data->Integral());
+			results[i]->result = dphi->data;
+		}else{
+			cout << "Instructions for result " << results[i]->name << "not found";
+		}
+	}
 
-        histname = "dy";  histname += specification;
-        dy = new TH1D(histname, dir_name, n_dy_bins, dy_bins);
-        dy->Sumw2();
+        this->results_calculated = true;
+};
 
-        histname = "w2";  histname += specification;
-        w2_dy = new TH1D(histname, dir_name, n_dy_bins, dy_bins);
-        w2_dy->Sumw2();
-
-        histname = "excl_dy";  histname += specification;
-        excl_dy = new TH1D(histname, dir_name, n_dy_bins, dy_bins);
-        excl_dy->Sumw2();
-
-        histname = "k_factor";  histname += specification;
-        k_factor = new TH1D(histname, dir_name, n_dy_bins, dy_bins);
-        k_factor->Sumw2();
-
-        histname = "cos_1";  histname += specification;
-        cos_1 = new TH1D(histname, dir_name, n_dy_bins, dy_bins);
-        cos_1->Sumw2();
-
-        histname = "cos_2";  histname += specification;
-        cos_2 = new TH1D(histname, dir_name, n_dy_bins, dy_bins);
-        cos_2->Sumw2();
-
-        histname = "cos_3";  histname += specification;
-        cos_3 = new TH1D(histname, dir_name, n_dy_bins, dy_bins);
-        cos_3->Sumw2();
-
-        histname = "cos2_1";  histname += specification;
-        cos2_1 = new TH1D(histname, dir_name, n_dy_bins, dy_bins);
-        cos2_1->Sumw2();
-
-        histname = "cos2_2";  histname += specification;
-        cos2_2 = new TH1D(histname, dir_name, n_dy_bins, dy_bins);
-        cos2_2->Sumw2();
-
-        histname = "cos2_3";  histname += specification;
-        cos2_3 = new TH1D(histname, dir_name, n_dy_bins, dy_bins);
-        cos2_3->Sumw2();
-
-        histname = "dphi_dy";  histname += specification;
-        dphi_dy = new TH2D(histname, dir_name, n_dphi_bins, dphi_bins, n_dy_bins, dy_bins);
-        dphi_dy->Sumw2();
-
-}
+/*
 
 void Decorrelations::CalculateErrors(){
 
@@ -215,22 +286,5 @@ void Decorrelations::CalculateErrors(){
 	}
 
 };
-
-void Decorrelations::ReadEvent(Event *event){
-
-        if(event->CNTR > 0) this->n_event_cntr++;
-	if(event->FWD > 0) this->n_event_fwd++;
-
-                this->dy->Fill(dy_MN,event->weight);
-     		this->w2_dy->Fill(dy_MN,event->weight*event->weight);
-                this->dphi_dy->Fill(dphi_MN,dy_MN,event->weight);
-
-                this->cos_1->Fill(dy_MN, event->weight*cos(pi - dphi_MN));
-		this->cos2_1->Fill(dy_MN,event->weight*pow(cos(pi - dphi_MN),2));
-      	        this->cos_2->Fill(dy_MN,event->weight*cos(2*(pi - dphi_MN)));
-		this->cos2_2->Fill(dy_MN,event->weight*pow(cos(2*(pi - dphi_MN)),2));
-       		this->cos_3->Fill(dy_MN,event->weight*cos(3*(pi - dphi_MN)));
-                this->cos2_3->Fill(dy_MN,event->weight*pow(cos(3*(pi - dphi_MN)),2));
-}
 */   
 

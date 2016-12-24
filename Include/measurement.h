@@ -1,11 +1,12 @@
 #include<TH1.h>
 #include<TH2.h>
 #include<TROOT.h>
+#include"event.h"
+#include"sample.h"
 #include"observable.h"
 #include"function.h"
 #include"object.h"
 #include"result.h"
-#include"event.h"
 
 #ifndef MEASUREMENT_H
 #define MEASUREMENT_H
@@ -30,9 +31,13 @@ class Measurement {
 		void IncludeObject(Object *);
 		void IncludeFunction(Function *);
 		void IncludeResult(Result *);
+		void ReadSample(Sample *);
+		void ReadFile(string , Sample *);
 		void ReadEvent(Event *);
 		void Merge();
 		void CalculateResults();
 		void WriteToFile(TString );
+
+		Observable* GetObservableCentral(TString , TString );
 };
 #endif // MEASUREMENT_H

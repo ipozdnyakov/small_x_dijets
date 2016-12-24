@@ -70,15 +70,16 @@ Source/Include  - *.cpp and *.h files correspondingly
 4. FUNCTIONALITY
 ----------------------------
 
-/access_to_the_data	- [DONE] class "Sample" for access to each event
-			  Sample -> ReadSample() -> ReadFile()
+class Measurement	- the main class over which all functionality is realised
 
-/access_to_the_event	- [DONE] class "Measurement" - combination of several observables,
-			  Measurement -> ReadEvent(), Observable -> ReadEvent()
+/access_to_the_data	- [DONE] class "Sample" to manage TTree name, branch names in TTrees and path to listing
+			  Measurement -> ReadSample() -> ReadFile() -> ReadEvent()
+			  Sample->"SetNames..."()
+			  Observable -> ReadEvent()
 
 /efficiency_calc	- [IN PROGRESS] family of observables MINBIAS
 
-/samples_merging	- [IN PROGRESS] families of observables CNTR, FWD. CNTRnoFWD
+/samples_merging	- [IN PROGRESS] families of observables CNTR, FWD, CNTRnoFWD
 
 /pileup			- [IN PROGRESS] the   same   as   for  JEC,  but   reference  file 
 			  not written yet

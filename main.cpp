@@ -9,14 +9,15 @@
 using namespace std;
 
 int main(int argc, char** argv) {
+//DECLARATION OF MEASUREMENTS
+	Measurement *dijets = new Measurement("dijets","_FSQJets3_2015C_data_13TeV_LowPU");
+//	Measurement *dijets = new Measurement("dijets","_FSQJets_2015_2016_data_13TeV_LowPU");
+//	Measurement *dijets = new Measurement("dijets","_FSQJets_2010_data_7TeV_LowPU");
 //DECLARATION OF SAMPLES
 	Sample *data = new Sample("13TeV_data_2015C_FSQJets3");
 //	Sample *data = new Sample("datasets/FSQJets3_2015C_VdMaugust");
 //	Sample *data = new Sample("datasets/7TeV_JetMETTau_Centr");
-//DECLARATION OF MEASUREMENTS
-	Measurement *dijets = new Measurement("dijets","_FSQJets_2015_2016_data_13TeV_LowPU");
-//	Measurement *dijets = new Measurement("dijets","_FSQJets_2010_data_7TeV_LowPU");
-//DECLARATION OF FUNCTIONS
+//ADD FUNCTIONS
 	Function *pt = new Function("pt", pt_bins, n_pt_bins);
 	Function *cor = new Function("cor", pt_bins, n_pt_bins);
 	Function *unc = new Function("unc", pt_bins, n_pt_bins);
@@ -36,15 +37,6 @@ int main(int argc, char** argv) {
 	Function *cos2_3 = new Function("cos2_3(dy)", drap_bins, n_drap_bins);
 	Function *cos_21 = new Function("cos_21(dy)", drap_bins, n_drap_bins);
 	Function *cos_32 = new Function("cos_32(dy)", drap_bins, n_drap_bins);
-//DECLARATION OF OBJECTS	
-	Object	 *incl = new Object("INCL", 35., 35., 35.);
-	Object	 *mn = new Object("MN", 35., 35., 35.);
-	Object	 *excl = new Object("EXCL", 35., 35., 35.);
-//INCLUDING OBJECTS
-	dijets->IncludeObject(incl);
-	dijets->IncludeObject(mn);
-	dijets->IncludeObject(excl);
-//INCLUDING FUNCTIONS
 	//dijets->IncludeFunction(pt);
 	//dijets->IncludeFunction(cor);
 	//dijets->IncludeFunction(unc);
@@ -62,17 +54,27 @@ int main(int argc, char** argv) {
 	dijets->IncludeFunction(cos2_1);
 	dijets->IncludeFunction(cos2_2);
 	dijets->IncludeFunction(cos2_3);
-//PERFORM MEASUREMENTS
+//ADD OBJECTS	
+	Object	 *incl = new Object("INCL", 35., 35., 35.);
+	Object	 *mn = new Object("MN", 35., 35., 35.);
+	Object	 *excl = new Object("EXCL", 35., 35., 35.);
+	dijets->IncludeObject(incl);
+	dijets->IncludeObject(mn);
+	dijets->IncludeObject(excl);
+//ADD RESULTS
+	Result *dphi_mn_1 = new Result("dphi_low_mn");
+	Result *dphi_mn_2 = new Result("dphi_med_mn");
+	Result *dphi_mn_3 = new Result("dphi_hig_mn");
+	dijets->IncludeResult(dphi_mn_1);
+	dijets->IncludeResult(dphi_mn_2);
+	dijets->IncludeResult(dphi_mn_3);
+//PROCESSING SAMPLE
 	cout << dijets->specification << "\t" << dijets->n_events << "\n";
-	data->ReadSample(dijets);
+	dijets->ReadSample(data);
 	cout << dijets->specification << "\t" << dijets->n_events << "\n";
 //POSTPROCESSING
 	dijets->Merge();
-//DECLARATION OF RESULTS
-	Result *dphi_distr_1 = new Result();
-//INCLUDE RESULTS
-	dijets->IncludeResult(dphi_distr_1);
-//CALCULATE AND WRITE RESULTS
+//GET RESULTS
 	dijets->CalculateResults();
 	dijets->WriteToFile("./dijets");
 	return (EXIT_SUCCESS);

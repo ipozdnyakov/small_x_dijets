@@ -1,4 +1,4 @@
-#include"measurement.h"
+#include<TString.h>
 
 #ifndef _SAMPLE_H
 #define	_SAMPLE_H
@@ -11,7 +11,10 @@ class Sample {
 //the name of the file is the name of the sample
 
 protected:
+
+public:
 	string name;
+
 	TString tree_name;
 	TString run_num_name = "", lumi_num_name = "", event_num_name = "", nPV_name = "";
 	TString CNTR_trg_name = "", FWD2_trg_name = "", FWD3_trg_name = "";
@@ -21,15 +24,11 @@ protected:
 	TString pt_vector_name = "", phi_vector_name = "", eta_vector_name = "", rap_vector_name = "";
 	TString cor_vector_name = "", unc_vector_name = "";
 
-public:
 	Sample(): name("FSQJets_2015_2016") { }
 	Sample(string str): name(str) { }
 
-	void ReadSample(Measurement *);
 	void Set13TeVNamesCFF();
 	void Set13TeVNames();
 	void Set7TeVNames();
-	void ReadFile(string , Measurement *);
-
 };
 #endif	/* _SAMPLE_H */
