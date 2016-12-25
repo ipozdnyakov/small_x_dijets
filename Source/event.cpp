@@ -49,7 +49,8 @@ void Event::Print(){
 	cout << "\nrun " << this->run;
 	cout << "; nPV " << this->nPV;
 	cout << "; CNTR " << this->CNTR;
-	cout << "; FWD " << this->FWD;
+	cout << "; FWD2 " << this->FWD2;
+	cout << "; FWD3 " << this->FWD3;
 	cout << "; MB " << this->MB;
 	cout << "; weight " << this->weight;
 
@@ -72,12 +73,13 @@ void Event::Print(){
 	cout << "\n";
 };
 
-void Event::Init(int r, int n, int npv, int cntr, int fwd, int mb, double w){ 
+void Event::Init(int r, int n, int npv, int cntr, int fwd2, int fwd3, int mb, double w){ 
 	this->run = r;
 	this->number = n;
 	this->nPV = npv;
 	this->CNTR = cntr;
-	this->FWD = fwd;
+	this->FWD2 = fwd2;
+	this->FWD3 = fwd3;
 	this->MB = mb;
 	this->weight = w;
 };

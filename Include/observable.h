@@ -1,6 +1,7 @@
 #include<TFile.h>
 #include<TH1.h>
 #include<TGraphAsymmErrors.h>
+#include"sample.h"
 #include"function.h"
 #include"object.h"
 
@@ -15,6 +16,7 @@ class Observable {
 		int n_events = 0;
 		Object* object;
 		Function* function;
+		Sample* sample;
 
 		void FillValues(string , vector<double> , vector<double>);
 
@@ -22,7 +24,7 @@ class Observable {
 		TH1D *data,*jecp,*jecm,*hpu,*lpu;
 
 		TString name;
-		Observable(Object *, Function *, TString);
+		Observable(Object *, Function *, Sample *);
 		void ReadEvent(Event *);
 		void AverageAndNormalize();
 		void WriteToFile(TString );

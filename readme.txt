@@ -55,6 +55,8 @@ Source/Include  - *.cpp and *.h files correspondingly
 
 	result.cpp/h.		- class "Result" calculation on several observables
 
+	sample.cpp/.h		- class "Sample" for set of events (central, minbias, merged, etc.)
+
 	event.cpp/.h		- class "Event" for event data (nPV, triggers, weigth, jets, etc.)
 
 	bining.h		- global definition of bining arrays
@@ -70,25 +72,31 @@ class Measurement	- the main class over which all functionality is realised
 /access_to_the_data	- [DONE] class "Dataset" to manage TTree name, branch names in TTrees and path to listing
 			  Measurement -> ReadDataset() -> ReadFile() -> ReadEvent(), Observable -> ReadEvent()
 
-/efficiency_calc	- [IN PROGRESS] family of observables MINBIAS
+/efficiency_calc	- [IN PROGRESS] class "Sample" to measure observables on various sets of events
+			  based on triggers - "central_trg", "forward2_trg", "forward3_trg" samples
+			  based on dataset  - "unbiased" sample
 
-/samples_merging	- [IN PROGRESS] families of observables CNTR, FWD, CNTRnoFWD
+/samples_merging	- [IN PROGRESS] new samples for calculating weights and merging
+			  based on dataset 		 - "low_pthat", "high_pthat" samples
+			  based on datasets and triggers - "central", "central_no_fwd", "forward" samples
+			  based on reweighting		 - "merged" sample
 
-/pileup			- [IN PROGRESS] the   same   as   for  JEC,  but   reference  file 
-			  not written yet
+/pileup			- [IN PROGRESS] the same as for JEC, but reference file not written yet
 
 /jec_study		- [DONE] jet energy correction  study  of  the   data,   for   each 
 			  observable from  the  set  of  observables  it  plots  observable
 			  on  jets   with pt_plus_unc and pt_minus_unc
 
+/mc_processing		- [TO BE DONE]
+
 /jer_study		- [TO BE DONE]
 
-/phi_res		- [TO BE DONE]
-
-/eta_res		- [TO BE DONE]
+/phi&eta_res		- [TO BE DONE]
 
 /unfolding		- [TO BE DONE]
 
 /final_values		- [IN PROGRESS] class "Result"
 
 /total_syst		- [IN PROGRESS] class "Result"
+
+/syst_correlations	- [TO BE DONE]

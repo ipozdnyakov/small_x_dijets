@@ -1,11 +1,11 @@
 #include<iostream>
-#include"measurement.h"
-#include"function.h"
-//#include"trigger.h"
-#include"object.h"
-#include"result.h"
 #include"dataset.h"
 #include"bining.h"
+#include"measurement.h"
+#include"function.h"
+#include"object.h"
+#include"result.h"
+#include"sample.h"
 
 using namespace std;
 
@@ -15,7 +15,7 @@ void BasicDistributions();
 void DeltaPhiDynamics();
 void DeltaYDynamics();
 
-//DECLARATION OF DATASETSS
+//DECLARATION OF DATASETS
 // to add - listing should be added
 // 	  - case should be added into constructor of class Dataset::Dataset() in dataset.cpp
 	Dataset *data = new Dataset("13TeV_data_2015C_FSQJets3");
@@ -47,9 +47,18 @@ void DeltaYDynamics();
 	Function *cos2_3 = new Function("cos2_3(dy)", drap_bins, n_drap_bins);
 	Function *cos_21 = new Function("cos_21(dy)", drap_bins, n_drap_bins);
 	Function *cos_32 = new Function("cos_32(dy)", drap_bins, n_drap_bins);
-//DECLARATION OF TRIGGERS
-// to add - ???
-	//Trigger *central = new Trigger("central");
+//DECLARATION OF SAMPLES
+// to add - case should be added into function of class Sample::CheckEvent() in sample.cpp
+	Sample *unbiased 	= new Sample("unbiased");
+	Sample *central_trg 	= new Sample("central_trg");
+	Sample *forward2_trg 	= new Sample("forward2_trg");
+	Sample *forward3_trg	= new Sample("forward3_trg");
+	Sample *low_pthat	= new Sample("low_pthat");
+	Sample *high_pthat	= new Sample("hogh_pthat");
+	Sample *central 	= new Sample("central");
+	Sample *central_no_fwd 	= new Sample("central_no_fwd");
+	Sample *forward 	= new Sample("forward");
+	Sample *merged	 	= new Sample("merged");
 //DECLARATION OF RESULTS
 // to add - ???
 	Result *dphi_mn_1 = new Result("dphi_low_mn");
@@ -61,9 +70,9 @@ int main(int argc, char** argv) {
 
 	EfficiencyCalculation();
 
-	BasicDistributions();
-	DeltaPhiDynamics();
-	DeltaYDynamics();
+//	BasicDistributions();
+//	DeltaPhiDynamics();
+//	DeltaYDynamics();
 
 	return (EXIT_SUCCESS);
 };
@@ -75,6 +84,7 @@ void EfficiencyCalculation(){
 
 	eff->IncludeFunction(pt);
 	eff->IncludeObject(incl);
+	eff->IncludeSample(unbiased);
 
 };
 

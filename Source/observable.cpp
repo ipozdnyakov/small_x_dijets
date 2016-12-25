@@ -5,10 +5,13 @@
 using namespace std;
 #define pi 3.1415926
 
-Observable::Observable(Object *object, Function *function, TString name){
-	this->object = object;
-	this->function = function;
-	this->name =  function->name + "_" + object->name + "_" + name;
+Observable::Observable(Object *object, Function *function, Sample *sample){
+
+	this->object	= object;
+	this->function	= function;
+	this->sample	= sample;
+
+	this->name =  function->name + "_" + object->name + "_" + sample->name;
 
         data = new TH1D(this->name + "_DATA", this->name + "_DATA", function->n_bins, function->bins);
         data->Sumw2();
@@ -32,18 +35,23 @@ Observable::Observable(Object *object, Function *function, TString name){
 };
 
 void Observable::ReadEvent(Event *event){	
-        if(event->nPV == 1){
+        if(sample->CheckEvent(event)){
 		this->n_events++;
 
 		object->LoadEvent(event);
 		function->CalculateValues(object);
+
 		this->FillValues("data",function->values,function->weights);
+
 		if(event->RunPileUp() == "H"){
 			this->FillValues("hpu",function->values,function->weights);
+
 		}
+
 		if(event->RunPileUp() == "L"){
 			this->FillValues("lpu",function->values,function->weights);
 		}
+
 		function->Clear();
 		object->Clear();
 

@@ -11,39 +11,48 @@ Measurement::Measurement(TString title, TString specification){
 };
 
 void Measurement::IncludeObject(Object *object){
-
 	this->objects.push_back(object);
 
-	vector<Observable*> new_central;
-	vector<Observable*> new_central_no_fwd;
-	vector<Observable*> new_forward;
-	vector<Observable*> new_minimum_bias;
+	vector<vector<Observable*>>	for_each_function;
+	vector<Observable*> 		for_each_function_and_sample;
 
-	for(int i = 0; i < this->functions.size(); i++){
-		new_central.push_back(new Observable(object,functions[i],"CNTR"));
-		new_central_no_fwd.push_back(new Observable(object,functions[i],"CNTRnoFWD"));
-		new_forward.push_back(new Observable(object,functions[i],"FWD"));
-		new_minimum_bias.push_back(new Observable(object,functions[i],"MINBIAS"));
+	for(int j = 0; j < this->functions.size(); j++){
+		for(int k = 0; k < this->samples.size(); k++){
+			for_each_function_and_sample.push_back(new Observable(object,functions[j],samples[k]));
+		}
+		for_each_function.push_back(for_each_function_and_sample);
+		for_each_function_and_sample.clear();
 	}
 
-	this->central.push_back(new_central);
-	this->central_no_fwd.push_back(new_central_no_fwd);
-	this->forward.push_back(new_forward);
-	this->minimum_bias.push_back(new_minimum_bias);
-	
+	this->observables.push_back(for_each_function);
 };
 
 void Measurement::IncludeFunction(Function *function){
 	this->functions.push_back(function);
 
+	vector<Observable*> for_each_object_and_sample;
+
 	for(int i = 0; i < this->objects.size(); i++){
-		this->central[i].push_back(new Observable(objects[i],function,"CNTR"));
-		this->central_no_fwd[i].push_back(new Observable(objects[i],function,"CNTRnoFWD"));
-		this->forward[i].push_back(new Observable(objects[i],function,"FWD"));
-		this->minimum_bias[i].push_back(new Observable(objects[i],function,"MINBIAS"));
+		for(int k = 0; k < this->samples.size(); k++){
+			for_each_object_and_sample.push_back(new Observable(objects[i],function,samples[k]));
+		}
+		this->observables[i].push_back(for_each_object_and_sample);
+		for_each_object_and_sample.clear();
 	}
 
 };
+
+void Measurement::IncludeSample(Sample *sample){
+	this->samples.push_back(sample);
+
+	for(int i = 0; i < this->objects.size(); i++){
+		for(int j = 0; j < this->functions.size(); j++){
+		this->observables[i][j].push_back(new Observable(objects[i],functions[j],sample));
+		}
+	}
+
+};
+
 
 void Measurement::IncludeResult(Result *result){
 	this->results.push_back(result);
@@ -116,13 +125,13 @@ void Measurement::ReadFile(string name, Dataset *dataset){
 	if(pt_v != 0){
 		for(int i = 0 ; i < nentries ; i++){
 			tree->GetEntry(i);
-			event->Init(iRun, iEvent, nPV, CNTR, FWD2, -1, 1.);
+			event->Init(iRun, iEvent, nPV, CNTR, FWD2, FWD3, -1, 1.);
 			event->AddJets(*pt_v, *eta_v, *phi_v, *rap_v, *cor_v, *unc_v);
 			this->ReadEvent(event);
 			event->Clear();
 		}
 	}else{
-		event->Init(iRun, iEvent, nPV, CNTR, FWD2, -1, 1.);
+		event->Init(iRun, iEvent, nPV, CNTR, FWD2, FWD3, -1, 1.);
 		for(int i = 0 ; i < nentries ; i++){
 			tree->GetEntry(i);
 				//cout << iRun << " " << iEvent << " " << nPV << " " << CNTR << " " << FWD2 << " " << FWD3 
@@ -134,7 +143,7 @@ void Measurement::ReadFile(string name, Dataset *dataset){
 				nEvent = iEvent;
 				this->ReadEvent(event);
 				event->Clear();
-				event->Init(iRun, iEvent, nPV, CNTR, FWD3, -1, 1.);
+				event->Init(iRun, iEvent, nPV, CNTR, FWD2, FWD3, -1, 1.);
 	   		}
 		}
 	}
@@ -144,47 +153,30 @@ void Measurement::ReadEvent(Event *event){
 	this->n_events++;
 	for(int i = 0; i < this->objects.size(); i++){
 		for(int j = 0; j < this->functions.size(); j++){
-			if(event->CNTR > 0){
-				this->central[i][j]->ReadEvent(event);
-				if(event->FWD == 0.) this->central_no_fwd[i][j]->ReadEvent(event);
+			for(int k = 0; k < this->samples.size(); k++){
+				this->observables[i][j][k]->ReadEvent(event);
 			}
-			if(event->FWD > 0) this->forward[i][j]->ReadEvent(event);
-			if(event->MB > 0) this->minimum_bias[i][j]->ReadEvent(event);
 		}
 	}
 };
 
 
-Observable* Measurement::GetObservableCentral(TString object_name, TString function_name){
+Observable* Measurement::GetObservableCentral(TString object_name, TString function_name, TString sample_name){
 
 	for(int i = 0; i < this->objects.size(); i++){
 		for(int j = 0; j < this->functions.size(); j++){
-			if((objects[i]->name == object_name)&&(functions[i]->name == function_name)){
-				return this->central[i][j];
+			for(int k = 0; k < this->samples.size(); k++){
+				if(   (objects[i]->name == object_name)
+				    &&(functions[j]->name == function_name)
+				    &&(samples[k]->name == sample_name)){
+					return this->observables[i][j][k];
+				}
 			}
 		}
 	}
 
 	cout << "Observable for object " << object_name << " and function " << function_name << "not found\n";
 	return 0;
-};
-
-void Measurement::Merge(){
-        if(this->merged){
-                cout << "Measurement Error: Measurement already merged\n";
-                return;
-        }
-
-	for(int i = 0; i < this->objects.size(); i++){	
-		for(int j = 0; j < this->functions.size(); j++){	
-		        this->central[i][j]->AverageAndNormalize();
-		        this->central_no_fwd[i][j]->AverageAndNormalize();
-		        this->forward[i][j]->AverageAndNormalize();
-		        this->minimum_bias[i][j]->AverageAndNormalize();
-		}
-	}
-
-        this->merged = true;
 };
 
 void Measurement::WriteToFile(TString prefix){
@@ -196,10 +188,9 @@ void Measurement::WriteToFile(TString prefix){
 
 	for(int i = 0; i < this->objects.size(); i++){	
 		for(int j = 0; j < this->functions.size(); j++){	
-		        this->central[i][j]->WriteToFile(name);
-		        this->central_no_fwd[i][j]->WriteToFile(name);
-		        this->forward[i][j]->WriteToFile(name);
-		        this->minimum_bias[i][j]->WriteToFile(name);
+			for(int k = 0; k < this->samples.size(); k++){	
+		        	this->observables[i][j][k]->WriteToFile(name);
+			}
 		}
 	}
 
@@ -213,11 +204,11 @@ void Measurement::CalculateResults(){
 
 	for(int i = 0; i < this->results.size(); i++){
 		if(results[i]->name == "dphi_all_incl"){
-			Observable* dphi = this->GetObservableCentral("INCL","dphi_0");
+			Observable* dphi = this->GetObservableCentral("INCL","dphi_0","merged");
 			dphi->data->Scale(1./dphi->data->Integral());
 			results[i]->result = dphi->data;
 		}else if(results[i]->name == "dphi_low_incl"){
-			Observable* dphi = this->GetObservableCentral("INCL","dphi_1");
+			Observable* dphi = this->GetObservableCentral("INCL","dphi_1","merged");
 			dphi->data->Scale(1./dphi->data->Integral());
 			results[i]->result = dphi->data;
 		}else{

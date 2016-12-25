@@ -16,28 +16,30 @@ using namespace std;
 class Measurement {
 	private:
 		bool results_calculated = false;
-		bool merged = false;
-		vector<vector<Observable*>> central;
-		vector<vector<Observable*>> central_no_fwd;
-		vector<vector<Observable*>> forward;
-		vector<vector<Observable*>> minimum_bias;
+		vector<vector<vector<Observable*>>> observables;
+		//[i-object][j-function][k-sample]
 		vector<Function*> functions;
 		vector<Object*> objects;
 		vector<Result*> results;
+		vector<Sample*> samples;
 	public:
 		string specification;
 		int  n_events = 0;
+
 		Measurement(TString , TString);
-		void IncludeObject(Object *);
+
 		void IncludeFunction(Function *);
+		void IncludeObject(Object *);
 		void IncludeResult(Result *);
+		void IncludeSample(Sample *);
+
 		void ReadDataset(Dataset *);
 		void ReadFile(string , Dataset *);
 		void ReadEvent(Event *);
-		void Merge();
+
 		void CalculateResults();
 		void WriteToFile(TString );
 
-		Observable* GetObservableCentral(TString , TString );
+		Observable* GetObservableCentral(TString , TString , TString );
 };
 #endif // MEASUREMENT_H
