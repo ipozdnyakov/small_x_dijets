@@ -14,7 +14,7 @@ protected:
 
 public:
 	string name;
-
+	bool min_bias_info = false;
 	TString tree_name = "";
 	TString run_num_name = "", lumi_num_name = "", event_num_name = "", nPV_name = "";
 	TString CNTR_trg_name = "", FWD2_trg_name = "", FWD3_trg_name = "";

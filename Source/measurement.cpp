@@ -86,10 +86,13 @@ void Measurement::ReadFile(string name, Dataset *dataset){
 	cout << "Entries: " << nentries << "\t";
 
         Int_t iLumi = 0, iEvent = 0, iRun = 0, nPV = 0;
-	Int_t CNTR = 1, FWD2 = -1, FWD3 = -1;
-	Int_t CNTR_ps = 1, FWD2_ps = -1, FWD3_ps = -1;
+	Int_t CNTR = -1, FWD2 = -1, FWD3 = -1, MB = -1;
+	Int_t CNTR_ps = -1, FWD2_ps = -1, FWD3_ps = -1;
+	double weight = 1.;
         double pt = 0., phi = 0., eta = 0., rap = 0., cor = 0., unc = 0.;
         vector<float> *pt_v = 0, *phi_v = 0, *eta_v = 0, *rap_v = 0, *cor_v = 0, *unc_v = 0;
+
+	if(dataset->min_bias_info) MB = 1;
 
 	if(dataset->lumi_num_name != "") tree->SetBranchAddress(dataset->lumi_num_name, &iLumi);
 	if(dataset->run_num_name != "") tree->SetBranchAddress(dataset->run_num_name, &iRun);
@@ -125,13 +128,13 @@ void Measurement::ReadFile(string name, Dataset *dataset){
 	if(pt_v != 0){
 		for(int i = 0 ; i < nentries ; i++){
 			tree->GetEntry(i);
-			event->Init(iRun, iEvent, nPV, CNTR, FWD2, FWD3, -1, 1.);
+			event->Init(iRun, iEvent, nPV, CNTR, FWD2, FWD3, MB, weight);
 			event->AddJets(*pt_v, *eta_v, *phi_v, *rap_v, *cor_v, *unc_v);
 			this->ReadEvent(event);
 			event->Clear();
 		}
 	}else{
-		event->Init(iRun, iEvent, nPV, CNTR, FWD2, FWD3, -1, 1.);
+		event->Init(iRun, iEvent, nPV, CNTR, FWD2, FWD3, MB, weight);
 		for(int i = 0 ; i < nentries ; i++){
 			tree->GetEntry(i);
 				//cout << iRun << " " << iEvent << " " << nPV << " " << CNTR << " " << FWD2 << " " << FWD3 
@@ -143,7 +146,7 @@ void Measurement::ReadFile(string name, Dataset *dataset){
 				nEvent = iEvent;
 				this->ReadEvent(event);
 				event->Clear();
-				event->Init(iRun, iEvent, nPV, CNTR, FWD2, FWD3, -1, 1.);
+				event->Init(iRun, iEvent, nPV, CNTR, FWD2, FWD3, MB, weight);
 	   		}
 		}
 	}

@@ -10,6 +10,8 @@
 using namespace std;
 
 void EfficiencyCalculation();
+void MergingWeightsCalculation();
+void PileUpCalculation();
 
 void BasicDistributions();
 void DeltaPhiDynamics();
@@ -19,10 +21,11 @@ void DeltaYDynamics();
 // to add - listing should be added
 // 	  - case should be added into constructor of class Dataset::Dataset() in dataset.cpp
 	Dataset *data = new Dataset("13TeV_data_2015C_FSQJets3");
-	Dataset *min_bias = new Dataset("13TeV_data_2015C_MinBias");
+	Dataset *min_bias = new Dataset("13TeV_data_2015C_Min_Bias");
 	Dataset *zerobias = new Dataset("13TeV_data_2015C_ZeroBias");
 //DECLARATION OF OBJECTS
 // to add - case should be added into function of class Object::LoadEvent() in object.cpp
+	Object	 *all_jets = new Object("INCL", 0., 0., 0.);
 	Object	 *incl = new Object("INCL", 35., 35., 35.);
 	Object	 *mn = new Object("MN", 35., 35., 35.);
 	Object	 *excl = new Object("EXCL", 35., 35., 35.);
@@ -83,9 +86,23 @@ void EfficiencyCalculation(){
 	Measurement *eff = new Measurement("eff","_Min_Bias_2015C_data_13TeV_LowPU");
 
 	eff->IncludeFunction(pt);
-	eff->IncludeObject(incl);
-	eff->IncludeSample(unbiased);
 
+	eff->IncludeObject(all_jets);
+
+	eff->IncludeSample(unbiased);
+	eff->IncludeSample(central_trg);
+	eff->IncludeSample(forward2_trg);
+
+	//eff->ReadDataset(min_bias);
+
+	eff->CalculateResults();
+	eff->WriteToFile("./eff");
+};
+
+void MergingWeightsCalculation(){
+};
+
+void PileUpCalculation(){
 };
 
 void BasicDistributions(){

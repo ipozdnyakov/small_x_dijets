@@ -11,7 +11,7 @@ Dataset::Dataset(string str){
 
 //NEW BRAMCHES SHOULD BE ALSO ADDED IN class Measurement::ReadFile()
 
-	if (name == "13TeV_data_2015C_FSQJets3"){
+	if ((name == "13TeV_data_2015C_FSQJets3")||(name == "13TeV_data_2015C_Min_Bias")||(name == "13TeV_data_2015C_ZeroBias")){
 	        this->tree_name         =	"JetTree/data";
         	this->run_num_name	=	"event_run";
 	        this->lumi_num_name     =	"event_lumi";
@@ -26,7 +26,10 @@ Dataset::Dataset(string str){
         	this->eta_vector_name   =	"slimmedJetsPt10_eta";
 	        this->phi_vector_name   =	"slimmedJetsPt10_phi";
         	this->cor_vector_name   =	"slimmedJetsPt10_cor";
-	        this->unc_vector_name   =	"slimmedJetsPt10_unc";		
+	        this->unc_vector_name   =	"slimmedJetsPt10_unc";
+		if ((name == "13TeV_data_2015C_Min_Bias")||(name == "13TeV_data_2015C_ZeroBias")){
+			this->min_bias_info = true;
+		}
 	}else if (name == "FSQJets_2015_2016"){
         	this->tree_name 	=	"JetCollection/jet_tree";
 	        this->run_num_name 	=	"iRun";
