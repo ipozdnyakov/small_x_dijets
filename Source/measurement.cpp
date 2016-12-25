@@ -53,12 +53,6 @@ void Measurement::ReadSample(Sample *sample){
 
         string file_name;
 
-
-        if(sample->name == "13TeV_data_2015C_FSQJets3") sample->Set13TeVNamesCFF();
-        if(sample->name == "FSQJets_2015_2016") sample->Set13TeVNames();
-        if(sample->name == "datasets/FSQJets3_2015C_VdMaugust") sample->Set13TeVNames();
-        if(sample->name == "datasets/7TeV_JetMETTau_Centr") sample->Set7TeVNames();
-
         ifstream data_files("./Docs/listing/" + sample->name);
         cout << "\t-reading data files from set " << sample->name << ":\n";
         while(getline(data_files, file_name)){
