@@ -4,7 +4,7 @@
 //#include"trigger.h"
 #include"object.h"
 #include"result.h"
-#include"sample.h"
+#include"dataset.h"
 #include"bining.h"
 
 using namespace std;
@@ -15,12 +15,12 @@ void BasicDistributions();
 void DeltaPhiDynamics();
 void DeltaYDynamics();
 
-//DECLARATION OF SAMPLES
+//DECLARATION OF DATASETSS
 // to add - listing should be added
-// 	  - case should be added into constructor of class Sample::Sample() in sample.cpp
-	Sample *data = new Sample("13TeV_data_2015C_FSQJets3");
-	Sample *min_bias = new Sample("13TeV_data_2015C_MinBias");
-	Sample *zerobias = new Sample("13TeV_data_2015C_ZeroBias");
+// 	  - case should be added into constructor of class Dataset::Dataset() in dataset.cpp
+	Dataset *data = new Dataset("13TeV_data_2015C_FSQJets3");
+	Dataset *min_bias = new Dataset("13TeV_data_2015C_MinBias");
+	Dataset *zerobias = new Dataset("13TeV_data_2015C_ZeroBias");
 //DECLARATION OF OBJECTS
 // to add - case should be added into function of class Object::LoadEvent() in object.cpp
 	Object	 *incl = new Object("INCL", 35., 35., 35.);
@@ -70,6 +70,7 @@ int main(int argc, char** argv) {
 
 
 void EfficiencyCalculation(){
+
 	Measurement *eff = new Measurement("eff","_Min_Bias_2015C_data_13TeV_LowPU");
 
 	eff->IncludeFunction(pt);
@@ -109,7 +110,7 @@ void DeltaPhiDynamics(){
 	delta_phi->IncludeResult(dphi_mn_2);
 	delta_phi->IncludeResult(dphi_mn_3);
 
-	delta_phi->ReadSample(data);
+	delta_phi->ReadDataset(data);
 
 	delta_phi->CalculateResults();
 	delta_phi->WriteToFile("./delta_phi");
@@ -131,7 +132,7 @@ void DeltaYDynamics(){
 	delta_y->IncludeObject(mn);
 	delta_y->IncludeObject(excl);
 
-	delta_y->ReadSample(data);
+	delta_y->ReadDataset(data);
 
 	delta_y->CalculateResults();
 

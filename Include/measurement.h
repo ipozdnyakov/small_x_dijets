@@ -2,7 +2,7 @@
 #include<TH2.h>
 #include<TROOT.h>
 #include"event.h"
-#include"sample.h"
+#include"dataset.h"
 #include"observable.h"
 #include"function.h"
 #include"object.h"
@@ -31,8 +31,8 @@ class Measurement {
 		void IncludeObject(Object *);
 		void IncludeFunction(Function *);
 		void IncludeResult(Result *);
-		void ReadSample(Sample *);
-		void ReadFile(string , Sample *);
+		void ReadDataset(Dataset *);
+		void ReadFile(string , Dataset *);
 		void ReadEvent(Event *);
 		void Merge();
 		void CalculateResults();

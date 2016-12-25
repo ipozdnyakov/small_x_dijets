@@ -49,17 +49,17 @@ void Measurement::IncludeResult(Result *result){
 	this->results.push_back(result);
 };
 
-void Measurement::ReadSample(Sample *sample){
+void Measurement::ReadDataset(Dataset *dataset){
 
 cout << this->specification << "\t" << this->n_events << "\n";
 
         string file_name;
 
-        ifstream data_files("./Docs/listing/" + sample->name);
-        cout << "\t-reading data files from set " << sample->name << ":\n";
+        ifstream data_files("./Docs/listing/" + dataset->name);
+        cout << "\t-reading data files from set " << dataset->name << ":\n";
         while(getline(data_files, file_name)){
                 cout << "\t" << file_name << "\t";
-                this->ReadFile(file_name, sample);
+                this->ReadFile(file_name, dataset);
         }
 	cout << "\n";
 
@@ -67,12 +67,12 @@ cout << this->specification << "\t" << this->n_events << "\n";
 
 };
 
-void Measurement::ReadFile(string name, Sample *sample){
+void Measurement::ReadFile(string name, Dataset *dataset){
 
 	TString file_name = name;
 	TFile Jfile(file_name);
 	TTree* tree;
-	tree = (TTree*) Jfile.Get(sample->tree_name);
+	tree = (TTree*) Jfile.Get(dataset->tree_name);
 	Int_t nentries = tree->GetEntries();
 	cout << "Entries: " << nentries << "\t";
 
@@ -82,30 +82,30 @@ void Measurement::ReadFile(string name, Sample *sample){
         double pt = 0., phi = 0., eta = 0., rap = 0., cor = 0., unc = 0.;
         vector<float> *pt_v = 0, *phi_v = 0, *eta_v = 0, *rap_v = 0, *cor_v = 0, *unc_v = 0;
 
-	if(sample->lumi_num_name != "") tree->SetBranchAddress(sample->lumi_num_name, &iLumi);
-	if(sample->run_num_name != "") tree->SetBranchAddress(sample->run_num_name, &iRun);
-	if(sample->event_num_name != "") tree->SetBranchAddress(sample->event_num_name, &iEvent);
-	if(sample->nPV_name != "") tree->SetBranchAddress(sample->nPV_name, &nPV);
-	if(sample->CNTR_trg_name != "") tree->SetBranchAddress(sample->CNTR_trg_name, &CNTR);
-	if(sample->FWD2_trg_name != "") tree->SetBranchAddress(sample->FWD2_trg_name, &FWD2);
-	if(sample->FWD3_trg_name != "") tree->SetBranchAddress(sample->FWD3_trg_name, &FWD3);
-	if(sample->CNTR_trg_ps_name != "") tree->SetBranchAddress(sample->CNTR_trg_ps_name, &CNTR_ps);
-	if(sample->FWD2_trg_ps_name != "") tree->SetBranchAddress(sample->FWD2_trg_ps_name, &FWD2_ps);
-	if(sample->FWD3_trg_ps_name != "") tree->SetBranchAddress(sample->FWD3_trg_ps_name, &FWD3_ps);
+	if(dataset->lumi_num_name != "") tree->SetBranchAddress(dataset->lumi_num_name, &iLumi);
+	if(dataset->run_num_name != "") tree->SetBranchAddress(dataset->run_num_name, &iRun);
+	if(dataset->event_num_name != "") tree->SetBranchAddress(dataset->event_num_name, &iEvent);
+	if(dataset->nPV_name != "") tree->SetBranchAddress(dataset->nPV_name, &nPV);
+	if(dataset->CNTR_trg_name != "") tree->SetBranchAddress(dataset->CNTR_trg_name, &CNTR);
+	if(dataset->FWD2_trg_name != "") tree->SetBranchAddress(dataset->FWD2_trg_name, &FWD2);
+	if(dataset->FWD3_trg_name != "") tree->SetBranchAddress(dataset->FWD3_trg_name, &FWD3);
+	if(dataset->CNTR_trg_ps_name != "") tree->SetBranchAddress(dataset->CNTR_trg_ps_name, &CNTR_ps);
+	if(dataset->FWD2_trg_ps_name != "") tree->SetBranchAddress(dataset->FWD2_trg_ps_name, &FWD2_ps);
+	if(dataset->FWD3_trg_ps_name != "") tree->SetBranchAddress(dataset->FWD3_trg_ps_name, &FWD3_ps);
 
-	if(sample->pt_name != "") tree->SetBranchAddress(sample->pt_name, &pt);
-	if(sample->rap_name != "") tree->SetBranchAddress(sample->rap_name, &rap);
-	if(sample->eta_name != "") tree->SetBranchAddress(sample->eta_name, &eta);
-	if(sample->phi_name != "") tree->SetBranchAddress(sample->phi_name, &phi);
-	if(sample->cor_name != "") tree->SetBranchAddress(sample->cor_name, &cor);
-	if(sample->unc_name != "") tree->SetBranchAddress(sample->unc_name, &unc);
+	if(dataset->pt_name != "") tree->SetBranchAddress(dataset->pt_name, &pt);
+	if(dataset->rap_name != "") tree->SetBranchAddress(dataset->rap_name, &rap);
+	if(dataset->eta_name != "") tree->SetBranchAddress(dataset->eta_name, &eta);
+	if(dataset->phi_name != "") tree->SetBranchAddress(dataset->phi_name, &phi);
+	if(dataset->cor_name != "") tree->SetBranchAddress(dataset->cor_name, &cor);
+	if(dataset->unc_name != "") tree->SetBranchAddress(dataset->unc_name, &unc);
 
-	if(sample->pt_vector_name != "") tree->SetBranchAddress(sample->pt_vector_name, &pt_v);
-	if(sample->rap_vector_name != "") tree->SetBranchAddress(sample->rap_vector_name, &rap_v);
-	if(sample->eta_vector_name != "") tree->SetBranchAddress(sample->eta_vector_name, &eta_v);
-	if(sample->phi_vector_name != "") tree->SetBranchAddress(sample->phi_vector_name, &phi_v);
-	if(sample->cor_vector_name != "") tree->SetBranchAddress(sample->cor_vector_name, &cor_v);
-	if(sample->unc_vector_name != "") tree->SetBranchAddress(sample->unc_vector_name, &unc_v);
+	if(dataset->pt_vector_name != "") tree->SetBranchAddress(dataset->pt_vector_name, &pt_v);
+	if(dataset->rap_vector_name != "") tree->SetBranchAddress(dataset->rap_vector_name, &rap_v);
+	if(dataset->eta_vector_name != "") tree->SetBranchAddress(dataset->eta_vector_name, &eta_v);
+	if(dataset->phi_vector_name != "") tree->SetBranchAddress(dataset->phi_vector_name, &phi_v);
+	if(dataset->cor_vector_name != "") tree->SetBranchAddress(dataset->cor_vector_name, &cor_v);
+	if(dataset->unc_vector_name != "") tree->SetBranchAddress(dataset->unc_vector_name, &unc_v);
 
 	tree->GetEntry(0);
 	cout << "Run: " << iRun << " pt:" << pt_v << "\n";

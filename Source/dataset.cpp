@@ -1,11 +1,11 @@
 #include<fstream>
 #include<iostream>
-#include"sample.h"
+#include"dataset.h"
 
 using namespace std;
 
 
-Sample::Sample(string str){
+Dataset::Dataset(string str){
 
 	name = str;
 
@@ -51,7 +51,7 @@ Sample::Sample(string str){
         	this->phi_name 		=       "phi";
 	        this->unc_name 		=       "uncert";
 	}else{
-		cout << "Name set for sample " << name << " not found\n";
+		cout << "Name set for dataset " << name << " not found\n";
 	}
 
 };

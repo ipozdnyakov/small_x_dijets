@@ -1,14 +1,14 @@
 #include<TString.h>
 
-#ifndef _SAMPLE_H
-#define	_SAMPLE_H
+#ifndef _DATASET_H
+#define	_DATASET_H
 
 using namespace std;
 
-class Sample {
+class Dataset {
 
-//Sample is a set of *.root files listed in the file in ./listing
-//the name of the file is the name of the sample
+//Dataset is a set of *.root files listed in the file in ./Docs/listing
+//the name of the file is the name of the dataset
 
 protected:
 
@@ -24,6 +24,6 @@ public:
 	TString pt_vector_name = "", phi_vector_name = "", eta_vector_name = "", rap_vector_name = "";
 	TString cor_vector_name = "", unc_vector_name = "";
 
-	Sample(string );
+	Dataset(string );
 };
-#endif	/* _SAMPLE_H */
+#endif	/* _Dataset_H */
