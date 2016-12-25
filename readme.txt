@@ -25,12 +25,7 @@ a similar set of source files intended to perform specific task
 more sofisticated and flexible control and reuse of similar parts,
 so it goes.
 
-To reflect the nature of the physical analysis of collisions data 
-the workflow in the project is organised as follows
-
-	- each task of the analysis developing in separate branch
-	- after completion branch have to be merged to master branch
-	- finally master branch should be a "button" for running full analysis
+- finally master branch should be a "button" for running full analysis
 
 /Docs		- contains detailed information on various aspects of the analysis, 
 		  additional to this readme.txt 
@@ -48,9 +43,9 @@ main.cpp	- main code of the analysis
 Source/Include  - *.cpp and *.h files correspondingly
 
 
-	sample.cpp/.h		- class "Sample" for accessing events from the input data
-
 	measurement.cpp/.h	- class "Measurement" - combination of several observables
+
+	sample.cpp/.h		- class "Sample" for accessing events from the input data
 
 	observable.cpp/.h	- class "Observable" = object + function = some plot (k_factor, decorr, etc.)
 

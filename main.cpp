@@ -1,6 +1,7 @@
 #include<iostream>
 #include"measurement.h"
 #include"function.h"
+//#include"trigger.h"
 #include"object.h"
 #include"result.h"
 #include"sample.h"
@@ -8,16 +9,25 @@
 
 using namespace std;
 
-int main(int argc, char** argv) {
-//DECLARATION OF MEASUREMENTS
-	Measurement *dijets = new Measurement("dijets","_FSQJets3_2015C_data_13TeV_LowPU");
-//	Measurement *dijets = new Measurement("dijets","_FSQJets_2015_2016_data_13TeV_LowPU");
-//	Measurement *dijets = new Measurement("dijets","_FSQJets_2010_data_7TeV_LowPU");
+void EfficiencyCalculation();
+
+void BasicDistributions();
+void DeltaPhiDynamics();
+void DeltaYDynamics();
+
 //DECLARATION OF SAMPLES
+// to add - listing should be added
+// 	  - case should be added into constructor of class Sample::Sample() in sample.cpp
 	Sample *data = new Sample("13TeV_data_2015C_FSQJets3");
-//	Sample *data = new Sample("datasets/FSQJets3_2015C_VdMaugust");
-//	Sample *data = new Sample("datasets/7TeV_JetMETTau_Centr");
-//ADD FUNCTIONS
+	Sample *min_bias = new Sample("13TeV_data_2015C_MinBias");
+	Sample *zerobias = new Sample("13TeV_data_2015C_ZeroBias");
+//DECLARATION OF OBJECTS
+// to add - case should be added into function of class Object::LoadEvent() in object.cpp
+	Object	 *incl = new Object("INCL", 35., 35., 35.);
+	Object	 *mn = new Object("MN", 35., 35., 35.);
+	Object	 *excl = new Object("EXCL", 35., 35., 35.);
+//DECLARATION OF FUNCTIONS
+// to add - case should be added into function of class Function::CalculateValues() in function.cpp
 	Function *pt = new Function("pt", pt_bins, n_pt_bins);
 	Function *cor = new Function("cor", pt_bins, n_pt_bins);
 	Function *unc = new Function("unc", pt_bins, n_pt_bins);
@@ -37,45 +47,95 @@ int main(int argc, char** argv) {
 	Function *cos2_3 = new Function("cos2_3(dy)", drap_bins, n_drap_bins);
 	Function *cos_21 = new Function("cos_21(dy)", drap_bins, n_drap_bins);
 	Function *cos_32 = new Function("cos_32(dy)", drap_bins, n_drap_bins);
-	//dijets->IncludeFunction(pt);
-	//dijets->IncludeFunction(cor);
-	//dijets->IncludeFunction(unc);
-	//dijets->IncludeFunction(eta);
-	//dijets->IncludeFunction(rap);
-	//dijets->IncludeFunction(phi);
-	//dijets->IncludeFunction(dphi0);
-	dijets->IncludeFunction(dphi1);
-	dijets->IncludeFunction(dphi2);
-	dijets->IncludeFunction(dphi3);
-	dijets->IncludeFunction(drap);
-	dijets->IncludeFunction(cos_1);
-	dijets->IncludeFunction(cos_2);
-	dijets->IncludeFunction(cos_3);
-	dijets->IncludeFunction(cos2_1);
-	dijets->IncludeFunction(cos2_2);
-	dijets->IncludeFunction(cos2_3);
-//ADD OBJECTS	
-	Object	 *incl = new Object("INCL", 35., 35., 35.);
-	Object	 *mn = new Object("MN", 35., 35., 35.);
-	Object	 *excl = new Object("EXCL", 35., 35., 35.);
-	dijets->IncludeObject(incl);
-	dijets->IncludeObject(mn);
-	dijets->IncludeObject(excl);
-//ADD RESULTS
+//DECLARATION OF TRIGGERS
+// to add - ???
+	//Trigger *central = new Trigger("central");
+//DECLARATION OF RESULTS
+// to add - ???
 	Result *dphi_mn_1 = new Result("dphi_low_mn");
 	Result *dphi_mn_2 = new Result("dphi_med_mn");
 	Result *dphi_mn_3 = new Result("dphi_hig_mn");
-	dijets->IncludeResult(dphi_mn_1);
-	dijets->IncludeResult(dphi_mn_2);
-	dijets->IncludeResult(dphi_mn_3);
-//PROCESSING SAMPLE
-	cout << dijets->specification << "\t" << dijets->n_events << "\n";
-	dijets->ReadSample(data);
-	cout << dijets->specification << "\t" << dijets->n_events << "\n";
-//POSTPROCESSING
-	dijets->Merge();
-//GET RESULTS
-	dijets->CalculateResults();
-	dijets->WriteToFile("./dijets");
+
+
+int main(int argc, char** argv) {
+
+	EfficiencyCalculation();
+
+	BasicDistributions();
+	DeltaPhiDynamics();
+	DeltaYDynamics();
+
 	return (EXIT_SUCCESS);
 };
+
+
+void EfficiencyCalculation(){
+	Measurement *eff = new Measurement("eff","_Min_Bias_2015C_data_13TeV_LowPU");
+
+	eff->IncludeFunction(pt);
+	eff->IncludeObject(incl);
+
+};
+
+void BasicDistributions(){
+
+	Measurement *basics = new Measurement("basics","_FSQJets3_2015C_data_13TeV_LowPU");
+
+	basics->IncludeFunction(pt);
+	basics->IncludeFunction(cor);
+	basics->IncludeFunction(unc);
+	basics->IncludeFunction(eta);
+	basics->IncludeFunction(rap);
+	basics->IncludeFunction(phi);
+
+	basics->IncludeObject(incl);
+
+};
+
+void DeltaPhiDynamics(){
+
+	Measurement *delta_phi = new Measurement("delta_phi","_FSQJets3_2015C_data_13TeV_LowPU");
+
+	delta_phi->IncludeFunction(dphi0);
+	delta_phi->IncludeFunction(dphi1);
+	delta_phi->IncludeFunction(dphi2);
+	delta_phi->IncludeFunction(dphi3);
+
+	delta_phi->IncludeObject(incl);
+	delta_phi->IncludeObject(mn);
+	delta_phi->IncludeObject(excl);
+
+	delta_phi->IncludeResult(dphi_mn_1);
+	delta_phi->IncludeResult(dphi_mn_2);
+	delta_phi->IncludeResult(dphi_mn_3);
+
+	delta_phi->ReadSample(data);
+
+	delta_phi->CalculateResults();
+	delta_phi->WriteToFile("./delta_phi");
+};
+
+void DeltaYDynamics(){
+
+	Measurement *delta_y = new Measurement("delta_y","_FSQJets3_2015C_data_13TeV_LowPU");
+
+	delta_y->IncludeFunction(drap);
+	delta_y->IncludeFunction(cos_1);
+	delta_y->IncludeFunction(cos_2);
+	delta_y->IncludeFunction(cos_3);
+	delta_y->IncludeFunction(cos2_1);
+	delta_y->IncludeFunction(cos2_2);
+	delta_y->IncludeFunction(cos2_3);
+
+	delta_y->IncludeObject(incl);
+	delta_y->IncludeObject(mn);
+	delta_y->IncludeObject(excl);
+
+	delta_y->ReadSample(data);
+
+	delta_y->CalculateResults();
+
+	delta_y->WriteToFile("./delta_y");
+
+};
+

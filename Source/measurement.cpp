@@ -51,6 +51,8 @@ void Measurement::IncludeResult(Result *result){
 
 void Measurement::ReadSample(Sample *sample){
 
+cout << this->specification << "\t" << this->n_events << "\n";
+
         string file_name;
 
         ifstream data_files("./Docs/listing/" + sample->name);
@@ -60,6 +62,8 @@ void Measurement::ReadSample(Sample *sample){
                 this->ReadFile(file_name, sample);
         }
 	cout << "\n";
+
+cout << this->specification << "\t" << this->n_events << "\n";
 
 };
 
