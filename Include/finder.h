@@ -21,5 +21,7 @@ using namespace std;
 
 	int find_i_max(vector<double> );
 
+	int find_Nth_value_index(vector<double> , int );
+
 #endif	/* _FINDER_H */
 

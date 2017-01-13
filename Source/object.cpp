@@ -1,8 +1,10 @@
 #include<iostream>
+#include<iomanip>
 #include"finder.h"
 #include"object.h"
 
 using namespace std;
+#define pi 3.1415926
 
 Object::Object(string name, double pt_min_1, double pt_min_2, double pt_veto):name(name){
 
@@ -57,17 +59,23 @@ void Object::LoadEvent(Event *event){
                 if((event->pt[i] < this->pt_min_L)&&(event->pt[i] > this->pt_veto)) this->veto = true;
         }
 
-	if((this->pt_H.size() > 0)&&(this->pt_L.size() > 1)&&(!(this->veto))){
-
-		if(this->name == "MN") this->LoadMN(event);
-		if(this->name == "INCL") this->LoadINCL(event);
-
-	        if((this->pt_H.size() > 0)&&(this->pt_L.size() == 2)){
-			if(this->name == "EXCL") this->LoadINCL(event);
-	        }
-	}
 	this->weight = event->weight;
 	this->loaded = true;
+
+	if((this->pt_H.size() > 0)&&(this->pt_L.size() > 1)&&(!(this->veto))){
+
+		if(this->name == "MN"){
+			this->LoadMN(event);
+		}else if(this->name == "INCL"){
+			this->LoadINCL(event);
+		}else if(this->name == "EXCL"){
+			if((this->pt_H.size() > 0)&&(this->pt_L.size() == 2)) this->LoadINCL(event);
+	        }else{
+	              	cout << "Object::LoadEvent Error: Case for object " << this->name << " not found\n";
+			this->loaded = false;
+		}
+
+	}
 };
 
 void Object::LoadMN(Event *event){
@@ -122,25 +130,17 @@ void Object::LoadINCL(Event *event){
 	}
 };
 void Object::Print(){
-        cout << "\nPrint object\n pt: ";
-        for(int i = 0; i < this->pt.size(); i++){
-                cout << this->pt[i] << "\t";
-        }
-	cout << "\n eta: ";
-        for(int i = 0; i < this->eta.size(); i++){
-                cout << this->eta[i] << "\t";
-        }
-	cout << "\n phi: ";
-        for(int i = 0; i < this->phi.size(); i++){
-                cout << this->phi[i] << "\t";
-        }
-	cout << "\n jet1: ";
+	double dphi = -1;
+        cout << " Print object " << this->name << ":";
+	cout << "\n drap: ";
         for(int i = 0; i < this->i_jet1.size(); i++){
-                cout << this->i_jet1[i] << "\t";
+                cout << setw(10) << fabs(this->eta[i_jet1[i]] - this->eta[i_jet2[i]]) << " ";
         }
-	cout << "\n jet2: ";
+	cout << "\n dphi: ";
         for(int i = 0; i < this->i_jet2.size(); i++){
-                cout << this->i_jet2[i] << "\t";
+                dphi = fabs(this->phi[i_jet1[i]] - this->phi[i_jet2[i]]);
+		if (dphi > pi) dphi = 2*pi - dphi;
+                cout << setw(10) << dphi << " ";
         }
 	cout << "\n";
 }
@@ -155,7 +155,6 @@ void Object::Clear(){
 	this->unc.clear();
 	this->i_jet1.clear();
 	this->i_jet2.clear();
-
 
 	this->pt_H.clear();
 	this->eta_H.clear();

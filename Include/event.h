@@ -12,10 +12,11 @@ private:
 	string jec_cond = "centr";
 
 public:
-	int number, run;
-	int nPV;
-	int CNTR, FWD2, FWD3, MB;
-	double weight;
+	int number = -1, run = -1;
+	int nPV = -1;
+	int CNTR = -1, FWD2 = -1, FWD3 = -1, MB = -1;
+	int CNTR_ps = -1, FWD2_ps = -1, FWD3_ps = -1, MB_ps = -1;
+	double weight = 1.;
 
 	vector<double> pt;	//corrected jet pt 	
 	vector<double> pt_unc;	//JEC uncertainty	 	
@@ -24,11 +25,8 @@ public:
 	vector<double> phi;	 	
 	vector<double> rap;	 	
 
-	Event(): run(-1), number(-1), nPV(-1), CNTR(-1), FWD2(-1), FWD3(-1), MB(-1), weight(0.) { }
-	Event(int r, int n, int npv, int cntr, int fwd2, int fwd3, int mb, double w): 
-		run(r), number(n), nPV(npv), CNTR(cntr), FWD2(fwd2), FWD3(fwd3), MB(mb), weight(w) { }
-	void Init(int , int , int , int , int , int , int , double );
-	string RunPileUp();
+	Event(){};
+	void Init(int , int , int , int , int , int , int , double , int , int , int , int );
 	void JecUp();
 	void JecDown();
 	void JecCentr();
@@ -37,5 +35,6 @@ public:
 	void AddJet(double , double , double , double , double, double);
 	void AddJets(vector<float> , vector<float> , vector<float> , vector<float> , vector<float>, vector<float>);
 
+	string RunPileUp();
 };
 #endif	/* _EVENT_H */

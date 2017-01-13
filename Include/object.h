@@ -23,9 +23,10 @@ class Object {
 		vector<int> i_jet2;
 		double weight;
 
-		vector<double> pt, eta, rap, phi, corr, unc;
-	        vector<double> pt_H, eta_H, rap_H, phi_H, corr_H, unc_H;
-        	vector<double> pt_L, eta_L, rap_L, phi_L, corr_L, unc_L;
+		vector<double> pt, eta, rap, phi, corr, unc;	// all jets from each dijet labeled in i_jet1 and i_jet2 
+								// N/B - multi entries are possible in case of INCL object
+	        vector<double> pt_H, eta_H, rap_H, phi_H, corr_H, unc_H; // all jets from event with pt > pt_min_H
+        	vector<double> pt_L, eta_L, rap_L, phi_L, corr_L, unc_L; // all	jets from event	with pt	> pt_min_L
 
 
 		Object(string , double , double , double);

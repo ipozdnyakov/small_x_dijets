@@ -1,6 +1,8 @@
 #include<iostream>
-#include"function.h"
+#include<iomanip>
 #include"bining.h"
+#include"finder.h"
+#include"function.h"
 
 using namespace std;
 #define pi 3.1415926
@@ -15,81 +17,78 @@ void Function::CalculateValues(Object *object){
 	if(this->name == "pt"){
 		this->values = object->pt;
 		this->SetPlainWeights(object);
-	}
-
-	if(this->name == "cor"){
+	}else if(this->name == "pt_lead"){
+        	int i = find_Nth_value_index(object->pt_L, 1);
+		double pt = object->pt_L[i];
+		if(pt > 0.) this->values.push_back(pt);
+		this->SetPlainWeights(object);
+	}else if(this->name == "pt_sublead"){
+        	int i = find_Nth_value_index(object->pt_L, 2);
+		double pt = object->pt_L[i];
+		if(pt > 0.) this->values.push_back(pt);
+		this->SetPlainWeights(object);
+	}else if(this->name == "pt_sublead_fwd3"){
+        	int i = find_Nth_value_index(object->pt_L, 2);
+		double pt = object->pt_L[i];
+		double eta = object->eta_L[i];
+		if((pt > 0.)&&(fabs(eta) > 3.)) this->values.push_back(pt);
+		this->SetPlainWeights(object);
+	}else if(this->name == "pt_sublead_fwd1d3"){
+        	int i = find_Nth_value_index(object->pt_L, 2);
+		double pt = object->pt_L[i];
+		double eta = object->eta_L[i];
+		if((pt > 0.)&&(fabs(eta) < 1.3)) this->values.push_back(pt);
+		this->SetPlainWeights(object);
+	}else if(this->name == "cor"){
 		this->values = object->corr;
 		this->SetPlainWeights(object);
-	}
-
-	if(this->name == "unc"){
+	}else if(this->name == "unc"){
 		this->values = object->unc;
 		this->SetPlainWeights(object);
-	}
-
-	if(this->name == "eta"){
+	}else if(this->name == "eta"){
 		this->values = object->eta;
 		this->SetPlainWeights(object);
-	}
-
-	if(this->name == "rap"){
+	}else if(this->name == "rap"){
 		this->values = object->rap;
 		this->SetPlainWeights(object);
-	}
-
-	if(this->name == "phi"){
+	}else if(this->name == "phi"){
 		this->values = object->phi;
 		this->SetPlainWeights(object);
-	}
-
-	if(this->name == "dphi0_9.4"){
+	}else if(this->name == "dphi0_9.4"){
 		this->SetDphiInDrap(0., 9.4, object);
 		this->SetPlainWeights(object);
-	}
-
-	if(this->name == "dphi0_3"){
+	}else if(this->name == "dphi0_3"){
 		this->SetDphiInDrap(0., 3.0, object);
 		this->SetPlainWeights(object);
-	}
-
-	if(this->name == "dphi3_6"){
+	}else if(this->name == "dphi3_6"){
 		this->SetDphiInDrap(3.0, 6.0, object);
 		this->SetPlainWeights(object);
-	}
-
-	if(this->name == "dphi6_9.4"){
+	}else if(this->name == "dphi6_9.4"){
 		this->SetDphiInDrap(6.0, 9.4, object);
 		this->SetPlainWeights(object);
-	}
-
-	if(this->name == "drap"){
+	}else if(this->name == "drap"){
 		this->SetDrapInDphi(0., pi, object);
 		this->SetPlainWeights(object);
-	}
-
-	if(this->name == "cos_1(dy)"){
+	}else if(this->name == "cos_1(dy)"){
 		this->SetCosNPowerMvsDrap(1., 1., object);
-	}
-
-	if(this->name == "cos_2(dy)"){
+	}else if(this->name == "cos_2(dy)"){
 		this->SetCosNPowerMvsDrap(2., 1., object);
-	}
-
-	if(this->name == "cos_3(dy)"){
+	}else if(this->name == "cos_3(dy)"){
 		this->SetCosNPowerMvsDrap(3., 1., object);
-	}
-
-	if(this->name == "cos2_1(dy)"){
+	}else if(this->name == "cos2_1(dy)"){
 		this->SetCosNPowerMvsDrap(1., 2., object);
-	}
-
-	if(this->name == "cos2_2(dy)"){
+	}else if(this->name == "cos2_2(dy)"){
 		this->SetCosNPowerMvsDrap(2., 2., object);
+	}else if(this->name == "cos2_3(dy)"){
+		this->SetCosNPowerMvsDrap(3., 2., object);
+	}else{
+              	cout << "Function Error: Case for function " << this->name << " not found\n";
 	}
 
-	if(this->name == "cos2_3(dy)"){
-		this->SetCosNPowerMvsDrap(3., 2., object);
-	}
+/*
+        Function *cos_21 = new Function("cos_21(dy)", drap_bins, n_drap_bins);
+        Function *cos_32 = new Function("cos_32(dy)", drap_bins, n_drap_bins);
+*/
 
 };
 
@@ -177,13 +176,13 @@ void Function::SetDrapInDphi(double dphi_min, double dphi_max, Object *object){
 };
 
 void Function::Print(){
-//        cout << "\nPrint function:\n values: ";
+        cout << " Print function "<< this->name << ":\n values: ";
         for(int i = 0; i < this->values.size(); i++){
-                cout << this->values[i] << "\t";
+                cout << setw(10) << this->values[i] << " ";
         }
-//	cout << "\n weights: ";
+	cout << "\n weights: ";
         for(int i = 0; i < this->weights.size(); i++){
-//                cout << this->weights[i] << "\t";
+                cout << setw(10) << this->weights[i] << " ";
         }
 	cout << "\n";
 };

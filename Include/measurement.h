@@ -15,13 +15,12 @@ using namespace std;
 
 class Measurement {
 	private:
-		bool results_calculated = false;
 		vector<vector<vector<Observable*>>> observables;
 		//[i-object][j-function][k-sample]
 		vector<Function*> functions;
 		vector<Object*> objects;
-		vector<Result*> results;
 		vector<Sample*> samples;
+		vector<Result*> results;
 	public:
 		string specification;
 		int  n_events = 0;
@@ -30,16 +29,16 @@ class Measurement {
 
 		void IncludeFunction(Function *);
 		void IncludeObject(Object *);
-		void IncludeResult(Result *);
 		void IncludeSample(Sample *);
 
 		void ReadDataset(Dataset *);
+		void ReadDatasetFast(Dataset *);
 		void ReadFile(string , Dataset *);
 		void ReadEvent(Event *);
 
-		void CalculateResults();
+		void CalculateResult(Result *);
 		void WriteToFile(TString );
 
-		Observable* GetObservableCentral(TString , TString , TString );
+		Observable* GetObservable(TString , TString , TString );
 };
 #endif // MEASUREMENT_H

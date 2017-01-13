@@ -54,7 +54,6 @@ return dphi;
 //////////////////
 
 
-
 //////////////////
 //FIND CLOSEST JET
 int find_closest(double phi_v, double y_v, vector<double> phi_v_m, vector<double> y_v_m, double *dr, int except){
@@ -115,7 +114,7 @@ if(y_v.size() != phi_v.size()){
 ////////////////////////////////
 
 ////////////////////////////////
-//FIND INDEX ofjet with min Y
+//FIND INDEX of jet with min Y
 int find_i_min(vector<double> y_v){
 int i = 0, j = 0;
 double y_min = 10;
@@ -144,3 +143,27 @@ double y_max = -10;
 	return i;
 };
 ////////////////////////////////
+
+////////////////////////////////
+//FIND Nth value in the vector
+int find_Nth_value_index(vector<double> v_v, int N){
+
+        if(N < 1) cout << "Error in Event: Index of Nth-Pt jet should be 1 for leading, 2 for next-to-leading and so on \n";
+
+        int index = 0;
+
+        for(int i = 0; i < v_v.size(); i++){
+
+                index = v_v.size()+1;
+
+                for(int j = 0; j < v_v.size(); j++){
+                        if(v_v[i] >= v_v[j]){
+                                index--;
+                       	}
+                }
+
+                if(index == N) return i;
+
+        }
+	return -1;
+};

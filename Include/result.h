@@ -11,8 +11,11 @@ class Result {
 	private:
 
 	public:
+		bool calculated = false;
+
 		TH1D *result;
 		TGraphAsymmErrors *syst;
+
 		TString name;
 		Result(TString );
 		void WriteToFile(TString );

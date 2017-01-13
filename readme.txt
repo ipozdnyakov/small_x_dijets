@@ -46,16 +46,18 @@ Source/Include  - *.cpp and *.h files correspondingly
 	dataset.cpp/.h		- class "Dataset" for storing files and names for data in files
 
 	measurement.cpp/.h	- class "Measurement" - combination of several observables
+				>> push each event to each observable
 
-	observable.cpp/.h	- class "Observable" = object + function = some plot (k_factor, decorr, etc.)
-
-	function.cpp/.h		- class "Function" for particular values from  phenomena (pt, dphi, etc.)
-
-	object.cpp/.h		- class "Object" for phenomena from event (MN, incl dijets, etc.)
-
-	result.cpp/h.		- class "Result" calculation on several observables
+	observable.cpp/.h	- class "Observable" = sample + object + function = some distribution
+				>> check if event entry in the sample	- Sample->CheckEvent(event)
+				>> construct object from event		- Object->LoadEvent(event)
+				>> calculate function from object	- Function->CalculateValues(object)
 
 	sample.cpp/.h		- class "Sample" for set of events (central, minbias, merged, etc.)
+	object.cpp/.h		- class "Object" for phenomena from event (MN, incl dijets, etc.)
+	function.cpp/.h		- class "Function" for particular values from  phenomena (pt, dphi, etc.)
+
+	result.cpp/h.		- class "Result" calculation on several observables = some plot (eff, k_factor, decorr, etc.)
 
 	event.cpp/.h		- class "Event" for event data (nPV, triggers, weigth, jets, etc.)
 
@@ -72,9 +74,9 @@ class Measurement	- the main class over which all functionality is realised
 /access_to_the_data	- [DONE] class "Dataset" to manage TTree name, branch names in TTrees and path to listing
 			  Measurement -> ReadDataset() -> ReadFile() -> ReadEvent(), Observable -> ReadEvent()
 
-/efficiency_calc	- [IN PROGRESS] class "Sample" to measure observables on various sets of events
-			  based on triggers - "central_trg", "forward2_trg", "forward3_trg" samples
-			  based on dataset  - "unbiased" sample
+/efficiency_calc	- [DONE] class "Sample" to measure observables on various sets of events
+			  based on triggers + selection - "central_trg", "forward2_trg", "forward3_trg" samples
+			  based on dataset  + selection - "unbiased" sample
 
 /samples_merging	- [IN PROGRESS] new samples for calculating weights and merging
 			  based on dataset 		 - "low_pthat", "high_pthat" samples

@@ -1,4 +1,5 @@
 #include<vector>
+#include<iomanip>
 #include"CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
 #include"event.h"
 
@@ -45,35 +46,39 @@ void Event::JecCentr(){
 void Event::Print(){
 
 	cout << "===========================================================";
-	cout << "Event " << this->number;
-	cout << "\nrun " << this->run;
+	cout << "\nEvent " << this->number;
+	cout << "; run " << this->run;
 	cout << "; nPV " << this->nPV;
 	cout << "; CNTR " << this->CNTR;
 	cout << "; FWD2 " << this->FWD2;
 	cout << "; FWD3 " << this->FWD3;
 	cout << "; MB " << this->MB;
 	cout << "; weight " << this->weight;
+	cout << "; CNTR_ps " << this->CNTR_ps;
+	cout << "; FWD2_ps " << this->FWD2_ps;
+	cout << "; FWD3_ps " << this->FWD3_ps;
+	cout << "; MB_ps " << this->MB_ps;
 
-	cout << "\nPrint event:\n pt: ";
+	cout << "\nPrint event:\n pt:  ";
 	for(int i = 0; i < this->pt.size(); i++){
-		cout << this->pt[i] << "\t";
+		cout << setw(10) << this->pt[i] << " ";
 	}
 	cout << "\n eta: ";
 	for(int i = 0; i < this->eta.size(); i++){
-		cout << this->eta[i] << "\t";
+		cout << setw(10) << this->eta[i] << " ";
 	}
 	cout << "\n rap: ";
 	for(int i = 0; i < this->rap.size(); i++){
-		cout << this->rap[i] << "\t";
+		cout << setw(10) <<  this->rap[i] << " ";
 	}
 	cout << "\n phi: ";
 	for(int i = 0; i < this->phi.size(); i++){
-		cout << this->phi[i] << "\t";
+		cout << setw(10) << this->phi[i] << " ";
 	}
 	cout << "\n";
 };
 
-void Event::Init(int r, int n, int npv, int cntr, int fwd2, int fwd3, int mb, double w){ 
+void Event::Init(int r, int n, int npv, int cntr, int fwd2, int fwd3, int mb, double w, int cntr_ps, int fwd2_ps, int fwd3_ps, int mb_ps){ 
 	this->run = r;
 	this->number = n;
 	this->nPV = npv;
@@ -82,6 +87,10 @@ void Event::Init(int r, int n, int npv, int cntr, int fwd2, int fwd3, int mb, do
 	this->FWD3 = fwd3;
 	this->MB = mb;
 	this->weight = w;
+	this->CNTR_ps = cntr_ps;
+	this->FWD2_ps = fwd2_ps;
+	this->FWD3_ps = fwd3_ps;
+	this->MB_ps = mb_ps;
 };
 
 void Event::Clear(){
@@ -131,12 +140,6 @@ void Event::AddJets(
 		vector<float> jet_pt_cor,		
 		vector<float> jet_pt_unc
         ){
-/*	cout << "\n===========================================================\n";
-	cout << jet_pt.size() << "\n";
-		for(int i = 0; i < jet_pt.size(); ++i){
-			this->pt.push_back(jet_pt[i]);
-		}
-	cout << "===========================================================\n";*/
         	this->pt = vector<double>(jet_pt.begin(), jet_pt.end());
         	this->pt_cor = vector<double>(jet_pt_cor.begin(), jet_pt_cor.end());
         	this->pt_unc = vector<double>(jet_pt_unc.begin(), jet_pt_unc.end());

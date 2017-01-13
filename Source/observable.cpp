@@ -5,6 +5,8 @@
 using namespace std;
 #define pi 3.1415926
 
+extern bool print_this_event;
+
 Observable::Observable(Object *object, Function *function, Sample *sample){
 
 	this->object	= object;
@@ -34,12 +36,19 @@ Observable::Observable(Object *object, Function *function, Sample *sample){
 	lpu->SetStats(false);
 };
 
-void Observable::ReadEvent(Event *event){	
+void Observable::ReadEvent(Event *event){
+
+if(print_this_event) cout << "Observable "<< this->name << ":\n";	
+
         if(sample->CheckEvent(event)){
 		this->n_events++;
 
 		object->LoadEvent(event);
-		function->CalculateValues(object);
+		object->weight = (object->weight)*(sample->weight);
+		if(print_this_event) object->Print();
+	
+ 		function->CalculateValues(object);
+		if(print_this_event) function->Print();
 
 		this->FillValues("data",function->values,function->weights);
 
@@ -109,14 +118,6 @@ void Observable::FillValues(string hist_name, vector<double> values, vector<doub
 			this->lpu->Fill(values[i], weights[i]);
 		}
 	}
-};
-
-void Observable::AverageAndNormalize(){
-	if(this->averaged_and_normalized){
-		cout << "Observable AverageAndNormalize Error: Observable already averaged and normalized!\n";
-		return;
-	}
-	this->averaged_and_normalized = true;
 };
 
 void Observable::WriteToFile(TString name){

@@ -6,6 +6,7 @@
 const int n_pt_bins = 14;
 const int n_eta_towers = 82;
 const int n_phi_towers = 72;
+const int n_fine_pt_bins = 15;
 
 const int n_drap_bins = 13;
 const int n_dphi_bins = 10;
@@ -15,6 +16,11 @@ const double pt_bins[n_pt_bins + 1]={
 		15,	20,	25,	30,	35,	40,
 		50,	60,	80,	100,	120,	160,
 		200,	300,	600};
+
+const double fine_pt_bins[n_fine_pt_bins + 1]={
+		15,	16,	17,	18,	19,	20,
+		22,	24,	26,	28,	32,	36,
+		40,	48,	56,	75};
 
 const double eta_towers[n_eta_towers + 1]={
                 -5.191,	-4.889,	-4.716,	-4.538,	-4.363,	-4.191,

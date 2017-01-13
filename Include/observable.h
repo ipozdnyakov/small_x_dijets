@@ -12,7 +12,6 @@ using namespace std;
 
 class Observable {
 	private:
-		bool averaged_and_normalized = false;
 		int n_events = 0;
 		Object* object;
 		Function* function;
@@ -26,7 +25,6 @@ class Observable {
 		TString name;
 		Observable(Object *, Function *, Sample *);
 		void ReadEvent(Event *);
-		void AverageAndNormalize();
 		void WriteToFile(TString );
 };
 #endif // OBSERVABLE_H

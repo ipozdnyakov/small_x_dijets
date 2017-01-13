@@ -9,6 +9,8 @@
 
 using namespace std;
 
+bool verbose = false, print_this_event = false;
+
 void EfficiencyCalculation();
 void MergingWeightsCalculation();
 void PileUpCalculation();
@@ -23,24 +25,32 @@ void DeltaYDynamics();
 	Dataset *data = new Dataset("13TeV_data_2015C_FSQJets3");
 	Dataset *min_bias = new Dataset("13TeV_data_2015C_Min_Bias");
 	Dataset *zerobias = new Dataset("13TeV_data_2015C_ZeroBias");
+
 //DECLARATION OF OBJECTS
 // to add - case should be added into function of class Object::LoadEvent() in object.cpp
 	Object	 *all_jets = new Object("INCL", 0., 0., 0.);
 	Object	 *incl = new Object("INCL", 35., 35., 35.);
 	Object	 *mn = new Object("MN", 35., 35., 35.);
 	Object	 *excl = new Object("EXCL", 35., 35., 35.);
+
 //DECLARATION OF FUNCTIONS
 // to add - case should be added into function of class Function::CalculateValues() in function.cpp
 	Function *pt = new Function("pt", pt_bins, n_pt_bins);
-	Function *cor = new Function("cor", pt_bins, n_pt_bins);
-	Function *unc = new Function("unc", pt_bins, n_pt_bins);
+	Function *pt_lead = new Function("pt_lead", fine_pt_bins, n_fine_pt_bins);
+	Function *pt_sublead = new Function("pt_sublead", fine_pt_bins, n_fine_pt_bins);
+	Function *pt_sublead_fwd3 = new Function("pt_sublead_fwd3", fine_pt_bins, n_fine_pt_bins);
+	Function *pt_sublead_fwd1d3 = new Function("pt_sublead_fwd1d3", fine_pt_bins, n_fine_pt_bins);
 	Function *eta = new Function("eta", eta_towers, n_eta_towers);
 	Function *rap = new Function("rap", eta_towers, n_eta_towers);
 	Function *phi = new Function("phi", phi_towers, n_phi_towers);
+	Function *cor = new Function("cor", pt_bins, n_pt_bins);
+	Function *unc = new Function("unc", pt_bins, n_pt_bins);
+
 	Function *dphi0 = new Function("dphi0_9.4", fine_dphi_bins, n_fine_dphi_bins);
 	Function *dphi1 = new Function("dphi0_3", dphi_bins, n_dphi_bins);
 	Function *dphi2 = new Function("dphi3_6", dphi_bins, n_dphi_bins);
 	Function *dphi3 = new Function("dphi6_9.4", dphi_bins, n_dphi_bins);
+
 	Function *drap = new Function("drap", drap_bins, n_drap_bins);
 	Function *cos_1 = new Function("cos_1(dy)", drap_bins, n_drap_bins);
 	Function *cos_2 = new Function("cos_2(dy)", drap_bins, n_drap_bins);
@@ -50,23 +60,37 @@ void DeltaYDynamics();
 	Function *cos2_3 = new Function("cos2_3(dy)", drap_bins, n_drap_bins);
 	Function *cos_21 = new Function("cos_21(dy)", drap_bins, n_drap_bins);
 	Function *cos_32 = new Function("cos_32(dy)", drap_bins, n_drap_bins);
+
 //DECLARATION OF SAMPLES
 // to add - case should be added into function of class Sample::CheckEvent() in sample.cpp
-	Sample *unbiased 	= new Sample("unbiased");
-	Sample *central_trg 	= new Sample("central_trg");
-	Sample *forward2_trg 	= new Sample("forward2_trg");
-	Sample *forward3_trg	= new Sample("forward3_trg");
-	Sample *low_pthat	= new Sample("low_pthat");
-	Sample *high_pthat	= new Sample("hogh_pthat");
-	Sample *central 	= new Sample("central");
-	Sample *central_no_fwd 	= new Sample("central_no_fwd");
-	Sample *forward 	= new Sample("forward");
-	Sample *merged	 	= new Sample("merged");
+	Sample *unbiased 		= new Sample("unbiased");
+
+	Sample *unbiased_central 	= new Sample("unbiased_central");
+	Sample *unbiased_forward2	= new Sample("unbiased_forward2");
+	Sample *unbiased_forward3	= new Sample("unbiased_forward3");
+	Sample *central_trg 		= new Sample("central_trg");
+	Sample *forward2_trg 		= new Sample("forward2_trg");
+	Sample *forward3_trg		= new Sample("forward3_trg");
+
+	Sample *low_pthat		= new Sample("low_pthat");
+	Sample *high_pthat		= new Sample("high_pthat");
+	Sample *central 		= new Sample("central");
+	Sample *central_no_fwd 		= new Sample("central_no_fwd");
+	Sample *forward 		= new Sample("forward");
+	Sample *merged	 		= new Sample("merged");
+
 //DECLARATION OF RESULTS
-// to add - ???
+// to add - case should be added into function of class Measurement::CalculateResult() in measurement.cpp
+	Result *eff_pt_sublead_cntr_trg = new Result("eff_pt_sublead_cntr_trg");
+	Result *eff_pt_sublead_fwd3_cntr_trg = new Result("eff_pt_sublead_fwd3_cntr_trg");
+	Result *eff_pt_sublead_fwd1d3_cntr_trg = new Result("eff_pt_sublead_fwd1d3_cntr_trg");
+	Result *eff_pt_sublead_forward2_trg = new Result("eff_pt_sublead_forward2_trg");
+	Result *eff_pt_sublead_forward3_trg = new Result("eff_pt_sublead_forward3_trg");
+	Result *pt_spectrum = new Result("pt_spectrum");
 	Result *dphi_mn_1 = new Result("dphi_low_mn");
 	Result *dphi_mn_2 = new Result("dphi_med_mn");
 	Result *dphi_mn_3 = new Result("dphi_hig_mn");
+	Result *cos_dphi = new Result("cos_dphi");
 
 
 int main(int argc, char** argv) {
@@ -85,17 +109,27 @@ void EfficiencyCalculation(){
 
 	Measurement *eff = new Measurement("eff","_Min_Bias_2015C_data_13TeV_LowPU");
 
-	eff->IncludeFunction(pt);
-
 	eff->IncludeObject(all_jets);
 
-	eff->IncludeSample(unbiased);
+	eff->IncludeFunction(pt_sublead);
+	eff->IncludeFunction(pt_sublead_fwd3);
+	eff->IncludeFunction(pt_sublead_fwd1d3);
+
 	eff->IncludeSample(central_trg);
 	eff->IncludeSample(forward2_trg);
+	eff->IncludeSample(forward3_trg);
+	eff->IncludeSample(unbiased_central);
+	eff->IncludeSample(unbiased_forward2);
+	eff->IncludeSample(unbiased_forward3);
 
-	//eff->ReadDataset(min_bias);
+	eff->ReadDataset(min_bias);
 
-	eff->CalculateResults();
+	eff->CalculateResult(eff_pt_sublead_cntr_trg);
+	eff->CalculateResult(eff_pt_sublead_fwd3_cntr_trg);
+	eff->CalculateResult(eff_pt_sublead_fwd1d3_cntr_trg);
+	eff->CalculateResult(eff_pt_sublead_forward2_trg);
+	eff->CalculateResult(eff_pt_sublead_forward3_trg);
+
 	eff->WriteToFile("./eff");
 };
 
@@ -118,6 +152,14 @@ void BasicDistributions(){
 
 	basics->IncludeObject(incl);
 
+	basics->IncludeSample(merged);
+
+	basics->ReadDataset(data);
+
+	basics->CalculateResult(pt_spectrum);
+
+	basics->WriteToFile("./basics_");
+
 };
 
 void DeltaPhiDynamics(){
@@ -133,13 +175,14 @@ void DeltaPhiDynamics(){
 	delta_phi->IncludeObject(mn);
 	delta_phi->IncludeObject(excl);
 
-	delta_phi->IncludeResult(dphi_mn_1);
-	delta_phi->IncludeResult(dphi_mn_2);
-	delta_phi->IncludeResult(dphi_mn_3);
+	delta_phi->IncludeSample(merged);
 
 	delta_phi->ReadDataset(data);
 
-	delta_phi->CalculateResults();
+	delta_phi->CalculateResult(dphi_mn_1);
+	delta_phi->CalculateResult(dphi_mn_2);
+	delta_phi->CalculateResult(dphi_mn_3);
+
 	delta_phi->WriteToFile("./delta_phi");
 };
 
@@ -159,11 +202,12 @@ void DeltaYDynamics(){
 	delta_y->IncludeObject(mn);
 	delta_y->IncludeObject(excl);
 
+	delta_y->IncludeSample(merged);
+
 	delta_y->ReadDataset(data);
 
-	delta_y->CalculateResults();
+	delta_y->CalculateResult(cos_dphi);
 
 	delta_y->WriteToFile("./delta_y");
 
 };
-
