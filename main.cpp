@@ -28,7 +28,8 @@ void DeltaYDynamics();
 
 //DECLARATION OF OBJECTS
 // to add - case should be added into function of class Object::LoadEvent() in object.cpp
-	Object	 *all_jets = new Object("INCL", 0., 0., 0.);
+	Object	 *all_incl = new Object("INCL", 0., 0., 0.);
+	Object	 *all_mn = new Object("MN", 0., 0., 0.);
 	Object	 *incl = new Object("INCL", 35., 35., 35.);
 	Object	 *mn = new Object("MN", 35., 35., 35.);
 	Object	 *excl = new Object("EXCL", 35., 35., 35.);
@@ -72,12 +73,12 @@ void DeltaYDynamics();
 	Sample *forward2_trg 		= new Sample("forward2_trg");
 	Sample *forward3_trg		= new Sample("forward3_trg");
 
-	Sample *low_pthat		= new Sample("low_pthat");
-	Sample *high_pthat		= new Sample("high_pthat");
-	Sample *central 		= new Sample("central");
-	Sample *central_no_fwd 		= new Sample("central_no_fwd");
-	Sample *forward 		= new Sample("forward");
-	Sample *merged	 		= new Sample("merged");
+	Sample *central_pt35			= new Sample("central_pt35");
+	Sample *central_no_fwd_pt35_eta2d1	= new Sample("central_no_fwd_pt35_eta2.1");
+	Sample *fwd_pt35_eta2d1 		= new Sample("forward_pt35_eta2.1");
+	Sample *merged_pt35_eta2d1	 	= new Sample("merged_pt35_eta2.1");
+	Sample *low_pthat			= new Sample("low_pthat");
+	Sample *high_pthat			= new Sample("high_pthat");
 
 //DECLARATION OF RESULTS
 // to add - case should be added into function of class Measurement::CalculateResult() in measurement.cpp
@@ -86,6 +87,10 @@ void DeltaYDynamics();
 	Result *eff_pt_sublead_fwd1d3_cntr_trg = new Result("eff_pt_sublead_fwd1d3_cntr_trg");
 	Result *eff_pt_sublead_forward2_trg = new Result("eff_pt_sublead_forward2_trg");
 	Result *eff_pt_sublead_forward3_trg = new Result("eff_pt_sublead_forward3_trg");
+
+	Result *forward_incl_pt35_eta2d1_weight = new Result("forward_incl_pt35_eta2.1_weight");
+	Result *forward_mn_pt35_eta2d1_weight = new Result("forward_mn_pt35_eta2.1_weight");
+
 	Result *pt_spectrum = new Result("pt_spectrum");
 	Result *dphi_mn_1 = new Result("dphi_low_mn");
 	Result *dphi_mn_2 = new Result("dphi_med_mn");
@@ -95,7 +100,8 @@ void DeltaYDynamics();
 
 int main(int argc, char** argv) {
 
-	EfficiencyCalculation();
+//	EfficiencyCalculation();
+	MergingWeightsCalculation();
 
 //	BasicDistributions();
 //	DeltaPhiDynamics();
@@ -109,7 +115,7 @@ void EfficiencyCalculation(){
 
 	Measurement *eff = new Measurement("eff","_Min_Bias_2015C_data_13TeV_LowPU");
 
-	eff->IncludeObject(all_jets);
+	eff->IncludeObject(all_incl);
 
 	eff->IncludeFunction(pt_sublead);
 	eff->IncludeFunction(pt_sublead_fwd3);
@@ -130,10 +136,29 @@ void EfficiencyCalculation(){
 	eff->CalculateResult(eff_pt_sublead_forward2_trg);
 	eff->CalculateResult(eff_pt_sublead_forward3_trg);
 
-	eff->WriteToFile("./eff");
+	eff->WriteToFile("./eff", 1 /* 1 - only results, 2 - results and observables */);
 };
 
 void MergingWeightsCalculation(){
+
+	Measurement *weight = new Measurement("weight","_FSQJets3_2015C_data_13TeV_LowPU");
+
+	weight->IncludeObject(all_incl);
+	weight->IncludeObject(all_mn);
+
+	weight->IncludeFunction(drap);
+
+	weight->IncludeSample(central_pt35);
+	weight->IncludeSample(central_no_fwd_pt35_eta2d1);
+	weight->IncludeSample(fwd_pt35_eta2d1);
+	weight->IncludeSample(merged_pt35_eta2d1);
+
+	weight->ReadDataset(data);
+
+	weight->CalculateResult(forward_incl_pt35_eta2d1_weight);
+	weight->CalculateResult(forward_mn_pt35_eta2d1_weight);
+
+	weight->WriteToFile("./weight", 2 /* 1 - only results, 2 - results and observables */);
 };
 
 void PileUpCalculation(){
@@ -152,13 +177,13 @@ void BasicDistributions(){
 
 	basics->IncludeObject(incl);
 
-	basics->IncludeSample(merged);
+	basics->IncludeSample(merged_pt35_eta2d1);
 
 	basics->ReadDataset(data);
 
 	basics->CalculateResult(pt_spectrum);
 
-	basics->WriteToFile("./basics_");
+	basics->WriteToFile("./basics_", 1 /* 1 - only results, 2 - results and observables */);
 
 };
 
@@ -175,7 +200,7 @@ void DeltaPhiDynamics(){
 	delta_phi->IncludeObject(mn);
 	delta_phi->IncludeObject(excl);
 
-	delta_phi->IncludeSample(merged);
+	delta_phi->IncludeSample(merged_pt35_eta2d1);
 
 	delta_phi->ReadDataset(data);
 
@@ -183,7 +208,7 @@ void DeltaPhiDynamics(){
 	delta_phi->CalculateResult(dphi_mn_2);
 	delta_phi->CalculateResult(dphi_mn_3);
 
-	delta_phi->WriteToFile("./delta_phi");
+	delta_phi->WriteToFile("./delta_phi", 1 /* 1 - only results, 2 - results and observables */);
 };
 
 void DeltaYDynamics(){
@@ -202,12 +227,12 @@ void DeltaYDynamics(){
 	delta_y->IncludeObject(mn);
 	delta_y->IncludeObject(excl);
 
-	delta_y->IncludeSample(merged);
+	delta_y->IncludeSample(merged_pt35_eta2d1);
 
 	delta_y->ReadDataset(data);
 
 	delta_y->CalculateResult(cos_dphi);
 
-	delta_y->WriteToFile("./delta_y");
+	delta_y->WriteToFile("./delta_y", 1 /* 1 - only results, 2 - results and observables */);
 
 };

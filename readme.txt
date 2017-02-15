@@ -19,14 +19,6 @@ Top level of the project repository should be placed in /CMSSW_X_X_X/src/.
 
 3. CONTENT OF THE PROJECT
 -------------------------
-Initial commit consisted of separate folders each of which is containing 
-a similar set of source files intended to perform specific task 
-(efficiency study, plotting variables, etc.) Using git allows one to make 
-more sofisticated and flexible control and reuse of similar parts,
-so it goes.
-
-- finally master branch should be a "button" for running full analysis
-
 /Docs		- contains detailed information on various aspects of the analysis, 
 		  additional to this readme.txt 
 
@@ -36,7 +28,7 @@ so it goes.
 
 	/jec_txt	- contains *.txt files with JEC and uncertainties
 
-maker_gcc	- script to compile the code to k_factor.exe, wich is the "final button"
+maker_gcc	- shell script to compile the code to k_factor.exe, wich is the "final button"
 
 main.cpp	- main code of the analysis
 
@@ -55,9 +47,9 @@ Source/Include  - *.cpp and *.h files correspondingly
 
 	sample.cpp/.h		- class "Sample" for set of events (central, minbias, merged, etc.)
 	object.cpp/.h		- class "Object" for phenomena from event (MN, incl dijets, etc.)
-	function.cpp/.h		- class "Function" for particular values from  phenomena (pt, dphi, etc.)
+	function.cpp/.h		- class "Function" for particular values from  phenomena (pt, dphi, dy, etc.)
 
-	result.cpp/h.		- class "Result" calculation on several observables = some plot (eff, k_factor, decorr, etc.)
+	result.cpp/.h		- class "Result" calculation on several observables = some plot (eff, k_factor, decorr, etc.)
 
 	event.cpp/.h		- class "Event" for event data (nPV, triggers, weigth, jets, etc.)
 
@@ -78,10 +70,11 @@ class Measurement	- the main class over which all functionality is realised
 			  based on triggers + selection - "central_trg", "forward2_trg", "forward3_trg" samples
 			  based on dataset  + selection - "unbiased" sample
 
-/samples_merging	- [IN PROGRESS] new samples for calculating weights and merging
+/samples_merging	- [DONE] new samples for calculating weights and merging
 			  based on dataset 		 - "low_pthat", "high_pthat" samples
 			  based on datasets and triggers - "central", "central_no_fwd", "forward" samples
 			  based on reweighting		 - "merged" sample
+			 //weight of forward for pt35 and eta 2.1 is 0.3, but stats decreases by less than 1%
 
 /pileup			- [IN PROGRESS] the same as for JEC, but reference file not written yet
 
@@ -97,7 +90,7 @@ class Measurement	- the main class over which all functionality is realised
 
 /unfolding		- [TO BE DONE]
 
-/final_values		- [IN PROGRESS] class "Result"
+/final_values		- [DONE] class "Result" which calculate some values according to the instructions labeled by its name
 
 /total_syst		- [IN PROGRESS] class "Result"
 

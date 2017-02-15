@@ -213,26 +213,31 @@ Observable* Measurement::GetObservable(TString object_name, TString function_nam
 	return 0;
 };
 
-void Measurement::WriteToFile(TString prefix){
+void Measurement::WriteToFile(TString prefix, int mode){
 
 	TString name = prefix + this->specification + ".root";
 
 	TFile *file = new TFile(name,"RECREATE");
 	file->Close();
 
-	for(int i = 0; i < this->objects.size(); i++){	
-		for(int j = 0; j < this->functions.size(); j++){	
-			for(int k = 0; k < this->samples.size(); k++){	
-		        	this->observables[i][j][k]->WriteToFile(name);
+	if(mode > 1){
+		for(int i = 0; i < this->objects.size(); i++){	
+			for(int j = 0; j < this->functions.size(); j++){	
+				for(int k = 0; k < this->samples.size(); k++){	
+		        		this->observables[i][j][k]->WriteToFile(name);
+				}
 			}
 		}
 	}
 
-	for(int i = 0; i < this->results.size(); i++){
-		if(results[i]->calculated){
-			results[i]->WriteToFile(name);
+	if(mode > 0){
+		for(int i = 0; i < this->results.size(); i++){
+			if(results[i]->calculated){
+				results[i]->WriteToFile(name);
+			}
 		}
 	}
+
 };
 
 void Measurement::CalculateResult(Result *result){
@@ -301,6 +306,36 @@ void Measurement::CalculateResult(Result *result){
 		result->result->SetName(result->name);
 		result->calculated = result->result->Divide(trg_bias->data, unbiased->data, 1., 1., "b");
 
+	}else if(result->name == "forward_incl_pt35_eta2.1_weight"){
+
+		Observable* cntr = this->GetObservable("INCL","drap","central_pt35");
+		Observable* cntr_no_fwd = this->GetObservable("INCL","drap","central_no_fwd_pt35_eta2.1");
+		Observable* forward = this->GetObservable("INCL","drap","forward_pt35_eta2.1");
+		delete result->result;
+		result->result = new TH1D(*(cntr->data));
+		result->result->Sumw2();
+		result->result->SetName(result->name);
+		
+		TH1D *difference =  new TH1D(*(cntr->data));
+		difference->Add(cntr_no_fwd->data,-1.);
+
+		result->calculated = result->result->Divide(difference, forward->data, 1., 1., "b");
+
+	}else if(result->name == "forward_mn_pt35_eta2.1_weight"){
+
+		Observable* cntr = this->GetObservable("MN","drap","central_pt35");
+		Observable* cntr_no_fwd = this->GetObservable("MN","drap","central_no_fwd_pt35_eta2.1");
+		Observable* forward = this->GetObservable("MN","drap","forward_pt35_eta2.1");
+		delete result->result;
+		result->result = new TH1D(*(cntr->data));
+		result->result->Sumw2();
+		result->result->SetName(result->name);
+		
+		TH1D *difference =  new TH1D(*(cntr->data));
+		difference->Add(cntr_no_fwd->data,-1.);
+
+		result->calculated = result->result->Divide(difference, forward->data, 1., 1., "b");
+
 	}else{
 		cout << "Measurement Error: Case for result " << result->name << " not found\n";
 	}
@@ -308,7 +343,6 @@ void Measurement::CalculateResult(Result *result){
 };
 
 /*
-
         Result *pt_spectrum = new Result("pt_spectrum");
         Result *dphi_mn_1 = new Result("dphi_low_mn");
         Result *dphi_mn_2 = new Result("dphi_med_mn");

@@ -37,7 +37,7 @@ class Measurement {
 		void ReadEvent(Event *);
 
 		void CalculateResult(Result *);
-		void WriteToFile(TString );
+		void WriteToFile(TString , int );
 
 		Observable* GetObservable(TString , TString , TString );
 };

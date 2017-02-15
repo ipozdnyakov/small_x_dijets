@@ -18,8 +18,8 @@ public:
 
 	Sample(TString );
 	bool CheckEvent(Event *);
-	bool CheckDiJet15(Event *);
-	bool CheckDiJet15fwdEta(Event *, double);
+	bool CheckDiJetPt(Event *, double);
+	bool CheckDiJetPtEta(Event *, double, double);
 
 };
 #endif	/* _SAMPLE_H */
