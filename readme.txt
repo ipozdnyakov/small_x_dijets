@@ -74,7 +74,7 @@ class Measurement	- the main class over which all functionality is realised
 			  based on dataset 		 - "low_pthat", "high_pthat" samples
 			  based on datasets and triggers - "central", "central_no_fwd", "forward" samples
 			  based on reweighting		 - "merged" sample
-			 //weight of forward for pt35 and eta 2.1 is 0.3, but stats decreases by less than 1%
+			  //weight of forward for pt35 and eta 2.1 is 0.3, but stats decreases by less than 1%
 
 /pileup			- [IN PROGRESS] the same as for JEC, but reference file not written yet
 
@@ -88,9 +88,10 @@ class Measurement	- the main class over which all functionality is realised
 
 /phi&eta_res		- [TO BE DONE]
 
-/unfolding		- [TO BE DONE]
+/unfolding		- [IN PROGRESS]
 
-/final_values		- [DONE] class "Result" which calculate some values according to the instructions labeled by its name
+/final_values		- [IN PROGRESS] class "Result" which calculate some values according to the instructions labeled by its name
+			  // all results of interest should be added
 
 /total_syst		- [IN PROGRESS] class "Result"
 

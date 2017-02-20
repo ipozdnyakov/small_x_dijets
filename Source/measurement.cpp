@@ -109,6 +109,12 @@ void Measurement::ReadFile(string name, Dataset *dataset){
         double pt = 0., phi = 0., eta = 0., rap = 0., cor = 0., unc = 0.;
         vector<float> *pt_v = 0, *phi_v = 0, *eta_v = 0, *rap_v = 0, *cor_v = 0, *unc_v = 0;
 
+	// Each of dataset's TTree (in each file) contains (generally) unique set of branch names
+	// these branch names are listed in the class Dataset - separate list for each dataset name
+	// if the branch does not exist in the dataset the name is empty ( == "" )
+	// below the check of branch existens is performing for each potential branch and
+	// if the branch exists, then assign it to the corresponding local variable
+
 	if(dataset->min_bias_info) MB = 1;
 
 	if(dataset->lumi_num_name != "") tree->SetBranchAddress(dataset->lumi_num_name, &iLumi);
@@ -122,6 +128,16 @@ void Measurement::ReadFile(string name, Dataset *dataset){
 	if(dataset->FWD2_trg_ps_name != "") tree->SetBranchAddress(dataset->FWD2_trg_ps_name, &FWD2_ps);
 	if(dataset->FWD3_trg_ps_name != "") tree->SetBranchAddress(dataset->FWD3_trg_ps_name, &FWD3_ps);
 
+	if(dataset->pt_vector_name != "") tree->SetBranchAddress(dataset->pt_vector_name, &pt_v);
+	if(dataset->rap_vector_name != "") tree->SetBranchAddress(dataset->rap_vector_name, &rap_v);
+	if(dataset->eta_vector_name != "") tree->SetBranchAddress(dataset->eta_vector_name, &eta_v);
+	if(dataset->phi_vector_name != "") tree->SetBranchAddress(dataset->phi_vector_name, &phi_v);
+	if(dataset->cor_vector_name != "") tree->SetBranchAddress(dataset->cor_vector_name, &cor_v);
+	if(dataset->unc_vector_name != "") tree->SetBranchAddress(dataset->unc_vector_name, &unc_v);
+
+	// The branches below are scalar and corresponds to the samples obtained without CFF
+	// in such samples there are one entry to the Tree per jet rather than per event
+
 	if(dataset->pt_name != "") tree->SetBranchAddress(dataset->pt_name, &pt);
 	if(dataset->rap_name != "") tree->SetBranchAddress(dataset->rap_name, &rap);
 	if(dataset->eta_name != "") tree->SetBranchAddress(dataset->eta_name, &eta);
@@ -129,12 +145,7 @@ void Measurement::ReadFile(string name, Dataset *dataset){
 	if(dataset->cor_name != "") tree->SetBranchAddress(dataset->cor_name, &cor);
 	if(dataset->unc_name != "") tree->SetBranchAddress(dataset->unc_name, &unc);
 
-	if(dataset->pt_vector_name != "") tree->SetBranchAddress(dataset->pt_vector_name, &pt_v);
-	if(dataset->rap_vector_name != "") tree->SetBranchAddress(dataset->rap_vector_name, &rap_v);
-	if(dataset->eta_vector_name != "") tree->SetBranchAddress(dataset->eta_vector_name, &eta_v);
-	if(dataset->phi_vector_name != "") tree->SetBranchAddress(dataset->phi_vector_name, &phi_v);
-	if(dataset->cor_vector_name != "") tree->SetBranchAddress(dataset->cor_vector_name, &cor_v);
-	if(dataset->unc_vector_name != "") tree->SetBranchAddress(dataset->unc_vector_name, &unc_v);
+
 
 	tree->GetEntry(0);
 	cout << "Run: " << iRun << " pt:" << pt_v << "\n";
