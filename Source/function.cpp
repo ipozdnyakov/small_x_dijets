@@ -14,7 +14,10 @@ void Function::CalculateValues(Object *object){
 
 	if(!object->loaded) cout << "Function Error: event not loaded to the object yet, but values already requested!!!\n";
 
-	if(this->name == "pt"){
+	if(this->name == "npv_distrib"){
+		this->values.push_back(object->event->nPV);
+		this->SetPlainWeights(object);
+	}else if(this->name == "pt"){
 		this->values = object->pt;
 		this->SetPlainWeights(object);
 	}else if(this->name == "pt_lead"){

@@ -38,6 +38,8 @@ void Object::LoadEvent(Event *event){
 		return;
 	}
 
+	this->event = event;
+
         for(int i = 0; i < event->pt.size(); i++){
 
                 if((event->pt[i] > this->pt_min_H) && (fabs(event->rap[i]) < 4.7)){
@@ -64,7 +66,9 @@ void Object::LoadEvent(Event *event){
 
 	if((this->pt_H.size() > 0)&&(this->pt_L.size() > 1)&&(!(this->veto))){
 
-		if(this->name == "MN"){
+		if(this->name == "EMPTY"){
+			this->LoadEMPTY(event);
+		}else if(this->name == "MN"){
 			this->LoadMN(event);
 		}else if(this->name == "INCL"){
 			this->LoadINCL(event);
@@ -77,6 +81,10 @@ void Object::LoadEvent(Event *event){
 
 	}
 };
+
+void Object::LoadEMPTY(Event *event){
+
+}
 
 void Object::LoadMN(Event *event){
 

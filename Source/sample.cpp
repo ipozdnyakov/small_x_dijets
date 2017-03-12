@@ -15,6 +15,17 @@ bool Sample::CheckEvent(Event *event){
 
 if(print_this_event) cout << " check for sample " << this->name << ": \n";
 
+	if (name == "plane"){
+		if(true){
+			this->weight = 1.;
+			if(print_this_event) cout << " true\n";
+			return true;
+		}else{
+			if(print_this_event) cout << " false\n";
+			return false;
+		}
+	}
+
 if(event->nPV != 1) return false;
 
 	if (name == "central_trg"){

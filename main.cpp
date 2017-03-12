@@ -28,6 +28,7 @@ void DeltaYDynamics();
 
 //DECLARATION OF OBJECTS
 // to add - case should be added into function of class Object::LoadEvent() in object.cpp
+	Object	 *empty = new Object("EMPTY", 0., 0., 0.);
 	Object	 *all_incl = new Object("INCL", 0., 0., 0.);
 	Object	 *all_mn = new Object("MN", 0., 0., 0.);
 	Object	 *incl = new Object("INCL", 35., 35., 35.);
@@ -36,6 +37,9 @@ void DeltaYDynamics();
 
 //DECLARATION OF FUNCTIONS
 // to add - case should be added into function of class Function::CalculateValues() in function.cpp
+// bining should be defined in binning.h
+	Function *npv_distrib = new Function("npv_distrib", npv_bins, n_npv_bins);
+
 	Function *pt = new Function("pt", pt_bins, n_pt_bins);
 	Function *pt_lead = new Function("pt_lead", fine_pt_bins, n_fine_pt_bins);
 	Function *pt_sublead = new Function("pt_sublead", fine_pt_bins, n_fine_pt_bins);
@@ -64,6 +68,7 @@ void DeltaYDynamics();
 
 //DECLARATION OF SAMPLES
 // to add - case should be added into function of class Sample::CheckEvent() in sample.cpp
+	Sample *plane	 		= new Sample("plane");
 	Sample *unbiased 		= new Sample("unbiased");
 
 	Sample *unbiased_central 	= new Sample("unbiased_central");
@@ -101,7 +106,8 @@ void DeltaYDynamics();
 int main(int argc, char** argv) {
 
 //	EfficiencyCalculation();
-	MergingWeightsCalculation();
+//	MergingWeightsCalculation();
+	PileUpCalculation();
 
 //	BasicDistributions();
 //	DeltaPhiDynamics();
@@ -162,6 +168,12 @@ void MergingWeightsCalculation(){
 };
 
 void PileUpCalculation(){
+	Measurement *pu = new Measurement("pu","_FSQJets3_2015C_data_13TeV_LowPU");
+	pu->IncludeObject(empty);
+	pu->IncludeFunction(npv_distrib);
+	pu->IncludeSample(plane);
+	pu->ReadDataset(data);
+	pu->WriteToFile("./pu", 2);
 };
 
 void BasicDistributions(){

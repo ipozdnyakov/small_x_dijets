@@ -16,6 +16,9 @@ class Object {
 
 	public:
 		string name;
+
+		Event *event;
+
 		bool loaded = false;
 	        bool veto = false;
 
@@ -31,6 +34,7 @@ class Object {
 
 		Object(string , double , double , double);
 		void LoadEvent(Event *);
+		void LoadEMPTY(Event *);
 		void LoadMN(Event *);
 		void LoadINCL(Event *);
 		void Print();

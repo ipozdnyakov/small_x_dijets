@@ -46,7 +46,7 @@ if(print_this_event) cout << "Observable "<< this->name << ":\n";
 		object->LoadEvent(event);
 		object->weight = (object->weight)*(sample->weight);
 		if(print_this_event) object->Print();
-	
+
  		function->CalculateValues(object);
 		if(print_this_event) function->Print();
 
@@ -54,7 +54,6 @@ if(print_this_event) cout << "Observable "<< this->name << ":\n";
 
 		if(event->RunPileUp() == "H"){
 			this->FillValues("hpu",function->values,function->weights);
-
 		}
 
 		if(event->RunPileUp() == "L"){

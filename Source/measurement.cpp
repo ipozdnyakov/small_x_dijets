@@ -103,6 +103,7 @@ void Measurement::ReadFile(string name, Dataset *dataset){
 	cout << "Entries: " << nentries << "\t";
 
         Int_t iLumi = 0, iEvent = 0, iRun = 0, nPV = 0;
+	Int_t CurrentRun = 0, SumNPV = 0, RunEvents = 0;
 	Int_t CNTR = -1, FWD2 = -1, FWD3 = -1, MB = -1;
 	Int_t CNTR_ps = -1, FWD2_ps = -1, FWD3_ps = -1, MB_ps = -1;
 	double weight = 1.;
@@ -145,10 +146,9 @@ void Measurement::ReadFile(string name, Dataset *dataset){
 	if(dataset->cor_name != "") tree->SetBranchAddress(dataset->cor_name, &cor);
 	if(dataset->unc_name != "") tree->SetBranchAddress(dataset->unc_name, &unc);
 
-
-
 	tree->GetEntry(0);
 	cout << "Run: " << iRun << " pt:" << pt_v << "\n";
+	CurrentRun = iRun;
 	Int_t nEvent = iEvent;
 
 	Event *event = new Event();
@@ -170,6 +170,16 @@ void Measurement::ReadFile(string name, Dataset *dataset){
 					verbose = false;
 					print_this_event = false;
 				}
+			}
+			
+			if(iRun == CurrentRun){//in RUN-LUMI
+				SumNPV += nPV; 
+				RunEvents++;
+			}else{//out RUN
+				cout << "run, SumNPV; RunEvents: " << CurrentRun << ", " << SumNPV << "; " << RunEvents << "\n";
+				SumNPV = nPV;
+				RunEvents = 1;
+				CurrentRun = iRun;
 			}
 		}
 	}else{

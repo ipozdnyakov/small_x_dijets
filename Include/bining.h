@@ -3,6 +3,8 @@
 
 #define pi 3.1415926
 
+const int n_npv_bins = 15;
+
 const int n_pt_bins = 14;
 const int n_eta_towers = 82;
 const int n_phi_towers = 72;
@@ -11,6 +13,10 @@ const int n_fine_pt_bins = 15;
 const int n_drap_bins = 13;
 const int n_dphi_bins = 10;
 const int n_fine_dphi_bins = 100;
+
+const double npv_bins[n_npv_bins + 1] = {
+		0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+		11, 12, 13, 14, 15};
 
 const double pt_bins[n_pt_bins + 1]={
 		15,	20,	25,	30,	35,	40,
