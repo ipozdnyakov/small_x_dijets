@@ -168,11 +168,17 @@ void MergingWeightsCalculation(){
 };
 
 void PileUpCalculation(){
+
 	Measurement *pu = new Measurement("pu","_FSQJets3_2015C_data_13TeV_LowPU");
+
 	pu->IncludeObject(empty);
+
 	pu->IncludeFunction(npv_distrib);
+
 	pu->IncludeSample(plane);
+
 	pu->ReadDataset(data);
+
 	pu->WriteToFile("./pu", 2);
 };
 
