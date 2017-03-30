@@ -22,6 +22,7 @@ public:
 	TString pt_name = "", phi_name = "", eta_name = "", rap_name = "";
 	TString cor_name = "", unc_name = "";
 	TString pt_vector_name = "", phi_vector_name = "", eta_vector_name = "", rap_vector_name = "";
+	TString gen_pt_vector_name = "", gen_phi_vector_name = "", gen_eta_vector_name = "", gen_rap_vector_name = "";
 	TString cor_vector_name = "", unc_vector_name = "";
 
 	Dataset(string );

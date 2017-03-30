@@ -100,6 +100,11 @@ void Event::Clear(){
 	this->eta.clear();
 	this->phi.clear();
 	this->rap.clear();
+
+	this->gen_pt.clear();
+	this->gen_eta.clear();
+	this->gen_phi.clear();
+	this->gen_rap.clear();
 };
 
 void Event::AddJet(
@@ -147,3 +152,18 @@ void Event::AddJets(
         	this->phi = vector<double>(jet_phi.begin(), jet_phi.end());
         	this->rap = vector<double>(jet_rap.begin(), jet_rap.end());
 };
+
+void Event::AddGenJets(
+		vector<float> gen_jet_pt,
+		vector<float> gen_jet_eta,
+		vector<float> gen_jet_phi,
+		vector<float> gen_jet_rap
+        ){
+        	this->gen_pt = vector<double>(gen_jet_pt.begin(), gen_jet_pt.end());
+        	this->gen_eta = vector<double>(gen_jet_eta.begin(), gen_jet_eta.end());
+        	this->gen_phi = vector<double>(gen_jet_phi.begin(), gen_jet_phi.end());
+        	this->gen_rap = vector<double>(gen_jet_rap.begin(), gen_jet_rap.end());
+
+		this->gen_level = true;
+};
+

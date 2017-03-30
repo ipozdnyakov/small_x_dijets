@@ -8,7 +8,6 @@
 #include"sample.h"
 
 using namespace std;
-
 bool verbose = false, print_this_event = false;
 
 void EfficiencyCalculation();
@@ -25,6 +24,11 @@ void DeltaYDynamics();
 	Dataset *data = new Dataset("13TeV_data_2015C_FSQJets3");
 	Dataset *min_bias = new Dataset("13TeV_data_2015C_Min_Bias");
 	Dataset *zerobias = new Dataset("13TeV_data_2015C_ZeroBias");
+	Dataset *herwig_minbias = new Dataset("13TeV_mc_herwigpp_MinBias");
+	Dataset *herwig_lowpthat = new Dataset("13TeV_mc_herwigpp_pt10to35");
+	Dataset *herwig_lowpthat_fb = new Dataset("13TeV_mc_herwigpp_pt10to35_FB");
+	Dataset *herwig_hightpthat = new Dataset("13TeV_mc_herwigpp_pt35toInf");
+	Dataset *herwig_hightpthat_fb = new Dataset("13TeV_mc_herwigpp_pt35toInf_FB");
 
 //DECLARATION OF OBJECTS
 // to add - case should be added into function of class Object::LoadEvent() in object.cpp
@@ -107,9 +111,9 @@ int main(int argc, char** argv) {
 
 //	EfficiencyCalculation();
 //	MergingWeightsCalculation();
-	PileUpCalculation();
+//	PileUpCalculation();
 
-//	BasicDistributions();
+	BasicDistributions();
 //	DeltaPhiDynamics();
 //	DeltaYDynamics();
 

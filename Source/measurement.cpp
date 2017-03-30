@@ -109,6 +109,7 @@ void Measurement::ReadFile(string name, Dataset *dataset){
 	double weight = 1.;
         double pt = 0., phi = 0., eta = 0., rap = 0., cor = 0., unc = 0.;
         vector<float> *pt_v = 0, *phi_v = 0, *eta_v = 0, *rap_v = 0, *cor_v = 0, *unc_v = 0;
+        vector<float> *gen_pt_v = 0, *gen_phi_v = 0, *gen_eta_v = 0, *gen_rap_v = 0;
 
 	// Each of dataset's TTree (in each file) contains (generally) unique set of branch names
 	// these branch names are listed in the class Dataset - separate list for each dataset name
@@ -135,6 +136,11 @@ void Measurement::ReadFile(string name, Dataset *dataset){
 	if(dataset->phi_vector_name != "") tree->SetBranchAddress(dataset->phi_vector_name, &phi_v);
 	if(dataset->cor_vector_name != "") tree->SetBranchAddress(dataset->cor_vector_name, &cor_v);
 	if(dataset->unc_vector_name != "") tree->SetBranchAddress(dataset->unc_vector_name, &unc_v);
+
+	if(dataset->gen_pt_vector_name != "") tree->SetBranchAddress(dataset->gen_pt_vector_name, &gen_pt_v);
+	if(dataset->gen_rap_vector_name != "") tree->SetBranchAddress(dataset->gen_rap_vector_name, &gen_rap_v);
+	if(dataset->gen_eta_vector_name != "") tree->SetBranchAddress(dataset->gen_eta_vector_name, &gen_eta_v);
+	if(dataset->gen_phi_vector_name != "") tree->SetBranchAddress(dataset->gen_phi_vector_name, &gen_phi_v);
 
 	// The branches below are scalar and corresponds to the samples obtained without CFF
 	// in such samples there are one entry to the Tree per jet rather than per event
@@ -163,6 +169,9 @@ void Measurement::ReadFile(string name, Dataset *dataset){
 			}
 			event->Init(iRun, iEvent, nPV, CNTR, FWD2, FWD3, MB, weight, CNTR_ps, FWD2_ps, FWD3_ps, MB_ps);
 			event->AddJets(*pt_v, *eta_v, *phi_v, *rap_v, *cor_v, *unc_v);
+			if(gen_pt_v != 0){
+				event->AddGenJets(*gen_pt_v, *gen_eta_v, *gen_phi_v, *gen_rap_v);
+			}
 			this->ReadEvent(event);
 			event->Clear();
 			if(verbose){
@@ -183,6 +192,7 @@ void Measurement::ReadFile(string name, Dataset *dataset){
 			}
 		}
 	}else{
+	//THis part is for non-CFF datasets
 		event->Init(iRun, iEvent, nPV, CNTR, FWD2, FWD3, MB, weight, CNTR_ps, FWD2_ps, FWD3_ps, MB_ps);
 		for(int i = 0 ; i < nentries ; i++){
 			tree->GetEntry(i);

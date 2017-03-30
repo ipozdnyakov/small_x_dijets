@@ -17,6 +17,7 @@ public:
 	int CNTR = -1, FWD2 = -1, FWD3 = -1, MB = -1;
 	int CNTR_ps = -1, FWD2_ps = -1, FWD3_ps = -1, MB_ps = -1;
 	double weight = 1.;
+	bool gen_level = false;
 
 	vector<double> pt;	//corrected jet pt 	
 	vector<double> pt_unc;	//JEC uncertainty	 	
@@ -24,6 +25,12 @@ public:
 	vector<double> eta;	 	
 	vector<double> phi;	 	
 	vector<double> rap;	 	
+
+	vector<double> gen_pt;	 	
+	vector<double> gen_eta;	 	
+	vector<double> gen_phi;	 	
+	vector<double> gen_rap;	 	
+
 
 	Event(){};
 	void Init(int , int , int , int , int , int , int , double , int , int , int , int );
@@ -34,6 +41,7 @@ public:
 	void Clear();
 	void AddJet(double , double , double , double , double, double);
 	void AddJets(vector<float> , vector<float> , vector<float> , vector<float> , vector<float>, vector<float>);
+	void AddGenJets(vector<float> , vector<float> , vector<float> , vector<float>);
 
 	string RunPileUp();
 };
