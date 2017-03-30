@@ -20,6 +20,7 @@ class Function {
 		void SetDphiInDrap(double , double , Object *);
 		void SetDrapInDphi(double , double , Object *);
 		void SetCosNPowerMvsDrap(double , double , Object*);
+		void SetCosNMvsDrap(double , double , Object*);
 		void Print();
 		void Clear();
 };

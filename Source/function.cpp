@@ -84,14 +84,13 @@ void Function::CalculateValues(Object *object){
 		this->SetCosNPowerMvsDrap(2., 2., object);
 	}else if(this->name == "cos2_3(dy)"){
 		this->SetCosNPowerMvsDrap(3., 2., object);
+	}else if(this->name == "cos_21(dy)"){
+		this->SetCosNMvsDrap(2., 1., object);
+	}else if(this->name == "cos_32(dy)"){
+		this->SetCosNMvsDrap(3., 2., object);
 	}else{
               	cout << "Function Error: Case for function " << this->name << " not found\n";
 	}
-
-/*
-        Function *cos_21 = new Function("cos_21(dy)", drap_bins, n_drap_bins);
-        Function *cos_32 = new Function("cos_32(dy)", drap_bins, n_drap_bins);
-*/
 
 };
 
@@ -104,6 +103,30 @@ void Function::SetPlainWeights(Object* object){
 	for(int i = 0; i < values.size(); i++){
 		this->weights.push_back(object->weight);
 	}
+};
+
+void Function::SetCosNMvsDrap(double n, double m, Object* object){
+
+	double rap1 = 0., rap2 = 0., phi1 = 0, phi2 = 0;
+	double drap = 0., dphi = 0.;
+	if(object->i_jet1.size() != object->i_jet2.size()){
+		cout << "Object Error: two index vectors of dijets components (jets) have different lenght!!!\n";
+	}
+	for(int i = 0; i < object->i_jet1.size(); i++){
+		rap1 = object->rap[object->i_jet1[i]];
+		rap2 = object->rap[object->i_jet2[i]];
+		phi1 = object->phi[object->i_jet1[i]];
+		phi2 = object->phi[object->i_jet2[i]];
+	
+		drap = fabs(rap1 - rap2);
+
+        	dphi = fabs(phi1 - phi2);
+	        if(dphi > pi) dphi = (2*pi - dphi);
+
+		this->values.push_back(drap);
+		this->weights.push_back((object->weight)*cos(n*(pi - dphi))*cos(m*(pi - dphi)));
+	}
+
 };
 
 void Function::SetCosNPowerMvsDrap(double n, double m, Object* object){
