@@ -70,9 +70,33 @@ Dataset::Dataset(string str){
 	        this->gen_rap_vector_name   =	"slimmedJetsPt10_gen_rap";
         	this->gen_eta_vector_name   =	"slimmedJetsPt10_gen_eta";
 	        this->gen_phi_vector_name   =	"slimmedJetsPt10_gen_phi";
+
+		this->mc_info = 1;
+
 		if ((name == "13TeV_mc_herwig_MinBias")||(name == "13TeV_mc_pythia_MinBias")){
 			this->min_bias_info = true;
 		}
+
+		if ((name == "13TeV_mc_herwig_pt10to35")||(name == "13TeV_mc_pythia_pt10to35")
+		||(name == "13TeV_mc_herwig_pt35toInf")||(name == "13TeV_mc_pythia_pt35toInf")){
+			this->mc_cntr_info = true;
+		}
+
+		if ((name == "13TeV_mc_herwig_pt10to35_FB")||(name == "13TeV_mc_pythia_pt10to35_FB")
+		||(name == "13TeV_mc_herwig_pt35toInf_FB")||(name == "13TeV_mc_pythia_pt35toInf_FB")){
+			this->mc_fb_info = true;
+		}
+
+		if ((name == "13TeV_mc_herwig_pt10to35")||(name == "13TeV_mc_pythia_pt10to35")
+		||(name == "13TeV_mc_herwig_pt10to35_FB")||(name == "13TeV_mc_pythia_pt10to35_FB")){
+			this->mc_low_pthat_info = true;
+		}
+
+		if ((name == "13TeV_mc_herwig_pt35toInf")||(name == "13TeV_mc_pythia_pt35toInf")
+		||(name == "13TeV_mc_herwig_pt35toInf_FB")||(name == "13TeV_mc_pythia_pt35toInf_FB")){
+			this->mc_high_pthat_info = true;
+		}
+
 	}else if (name == "FSQJets_2015_2016"){
         	this->tree_name 	=	"JetCollection/jet_tree";
 	        this->run_num_name 	=	"iRun";

@@ -16,6 +16,13 @@ public:
 	int nPV = -1;
 	int CNTR = -1, FWD2 = -1, FWD3 = -1, MB = -1;
 	int CNTR_ps = -1, FWD2_ps = -1, FWD3_ps = -1, MB_ps = -1;
+
+        int mc_info = -1;//1 - herwigpp, 2 - pythia
+        int mc_cntr_info = -1;
+        int mc_fb_info = -1;
+        int mc_low_pthat_info = -1;
+        int mc_high_pthat_info = -1;
+
 	double weight = 1.;
 	bool gen_level = false;
 

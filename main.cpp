@@ -22,6 +22,7 @@ void DeltaYDynamics();
 // to add - listing should be added
 // 	  - case should be added into constructor of class Dataset::Dataset() in dataset.cpp
 	Dataset *data = new Dataset("13TeV_data_2015C_FSQJets3");
+	Dataset *data_2016 = new Dataset("13TeV_data_2016H_FSQ_Jets");
 	Dataset *min_bias_2015 = new Dataset("13TeV_data_2015C_Min_Bias");
 	Dataset *min_bias_2016 = new Dataset("13TeV_data_2016H_Min_Bias");
 	Dataset *zerobias = new Dataset("13TeV_data_2015C_ZeroBias");
@@ -73,22 +74,31 @@ void DeltaYDynamics();
 
 //DECLARATION OF SAMPLES
 // to add - case should be added into function of class Sample::CheckEvent() in sample.cpp
-	Sample *plane	 		= new Sample("plane");
-	Sample *unbiased 		= new Sample("unbiased");
+	Sample *plane	 			= new Sample("plane");
+	Sample *unbiased 			= new Sample("unbiased");
 
-	Sample *unbiased_central 	= new Sample("unbiased_central");
-	Sample *unbiased_forward2	= new Sample("unbiased_forward2");
-	Sample *unbiased_forward3	= new Sample("unbiased_forward3");
-	Sample *central_trg 		= new Sample("central_trg");
-	Sample *forward2_trg 		= new Sample("forward2_trg");
-	Sample *forward3_trg		= new Sample("forward3_trg");
+	Sample *unbiased_central 		= new Sample("unbiased_central");
+	Sample *unbiased_forward2		= new Sample("unbiased_forward2");
+	Sample *unbiased_forward3		= new Sample("unbiased_forward3");
+	Sample *central_trg 			= new Sample("central_trg");
+	Sample *forward2_trg 			= new Sample("forward2_trg");
+	Sample *forward3_trg			= new Sample("forward3_trg");
 
 	Sample *central_pt35			= new Sample("central_pt35");
 	Sample *central_no_fwd_pt35_eta2d1	= new Sample("central_no_fwd_pt35_eta2.1");
 	Sample *fwd_pt35_eta2d1 		= new Sample("forward_pt35_eta2.1");
 	Sample *merged_pt35_eta2d1	 	= new Sample("merged_pt35_eta2.1");
-	Sample *low_pthat			= new Sample("low_pthat");
-	Sample *high_pthat			= new Sample("high_pthat");
+
+	Sample *mc_low_pthat_cntr		= new Sample("mc_low_pthat_cntr");
+	Sample *mc_high_pthat_cntr		= new Sample("mc_high_pthat_cntr");
+	Sample *mc_flat_pthat_cntr		= new Sample("mc_flat_pthat_cntr");
+	Sample *mc_low_pthat_FB			= new Sample("mc_low_pthat_FB");
+	Sample *mc_high_pthat_FB		= new Sample("mc_high_pthat_FB");
+	Sample *mc_flat_pthat_FB		= new Sample("mc_flat_pthat_FB");
+	Sample *mc_flat_central_pt35			= new Sample("mc_flat_central_pt35");
+	Sample *mc_flat_central_no_fwd_pt35_eta3d1	= new Sample("mc_flat_central_no_fwd_pt35_eta3.1");
+	Sample *mc_flat_fwd_pt35_eta3d1 		= new Sample("mc_flat_forward_pt35_eta3.1");
+	Sample *mc_flat_merged_pt35_eta3d1	 	= new Sample("mc_flat_merged_pt35_eta3.1");
 
 //DECLARATION OF RESULTS
 // to add - case should be added into function of class Measurement::CalculateResult() in measurement.cpp

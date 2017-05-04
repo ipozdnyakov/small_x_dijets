@@ -15,6 +15,11 @@ protected:
 public:
 	string name;
 	bool min_bias_info = false;
+	int mc_info = -1; // 1 - herwigpp, 2 - pythia
+	bool mc_cntr_info = false;
+	bool mc_fb_info = false;
+	bool mc_low_pthat_info = false;
+	bool mc_high_pthat_info = false;
 	TString tree_name = "";
 	TString run_num_name = "", lumi_num_name = "", event_num_name = "", nPV_name = "";
 	TString CNTR_trg_name = "", FWD2_trg_name = "", FWD3_trg_name = "";

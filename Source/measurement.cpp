@@ -106,6 +106,7 @@ void Measurement::ReadFile(string name, Dataset *dataset){
 	Int_t CurrentRun = 0, SumNPV = 0, RunEvents = 0;
 	Int_t CNTR = -1, FWD2 = -1, FWD3 = -1, MB = -1;
 	Int_t CNTR_ps = -1, FWD2_ps = -1, FWD3_ps = -1, MB_ps = -1;
+	Int_t mc = -1, mc_cntr = -1, mc_fb = -1, mc_low_pthat = -1, mc_high_pthat = -1;
 	double weight = 1.;
         double pt = 0., phi = 0., eta = 0., rap = 0., cor = 0., unc = 0.;
         vector<float> *pt_v = 0, *phi_v = 0, *eta_v = 0, *rap_v = 0, *cor_v = 0, *unc_v = 0;
@@ -118,6 +119,12 @@ void Measurement::ReadFile(string name, Dataset *dataset){
 	// if the branch exists, then assign it to the corresponding local variable
 
 	if(dataset->min_bias_info) MB = 1;
+	if(dataset->mc_info == 1) mc = 1;//herwigpp
+	if(dataset->mc_info == 2) mc = 2;//pythia
+	if(dataset->mc_cntr_info) mc_cntr = 1;
+	if(dataset->mc_fb_info) mc_fb = 1;
+	if(dataset->mc_low_pthat_info) mc_low_pthat = 1;
+	if(dataset->mc_high_pthat_info) mc_high_pthat = 1;
 
 	if(dataset->lumi_num_name != "") tree->SetBranchAddress(dataset->lumi_num_name, &iLumi);
 	if(dataset->run_num_name != "") tree->SetBranchAddress(dataset->run_num_name, &iRun);
@@ -168,6 +175,11 @@ void Measurement::ReadFile(string name, Dataset *dataset){
 				}
 			}
 			event->Init(iRun, iEvent, nPV, CNTR, FWD2, FWD3, MB, weight, CNTR_ps, FWD2_ps, FWD3_ps, MB_ps);
+			event->mc_info = mc;
+			event->mc_cntr_info = mc_cntr;
+			event->mc_fb_info = mc_fb;
+			event->mc_low_pthat_info = mc_low_pthat;
+			event->mc_high_pthat_info = mc_high_pthat;
 			event->AddJets(*pt_v, *eta_v, *phi_v, *rap_v, *cor_v, *unc_v);
 			if(gen_pt_v != 0){
 				event->AddGenJets(*gen_pt_v, *gen_eta_v, *gen_phi_v, *gen_rap_v);

@@ -68,17 +68,16 @@ void Object::LoadEvent(Event *event){
 
 		if(this->name == "EMPTY"){
 			this->LoadEMPTY(event);
+		}else if(this->name == "EXCL"){
+			if((this->pt_H.size() > 0)&&(this->pt_L.size() == 2)) this->LoadINCL(event);
 		}else if(this->name == "MN"){
 			this->LoadMN(event);
 		}else if(this->name == "INCL"){
 			this->LoadINCL(event);
-		}else if(this->name == "EXCL"){
-			if((this->pt_H.size() > 0)&&(this->pt_L.size() == 2)) this->LoadINCL(event);
 	        }else{
 	              	cout << "Object::LoadEvent Error: Case for object " << this->name << " not found\n";
 			this->loaded = false;
 		}
-
 	}
 };
 

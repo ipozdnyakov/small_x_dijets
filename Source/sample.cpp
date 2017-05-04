@@ -26,6 +26,9 @@ if(print_this_event) cout << " check for sample " << this->name << ": \n";
 		}
 	}
 
+//run FILTER
+if((event->run != 281616)&&(event->run != 282663)) return false;
+//nPV FILTER
 if(event->nPV != 1) return false;
 
 	if (name == "central_trg"){
@@ -119,6 +122,7 @@ if(event->nPV != 1) return false;
 		}else if(((event->FWD2 == 1)||(event->FWD3 == 1))&&(CheckDiJetPtEta(event, 35., 2.1))){
 			if(print_this_event) cout << " true\n";
 			this->weight = 0.3;
+			//FOR 2015 DATA
 			// 0.29 - pt=35 eta=2.1
 			// 0.30 - pt=35 eta=3.1
 			// 0.31 - pt=20 eta=3.1
@@ -129,16 +133,153 @@ if(event->nPV != 1) return false;
 			if(print_this_event) cout << " false\n";
 			return false;
 		}
+	}else if (name == "mc_low_pthat_cntr"){
+		if((event->mc_info > 0)&&(event->mc_low_pthat_info == 1)&&(event->mc_cntr_info == 1)){
+			this->weight = 1.;
+			if(print_this_event) cout << " true\n";
+			return true;
+		}else{
+			if(print_this_event) cout << " false\n";
+			return false;
+		}
+	}else if (name == "mc_high_pthat_cntr"){
+		if((event->mc_info > 0)&&(event->mc_high_pthat_info == 1)&&(event->mc_cntr_info == 1)){
+			this->weight = 1.;
+			if(print_this_event) cout << " true\n";
+			return true;
+		}else{
+			if(print_this_event) cout << " false\n";
+			return false;
+		}
+	}else if (name == "mc_flat_pthat_cntr"){
+		if((event->mc_info > 0)&&(event->mc_high_pthat_info == 1)&&(event->mc_cntr_info == 1)){
+			if(event->mc_info == 1) this->weight = 1.; // herwig
+			if(event->mc_info == 2) this->weight = 1.; // pythia
+			if(print_this_event) cout << " true\n";
+			return true;
+		}else if((event->mc_info > 0)&&(event->mc_low_pthat_info == 1)&&(event->mc_cntr_info == 1)){
+			if(event->mc_info == 1) this->weight = 78170./7272000.; // herwig
+			if(event->mc_info == 2) this->weight = 1.; // pythia
+			if(print_this_event) cout << " true\n";
+			return true;
+		}else{
+			if(print_this_event) cout << " false\n";
+			return false;
+		}
+		//13TeV_mc_herwigpp_pt10to35      1 000 000       7272 000 000 pb
+		//13TeV_mc_herwigpp_p35toInf      1 000 000         78 170 000 pb
+	}else if (name == "mc_low_pthat_fb"){
+		if((event->mc_info > 0)&&(event->mc_low_pthat_info == 1)&&(event->mc_fb_info == 1)){
+			this->weight = 1.;
+			if(print_this_event) cout << " true\n";
+			return true;
+		}else{
+			if(print_this_event) cout << " false\n";
+			return false;
+		}
+	}else if (name == "mc_high_pthat_fb"){
+		if((event->mc_info > 0)&&(event->mc_high_pthat_info == 1)&&(event->mc_fb_info == 1)){
+			this->weight = 1.;
+			if(print_this_event) cout << " true\n";
+			return true;
+		}else{
+			if(print_this_event) cout << " false\n";
+			return false;
+		}
+	}else if (name == "mc_flat_pthat_fb"){
+		if((event->mc_info > 0)&&(event->mc_high_pthat_info == 1)&&(event->mc_fb_info == 1)){
+			if(event->mc_info == 1) this->weight = 1.; // herwig
+			if(event->mc_info == 2) this->weight = 1.; // pythia
+			if(print_this_event) cout << " true\n";
+			return true;
+		}else if((event->mc_info > 0)&&(event->mc_low_pthat_info == 1)&&(event->mc_fb_info == 1)){
+			if(event->mc_info == 1) this->weight = 6584./375300.; // herwig
+			if(event->mc_info == 2) this->weight = 1.; // pythia
+			if(print_this_event) cout << " true\n";
+			return true;
+		}else{
+			if(print_this_event) cout << " false\n";
+			return false;
+		}
+		//13TeV_mc_herwigpp_pt10to35_FB   1 000 000        375 300 000 pb
+		//13TeV_mc_herwigpp_p35toInf_FB   1 000 000          6 584 000 pb
+	}else if (name == "mc_flat_central_pt35"){
+		if((event->mc_info > 0)&&(event->mc_high_pthat_info == 1)&&(event->mc_cntr_info == 1)&&(CheckDiJetPt(event, 35.))){
+			if(event->mc_info == 1) this->weight = 1.; // herwig
+			if(event->mc_info == 2) this->weight = 1.; // pythia
+			if(print_this_event) cout << " true\n";
+			return true;
+		}else if((event->mc_info > 0)&&(event->mc_low_pthat_info == 1)&&(event->mc_cntr_info == 1)&&(CheckDiJetPt(event, 35.))){
+			if(event->mc_info == 1) this->weight = 78170./7272000.; // herwig
+			if(event->mc_info == 2) this->weight = 1.; // pythia
+			if(print_this_event) cout << " true\n";
+			return true;
+		}else{
+			if(print_this_event) cout << " false\n";
+			return false;
+		}
+	}else if (name == "mc_flat_forward_pt35_eta3.1"){
+		if((event->mc_info > 0)&&(event->mc_high_pthat_info == 1)&&(event->mc_fb_info == 1)&&(CheckDiJetPtEta(event, 35., 3.1))){
+			if(event->mc_info == 1) this->weight = 1.; // herwig
+			if(event->mc_info == 2) this->weight = 1.; // pythia
+			if(print_this_event) cout << " true\n";
+			return true;
+		}else if((event->mc_info > 0)&&(event->mc_low_pthat_info == 1)&&(event->mc_fb_info == 1)&&(CheckDiJetPtEta(event, 35., 3.1))){
+			if(event->mc_info == 1) this->weight = 6584./375300.; // herwig
+			if(event->mc_info == 2) this->weight = 1.; // pythia
+			if(print_this_event) cout << " true\n";
+			return true;
+		}else{
+			if(print_this_event) cout << " false\n";
+			return false;
+		}
+	}else if (name == "mc_flat_central_no_fwd_pt35_eta3.1"){
+		if((event->mc_info > 0)&&(event->mc_high_pthat_info == 1)&&(event->mc_cntr_info == 1)&&(CheckDiJetPt(event, 35.))&&(!CheckDiJetPtEta(event, 35., 3.1))){
+			if(event->mc_info == 1) this->weight = 1.; // herwig
+			if(event->mc_info == 2) this->weight = 1.; // pythia
+			if(print_this_event) cout << " true\n";
+			return true;
+		}else if((event->mc_info > 0)&&(event->mc_low_pthat_info == 1)&&(event->mc_cntr_info == 1)&&(CheckDiJetPt(event, 35.))&&(!CheckDiJetPtEta(event, 35., 3.1))){
+			if(event->mc_info == 1) this->weight = 78170./7272000.; // herwig
+			if(event->mc_info == 2) this->weight = 1.; // pythia
+			if(print_this_event) cout << " true\n";
+			return true;
+		}else{
+			if(print_this_event) cout << " false\n";
+			return false;
+		}
+	}else if (name == "mc_flat_merged_pt35_eta3.1"){
+		double forward_weight_herwig = 1.;
+		double forward_weight_pythia = 1.;
+		//NEED TO BE CALCULATED
+		if((event->mc_info > 0)&&(event->mc_high_pthat_info == 1)&&(event->mc_cntr_info == 1)&&(CheckDiJetPt(event, 35.))&&(!CheckDiJetPtEta(event, 35., 3.1))){
+			if(event->mc_info == 1) this->weight = 1.; // herwig
+			if(event->mc_info == 2) this->weight = 1.; // pythia
+			if(print_this_event) cout << " true\n";
+			return true;
+		}else if((event->mc_info > 0)&&(event->mc_low_pthat_info == 1)&&(event->mc_cntr_info == 1)&&(CheckDiJetPt(event, 35.))&&(!CheckDiJetPtEta(event, 35., 3.1))){
+			if(event->mc_info == 1) this->weight = 78170./7272000.; // herwig
+			if(event->mc_info == 2) this->weight = 1.; // pythia
+			if(print_this_event) cout << " true\n";
+			return true;
+		}else if((event->mc_info > 0)&&(event->mc_high_pthat_info == 1)&&(event->mc_fb_info == 1)&&(CheckDiJetPtEta(event, 35., 3.1))){
+			if(event->mc_info == 1) this->weight = 1.*forward_weight_herwig; // herwig
+			if(event->mc_info == 2) this->weight = 1.*forward_weight_pythia; // pythia
+			if(print_this_event) cout << " true\n";
+			return true;
+		}else if((event->mc_info > 0)&&(event->mc_low_pthat_info == 1)&&(event->mc_fb_info == 1)&&(CheckDiJetPtEta(event, 35., 3.1))){
+			if(event->mc_info == 1) this->weight = 6584./375300.*forward_weight_herwig; // herwig
+			if(event->mc_info == 2) this->weight = 1.*forward_weight_pythia; // pythia
+			if(print_this_event) cout << " true\n";
+			return true;
+		}else{
+			if(print_this_event) cout << " false\n";
+			return false;
+		}
 	}else{
 		cout << "Sample Error: Conditions for sample " << this->name << " not found\n";
 		return false;
 	}
-
-/*
-        Sample *low_pthat               = new Sample("low_pthat");
-        Sample *high_pthat              = new Sample("high_pthat");
-*/
-
 };
 
 bool Sample::CheckDiJetPt(Event *event, double Pt){
