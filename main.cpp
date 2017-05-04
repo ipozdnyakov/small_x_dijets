@@ -22,7 +22,8 @@ void DeltaYDynamics();
 // to add - listing should be added
 // 	  - case should be added into constructor of class Dataset::Dataset() in dataset.cpp
 	Dataset *data = new Dataset("13TeV_data_2015C_FSQJets3");
-	Dataset *min_bias = new Dataset("13TeV_data_2015C_Min_Bias");
+	Dataset *min_bias_2015 = new Dataset("13TeV_data_2015C_Min_Bias");
+	Dataset *min_bias_2016 = new Dataset("13TeV_data_2016H_Min_Bias");
 	Dataset *zerobias = new Dataset("13TeV_data_2015C_ZeroBias");
 	Dataset *herwig_minbias = new Dataset("13TeV_mc_herwigpp_MinBias");
 	Dataset *herwig_lowpthat = new Dataset("13TeV_mc_herwigpp_pt10to35");
@@ -109,11 +110,11 @@ void DeltaYDynamics();
 
 int main(int argc, char** argv) {
 
-//	EfficiencyCalculation();
+	EfficiencyCalculation();
 //	MergingWeightsCalculation();
 //	PileUpCalculation();
 
-	BasicDistributions();
+//	BasicDistributions();
 //	DeltaPhiDynamics();
 //	DeltaYDynamics();
 
@@ -124,6 +125,7 @@ int main(int argc, char** argv) {
 void EfficiencyCalculation(){
 
 	Measurement *eff = new Measurement("eff","_Min_Bias_2015C_data_13TeV_LowPU");
+	//Measurement *eff = new Measurement("eff","_Min_Bias_2016H_data_13TeV_LowPU");
 
 	eff->IncludeObject(all_incl);
 
@@ -132,21 +134,21 @@ void EfficiencyCalculation(){
 	eff->IncludeFunction(pt_sublead_fwd1d3);
 
 	eff->IncludeSample(central_trg);
-	eff->IncludeSample(forward2_trg);
+	//eff->IncludeSample(forward2_trg);
 	eff->IncludeSample(forward3_trg);
 	eff->IncludeSample(unbiased_central);
-	eff->IncludeSample(unbiased_forward2);
+	//eff->IncludeSample(unbiased_forward2);
 	eff->IncludeSample(unbiased_forward3);
 
-	eff->ReadDataset(min_bias);
+	eff->ReadDataset(min_bias_2015);
 
 	eff->CalculateResult(eff_pt_sublead_cntr_trg);
 	eff->CalculateResult(eff_pt_sublead_fwd3_cntr_trg);
 	eff->CalculateResult(eff_pt_sublead_fwd1d3_cntr_trg);
-	eff->CalculateResult(eff_pt_sublead_forward2_trg);
+	//eff->CalculateResult(eff_pt_sublead_forward2_trg);
 	eff->CalculateResult(eff_pt_sublead_forward3_trg);
 
-	eff->WriteToFile("./eff", 1 /* 1 - only results, 2 - results and observables */);
+	eff->WriteToFile("./eff", 2 /* 1 - only results, 2 - results and observables */);
 };
 
 void MergingWeightsCalculation(){

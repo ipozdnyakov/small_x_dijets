@@ -11,7 +11,30 @@ Dataset::Dataset(string str){
 
 //NEW BRANCHES SHOULD BE ALSO ADDED IN class Measurement::ReadFile()
 
-	if ((name == "13TeV_data_2015C_FSQJets3")||(name == "13TeV_data_2015C_Min_Bias")||(name == "13TeV_data_2015C_ZeroBias")){
+	if ((name == "13TeV_data_2016H_FSQ_Jets")||(name == "13TeV_data_2016H_Min_Bias")){
+	        this->tree_name         =	"JetTree/data";
+        	this->run_num_name	=	"event_run";
+	        this->lumi_num_name     =	"event_lumi";
+        	this->event_num_name    =	"event_event";
+	        this->nPV_name          =	"event_nPV";
+        	this->CNTR_trg_name     =	"trgHLT_DiPFJet15_NoCaloMatched_v5";
+	        this->CNTR_trg_ps_name  =	"trgHLTPS_HLT_DiPFJet15_NoCaloMatched_v5";
+        	//this->CNTR_trg_name     =	"trgHLT_DiPFJet25_NoCaloMatched_v5";
+	        //this->CNTR_trg_ps_name  =	"trgHLTPS_HLT_DiPFJet25_NoCaloMatched_v5";
+        	this->FWD3_trg_name     =	"trgHLT_DiPFJet15_FBEta3_NoCaloMatched_v6";
+	        this->FWD3_trg_ps_name  =	"trgHLTPS_HLT_DiPFJet15_FBEta3_NoCaloMatched_v6";
+        	//this->FWD3_trg_name     =	"trgHLT_DiPFJet25_FBEta3_NoCaloMatched_v6";
+	        //this->FWD3_trg_ps_name  =	"trgHLTPS_HLT_DiPFJet25_FBEta3_NoCaloMatched_v6";
+        	this->pt_vector_name    =	"slimmedJetsPt10_pt";
+	        this->rap_vector_name   =	"slimmedJetsPt10_rap";
+        	this->eta_vector_name   =	"slimmedJetsPt10_eta";
+	        this->phi_vector_name   =	"slimmedJetsPt10_phi";
+        	this->cor_vector_name   =	"slimmedJetsPt10_cor";
+	        this->unc_vector_name   =	"slimmedJetsPt10_unc";
+		if ((name == "13TeV_data_2016H_Min_Bias")){
+			this->min_bias_info = true;
+		}
+	}else if ((name == "13TeV_data_2015C_FSQJets3")||(name == "13TeV_data_2015C_Min_Bias")||(name == "13TeV_data_2015C_ZeroBias")){
 	        this->tree_name         =	"JetTree/data";
         	this->run_num_name	=	"event_run";
 	        this->lumi_num_name     =	"event_lumi";
